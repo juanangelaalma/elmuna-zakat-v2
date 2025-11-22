@@ -1,7 +1,8 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
-import { PanelLeftIcon } from "lucide-react"
+import * as Collapsible from "@radix-ui/react-collapsible"
+import { PanelLeftIcon, LucideIcon } from "lucide-react"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -693,6 +694,56 @@ function SidebarMenuSubButton({
   )
 }
 
+
+function SidebarCollapsible({ className, ...props }: React.ComponentProps<typeof Collapsible.Root>) {
+  return (
+    <Collapsible.Root
+      data-slot="sidebar-collapsible pointer"
+      className={cn("w-full", className)}
+      {...props}
+    />
+  )
+}
+
+function SidebarCollapsibleTrigger({
+  isActive = false,
+  icon,
+  tooltip,
+  className,
+  children,
+  ...props
+}: Omit<React.ComponentProps<typeof Collapsible.Trigger>, 'asChild'> & {
+  isActive?: boolean
+  icon?: LucideIcon | null
+  tooltip?: string | React.ComponentProps<typeof TooltipContent>
+} & VariantProps<typeof sidebarMenuButtonVariants>) {
+  return (
+    <Collapsible.Trigger asChild>
+      <SidebarMenuButton
+        isActive={isActive}
+        tooltip={tooltip}
+        className={cn(className)}
+        {...props}
+      >
+        {icon && React.createElement(icon)}
+        {children}
+      </SidebarMenuButton>
+    </Collapsible.Trigger>
+  )
+}
+
+
+function SidebarCollapsibleContent({ className, ...props }: React.ComponentProps<typeof Collapsible.Content>) {
+  return (
+    <Collapsible.Content
+      data-slot="sidebar-collapsible-content"
+      className={cn("overflow-hidden transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down", className)}
+      {...props}
+    />
+  )
+}
+
+
 export {
   Sidebar,
   SidebarContent,
@@ -718,4 +769,7 @@ export {
   SidebarSeparator,
   SidebarTrigger,
   useSidebar,
+  SidebarCollapsible,
+  SidebarCollapsibleTrigger,
+  SidebarCollapsibleContent,
 }

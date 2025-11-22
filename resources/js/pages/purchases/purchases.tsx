@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { purchases } from '@/routes';
+import { purchases, purchaseCreate } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import Table from '@/components/table';
@@ -75,7 +75,7 @@ export default function Purchases() {
                                     Daftar semua pembelian beras
                                 </p>
                             </div>
-                            <Link href="/purchase/new" prefetch>
+                            <Link href={purchaseCreate()} prefetch>
                                 <Button className="cursor-pointer">
                                     <ShoppingCart className="mr-2 h-4 w-4" />
                                     Pembelian Baru
