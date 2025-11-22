@@ -12,6 +12,8 @@ class PurchaseRice extends Model
 
     protected $table = 'purchase_rices';
 
+    protected $guarded = ['id'];
+
     public function riceItem()
     {
         return $this->belongsTo(RiceItem::class);

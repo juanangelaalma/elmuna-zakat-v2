@@ -10,10 +10,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, purchases } from '@/routes';
+import { dashboard, purchases, riceItems } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, ShoppingCart, Package2 } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -24,8 +24,19 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Purchase',
-        href: purchases(),
-        icon: LayoutGrid,
+        icon: ShoppingCart, // Parent icon
+        children: [
+            {
+                title: 'Purchase',
+                href: purchases(),
+                icon: ShoppingCart,
+            },
+            {
+                title: 'RiceItem',
+                href: riceItems(), // Assuming riceItems() function exists for the route
+                icon: Package2,
+            }
+        ]
     }
 ];
 
