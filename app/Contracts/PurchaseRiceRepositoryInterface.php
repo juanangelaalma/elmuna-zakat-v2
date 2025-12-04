@@ -12,4 +12,6 @@ interface PurchaseRiceRepositoryInterface
     public function create(array $data): PurchaseRice;
     public function update(PurchaseRice $purchaseRice, array $data): PurchaseRice;
     public function delete(PurchaseRice $purchaseRice): bool;
+    public function getAvailablePurchaseRices(): Collection;
+    public function decrementPurchaseRiceQuantity(PurchaseRice $purchaseRice, $riceSale, $quantity): void;
 }

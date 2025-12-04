@@ -6,5 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class RiceSale extends Model
 {
-    //
+    protected $guarded = ["id"];
+
+    public function allocations()
+    {
+        return $this->hasMany(PurchaseRiceAllocation::class);
+    }
 }

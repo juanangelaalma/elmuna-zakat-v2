@@ -14,9 +14,8 @@ return new class extends Migration
         Schema::create('rice_sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transaction_detail_id')->constrained('transaction_details')->onDelete('cascade');
-            $table->decimal('price', 10, 2);
+            $table->decimal('amount', 10, 2);
             $table->decimal('quantity', 10, 2);
-            $table->decimal('total_price', 10, 2);
             $table->timestamps();
         });
     }

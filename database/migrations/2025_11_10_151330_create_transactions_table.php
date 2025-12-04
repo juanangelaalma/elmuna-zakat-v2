@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('transaction_number')->unique();
             $table->date('date');
             $table->string('customer');
             $table->string('address')->nullable();
             $table->string('wa_number')->nullable();
             $table->string('officer_name');
             $table->foreignId('created_by')->constrained('users');
-            $table->decimal('total_amount', 10, 2);
             $table->timestamps();
         });
     }

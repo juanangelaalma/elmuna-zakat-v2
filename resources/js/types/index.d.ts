@@ -1,5 +1,6 @@
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
+import { RICE_SALES_ID, ZAKAT_RICE_ID, INFAQ_ID, FIDYAH_ID, ZAKAT_MALL_ID } from '@/lib/constant';
 
 export interface Auth {
     user: User;
@@ -41,4 +42,35 @@ export interface User {
     created_at: string;
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
+}
+
+export interface RiceSalesItem {
+    quantity: number;
+    amount: number | null;
+}
+
+export interface RiceItem {
+    quantity: number;
+}
+
+export interface DonationItem {
+    donation_type: string;
+    amount: number | null;
+    quantity: number | null;
+}
+
+export interface FidyahItem {
+    fidyah_type: string;
+    amount: number | null;
+    quantity: number | null;
+}
+
+export interface WealthItem {
+    amount: number;
+}
+
+export interface TransactionItem {
+    customer: string;
+    item_type: RICE_SALES_ID | ZAKAT_RICE_ID | INFAQ_ID | FIDYAH_ID | ZAKAT_MALL_ID;
+    detail: RiceItem | RiceSalesItem | DonationItem | FidyahItem | WealthItem;
 }
