@@ -18,4 +18,9 @@ class PurchaseRice extends Model
     {
         return $this->belongsTo(RiceItem::class);
     }
+
+    public function allocations()
+    {
+        return $this->hasMany(PurchaseRiceAllocation::class);
+    }
 }

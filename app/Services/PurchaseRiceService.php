@@ -45,4 +45,29 @@ class PurchaseRiceService implements PurchaseRiceServiceInterface
 
         return $this->repository->delete($purchaseRice);
     }
+
+    public function allocatePurchaseRiceToRiceSale($riceSale)
+    {
+        $allocatedQuantity = 0;
+        $neededQuantity = $riceSale->quantity;
+
+        $availablePurchaseRices = $this->repository->getAvailablePurchaseRices();
+
+        foreach($availablePurchaseRices as $purchaseRice) {
+            if ($allocatedQuantity >= $neededQuantity) {
+                break;
+            }
+
+            $remainingQuantity = $purchaseRice->remaining_quantity;
+            $allocationQuantity = min($neededQuantity - $allocatedQuantity, $remainingQuantity);
+
+            $this->repository->decrementPurchaseRiceQuantity($purchaseRice, $riceSale, $allocationQuantity);
+
+            $allocatedQuantity += $allocationQuantity;
+        }
+
+        if ($allocatedQuantity < $neededQuantity) {
+            throw new \Exception('Stok tidak cukup untuk memenuhi transaksi.');
+        }
+    }
 }
