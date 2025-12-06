@@ -18,7 +18,9 @@ use App\Contracts\{
     DonationRepositoryInterface,
     DonationServiceInterface,
     FidyahRepositoryInterface,
-    FidyahServiceInterface
+    FidyahServiceInterface,
+    WealthRepositoryInterface,
+    WealthServiceInterface
 };
 use App\Repositories\{
     PurchaseRiceRepository,
@@ -28,7 +30,8 @@ use App\Repositories\{
     TransactionDetailRepository,
     TransactionRepository,
     DonationRepository,
-    FidyahRepository
+    FidyahRepository,
+    WealthRepository
 };
 use App\Services\{
     PurchaseRiceService,
@@ -38,7 +41,8 @@ use App\Services\{
     TransactionDetailService,
     TransactionService,
     DonationService,
-    FidyahService
+    FidyahService,
+    WealthService
 };
 
 use Illuminate\Support\ServiceProvider;
@@ -72,6 +76,9 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(FidyahRepositoryInterface::class, FidyahRepository::class);
         $this->app->bind(FidyahServiceInterface::class, FidyahService::class);
+
+        $this->app->bind(WealthRepositoryInterface::class, WealthRepository::class);
+        $this->app->bind(WealthServiceInterface::class, WealthService::class);
     }
 
     /**
