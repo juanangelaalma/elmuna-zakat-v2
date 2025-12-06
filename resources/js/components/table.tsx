@@ -27,23 +27,23 @@ const Table = ({
   // Filter data berdasarkan pencarian
   const filteredData = searchable && searchTerm
     ? data.filter(row =>
-        columns.some(col => {
-          const value = getNestedValue(row, col.key);
-          return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
-        })
-      )
+      columns.some(col => {
+        const value = getNestedValue(row, col.key);
+        return value?.toString().toLowerCase().includes(searchTerm.toLowerCase());
+      })
+    )
     : data;
 
   // Sort data
   const sortedData = sortable && sortConfig.key
     ? [...filteredData].sort((a, b) => {
-        const aVal = getNestedValue(a, sortConfig.key);
-        const bVal = getNestedValue(b, sortConfig.key);
+      const aVal = getNestedValue(a, sortConfig.key);
+      const bVal = getNestedValue(b, sortConfig.key);
 
-        if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
-        if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
-        return 0;
-      })
+      if (aVal < bVal) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortConfig.direction === 'asc' ? 1 : -1;
+      return 0;
+    })
     : filteredData;
 
   // Pagination
@@ -141,27 +141,24 @@ const Table = ({
                   <th
                     key={column.key}
                     onClick={() => column.sortable !== false && handleSort(column.key)}
-                    className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${
-                      column.sortable !== false && sortable ? 'cursor-pointer select-none hover:bg-gray-100' : ''
-                    }`}
+                    className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${column.sortable !== false && sortable ? 'cursor-pointer select-none hover:bg-gray-100' : ''
+                      }`}
                   >
                     <div className="flex items-center space-x-1">
                       <span>{column.label}</span>
                       {sortable && column.sortable !== false && (
                         <span className="flex flex-col">
                           <ChevronUp
-                            className={`w-3 h-3 -mb-1 ${
-                              sortConfig.key === column.key && sortConfig.direction === 'asc'
+                            className={`w-3 h-3 -mb-1 ${sortConfig.key === column.key && sortConfig.direction === 'asc'
                                 ? 'text-indigo-600'
                                 : 'text-gray-400'
-                            }`}
+                              }`}
                           />
                           <ChevronDown
-                            className={`w-3 h-3 ${
-                              sortConfig.key === column.key && sortConfig.direction === 'desc'
+                            className={`w-3 h-3 ${sortConfig.key === column.key && sortConfig.direction === 'desc'
                                 ? 'text-indigo-600'
                                 : 'text-gray-400'
-                            }`}
+                              }`}
                           />
                         </span>
                       )}
@@ -180,7 +177,7 @@ const Table = ({
                   {columns.map((column) => (
                     <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {column.render
-                        ? column.render(getNestedValue(row, column.key), row, rowIndex)
+                        ? column.render(getNestedValue(row, column.key), row, startIndex + rowIndex + 1)
                         : getNestedValue(row, column.key)}
                     </td>
                   ))}
@@ -227,11 +224,10 @@ const Table = ({
                     <button
                       key={i}
                       onClick={() => handlePageChange(pageNum)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md transition-colors ${
-                        currentPage === pageNum
+                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium rounded-md transition-colors ${currentPage === pageNum
                           ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
                           : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </button>
