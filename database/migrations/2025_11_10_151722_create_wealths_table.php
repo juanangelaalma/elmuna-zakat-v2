@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('wealths', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transaction_detail_id')->constrained('transaction_details')->onDelete('cascade');
-            $table->decimal('amount', 10, 2);
+            $table->decimal('amount', 14, 2);
             $table->timestamps();
         });
     }
