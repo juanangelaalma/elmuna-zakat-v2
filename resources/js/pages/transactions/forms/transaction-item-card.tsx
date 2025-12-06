@@ -110,6 +110,7 @@ const TransactionItemCard = ({
                     <Button
                         variant="ghost"
                         size="icon"
+                        type="button"
                         className="flex-shrink-0 h-9 w-9 text-destructive hover:text-destructive hover:bg-destructive/10"
                         onClick={() => handleDelete(item)}
                     >
