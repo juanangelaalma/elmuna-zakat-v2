@@ -19,7 +19,13 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = $this->service->getList();
-        return Inertia::render('transactions/transactions', compact('transactions'));
+        $transactionSummary = $this->summarizeTransactions($transactions);
+        
+        $totalAmount = $transactionSummary->totalAmount;
+        $totalQuantity = $transactionSummary->totalQuantity;
+        $numberOfTransactions = count($transactions);
+
+        return Inertia::render('transactions/transactions', compact('transactions', 'totalAmount', 'totalQuantity', 'numberOfTransactions'));
     }
 
     public function create()
@@ -44,5 +50,16 @@ class TransactionController extends Controller
         $this->service->createTransaction($newTransaction);
 
         return redirect()->route('transactions');
+    }
+    
+    private function summarizeTransactions($transactions)
+    {
+        $totalAmount = $transactions->sum('total_transaction_amount');
+        $totalQuantity = $transactions->sum('total_transaction_quantity');
+
+        return (object) [
+            'totalAmount' => $totalAmount,
+            'totalQuantity' => $totalQuantity,
+        ];
     }
 }
