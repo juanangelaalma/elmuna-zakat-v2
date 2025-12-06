@@ -14,7 +14,9 @@ use App\Contracts\{
     TransactionDetailRepositoryInterface,
     TransactionDetailServiceInterface,
     TransactionRepositoryInterface,
-    TransactionServiceInterface
+    TransactionServiceInterface,
+    DonationRepositoryInterface,
+    DonationServiceInterface
 };
 use App\Repositories\{
     PurchaseRiceRepository,
@@ -22,7 +24,9 @@ use App\Repositories\{
     RiceRepository,
     RiceSaleRepository,
     TransactionDetailRepository,
-    TransactionRepository
+    TransactionRepository,
+    DonationRepository,
+    
 };
 use App\Services\{
     PurchaseRiceService,
@@ -30,7 +34,8 @@ use App\Services\{
     RiceService,
     RiceSaleService,
     TransactionDetailService,
-    TransactionService
+    TransactionService,
+    DonationService
 };
 
 use Illuminate\Support\ServiceProvider;
@@ -58,6 +63,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(TransactionDetailServiceInterface::class, TransactionDetailService::class);
         $this->app->bind(RiceRepositoryInterface::class, RiceRepository::class);
         $this->app->bind(RiceServiceInterface::class, RiceService::class);
+
+        $this->app->bind(DonationRepositoryInterface::class, DonationRepository::class);
+        $this->app->bind(DonationServiceInterface::class, DonationService::class);
     }
 
     /**
