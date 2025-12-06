@@ -2,27 +2,38 @@
 
 namespace App\Providers;
 
-use App\Contracts\PurchaseRiceRepositoryInterface;
-use App\Contracts\PurchaseRiceServiceInterface;
-use App\Contracts\RiceItemRepositoryInterface;
-use App\Contracts\RiceItemServiceInterface;
-use App\Repositories\PurchaseRiceRepository;
-use App\Repositories\RiceItemRepository;
-use App\Services\PurchaseRiceService;
-use App\Services\RiceItemService;
+use App\Contracts\{
+    PurchaseRiceRepositoryInterface,
+    PurchaseRiceServiceInterface,
+    RiceItemRepositoryInterface,
+    RiceItemServiceInterface,
+    RiceRepositoryInterface,
+    RiceSaleRepositoryInterface,
+    RiceSaleServiceInterface,
+    RiceServiceInterface,
+    TransactionDetailRepositoryInterface,
+    TransactionDetailServiceInterface,
+    TransactionRepositoryInterface,
+    TransactionServiceInterface
+};
+use App\Repositories\{
+    PurchaseRiceRepository,
+    RiceItemRepository,
+    RiceRepository,
+    RiceSaleRepository,
+    TransactionDetailRepository,
+    TransactionRepository
+};
+use App\Services\{
+    PurchaseRiceService,
+    RiceItemService,
+    RiceService,
+    RiceSaleService,
+    TransactionDetailService,
+    TransactionService
+};
+
 use Illuminate\Support\ServiceProvider;
-use App\Services\TransactionService;
-use App\Contracts\TransactionServiceInterface;
-use App\Contracts\TransactionRepositoryInterface;
-use App\Repositories\TransactionRepository;
-use App\Contracts\TransactionDetailRepositoryInterface;
-use App\Repositories\TransactionDetailRepository;
-use App\Contracts\RiceSaleRepositoryInterface;
-use App\Contracts\RiceSaleServiceInterface;
-use App\Repositories\RiceSaleRepository;
-use App\Services\RiceSaleService;
-use App\Services\TransactionDetailService;
-use App\Contracts\TransactionDetailServiceInterface;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +56,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(RiceSaleServiceInterface::class, RiceSaleService::class);
 
         $this->app->bind(TransactionDetailServiceInterface::class, TransactionDetailService::class);
+        $this->app->bind(RiceRepositoryInterface::class, RiceRepository::class);
+        $this->app->bind(RiceServiceInterface::class, RiceService::class);
     }
 
     /**

@@ -6,7 +6,7 @@ import { OverviewCard } from '@/components/overview-card';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import { Package, DollarSign, ShoppingCart } from 'lucide-react';
-import { formatNumber, formatCurrency } from '@/lib/utils';
+import { formatNumber, formatCurrency, autoOrderedNumber } from '@/lib/utils';
 import { router } from '@inertiajs/react'
 import { transactions, transactionCreate } from '@/routes';
 
@@ -18,11 +18,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const columns = [
-    { key: 'id', label: 'ID' },
+    { key: 'id', label: 'No', render: autoOrderedNumber }, // auto-ordered number
+    { key: 'transaction_number', label: 'Nomor Transaksi' },
     { key: 'date', label: 'Tanggal' },
     { key: 'customer', label: 'Nama' },
     { key: 'officer_name', label: 'Petugas' },
-    { key: 'total_amount', label: 'Total', render: formatCurrency },
+    { key: 'total_transaction_amount', label: 'Total Amount', render: formatCurrency },
+    { key: 'total_transaction_quantity', label: 'Total Quantity' },
 ];
 
 export default function Transactions() {

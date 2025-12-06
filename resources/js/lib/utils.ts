@@ -32,3 +32,5 @@ export const formatCurrency = (num) => {
         maximumFractionDigits: 0,
     }).format(num);
 };
+
+export const autoOrderedNumber = (_value: any, _row: any, globalIndex: number) => globalIndex;
