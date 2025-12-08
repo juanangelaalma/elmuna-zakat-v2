@@ -27,7 +27,7 @@ class PurchaseController extends Controller
     public function create()
     {
         $riceItems = $this->riceItemService->getAllRiceItems();
-        return Inertia::render('purchases/create-purchase', compact('riceItems'));
+        return Inertia::render('purchases/purchase-create', compact('riceItems'));
     }
 
     public function store(PurchaseStoreRequest $request)
