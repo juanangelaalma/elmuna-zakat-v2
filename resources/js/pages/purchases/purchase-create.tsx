@@ -8,7 +8,7 @@ import { Package, DollarSign, ArrowLeft, Save } from 'lucide-react';
 import { formatNumber, formatCurrency } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import InputError from '@/components/input-error';
 import { Form } from '@inertiajs/react';
 import { purchaseStore } from '@/routes'
@@ -20,10 +20,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Baru',
+        href: purchaseStore().url,
     },
 ];
 
-export default function CreatePurchase() {
+export default function PurchaseCreate() {
     const { riceItems } = usePage().props; // Asumsikan rice_items dikirim dari controller
 
     const { data, setData } = useForm({
@@ -62,7 +63,7 @@ export default function CreatePurchase() {
                 <div className="grid gap-6 lg:grid-cols-3">
                     {/* Form Card */}
                     <div className="lg:col-span-2">
-                        <div className="rounded-xl border border-sidebar-border/70 bg-white dark:bg-sidebar-accent shadow-sm">
+                        <div className="rounded-xl px-4 border border-sidebar-border/70 bg-white dark:bg-sidebar-accent shadow-sm">
                             <div className="border-b border-gray-200 dark:border-gray-700 p-6 pl-0">
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informasi Pembelian
@@ -136,7 +137,7 @@ export default function CreatePurchase() {
                                             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-gray-500">
                                                 IDR
                                             </span>
-                                        <InputError message={errors.price_per_kg} />
+                                            <InputError message={errors.price_per_kg} />
                                         </Input>
 
                                         {/* Action Buttons */}
