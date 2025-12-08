@@ -9,5 +9,6 @@ use App\Models\Transaction;
 interface TransactionRepositoryInterface
 {
     public function getList(): Collection;
+    public function getById(int $id): ?array;
     public function createTransaction(TransactionDTO $transaction): Transaction;
 }

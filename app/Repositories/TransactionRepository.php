@@ -110,4 +110,100 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return Transaction::orderBy('created_at', 'desc')->first();
     }
+
+    public function getById(int $id): ?array
+    {
+        $transaction = Transaction::find($id);
+        
+        if (!$transaction) {
+            return null;
+        }
+
+        $details = DB::table('transaction_details as td')
+            ->where('td.transaction_id', $id)
+            ->leftJoin('rice_sales as rs', function ($join) {
+                $join->on('td.id', '=', 'rs.transaction_detail_id')
+                    ->where('td.type', TransactionItemType::RICE_SALES);
+            })
+            ->leftJoin('rices as r', function ($join) {
+                $join->on('td.id', '=', 'r.transaction_detail_id')
+                    ->where('td.type', TransactionItemType::RICE);
+            })
+            ->leftJoin('donations as d', function ($join) {
+                $join->on('td.id', '=', 'd.transaction_detail_id')
+                    ->where('td.type', TransactionItemType::DONATION);
+            })
+            ->leftJoin('fidyahs as f', function ($join) {
+                $join->on('td.id', '=', 'f.transaction_detail_id')
+                    ->where('td.type', TransactionItemType::FIDYAH);
+            })
+            ->leftJoin('wealths as w', function ($join) {
+                $join->on('td.id', '=', 'w.transaction_detail_id')
+                    ->where('td.type', TransactionItemType::WEALTH);
+            })
+            ->select([
+                'td.id',
+                'td.giver_name as customer',
+                'td.type as item_type',
+                DB::raw('COALESCE(rs.quantity, r.quantity, d.quantity, f.quantity) as quantity'),
+                DB::raw('COALESCE(rs.amount, d.amount, f.amount, w.amount) as amount'),
+                DB::raw('d.donation_type'),
+                DB::raw('f.fidyah_type'),
+            ])
+            ->get()
+            ->map(function ($detail) {
+                $item = [
+                    'customer' => $detail->customer,
+                    'item_type' => $detail->item_type,
+                    'detail' => []
+                ];
+
+                switch ($detail->item_type) {
+                    case TransactionItemType::RICE_SALES:
+                        $item['detail'] = [
+                            'quantity' => $detail->quantity,
+                            'amount' => $detail->amount,
+                        ];
+                        break;
+                    case TransactionItemType::RICE:
+                        $item['detail'] = [
+                            'quantity' => $detail->quantity,
+                        ];
+                        break;
+                    case TransactionItemType::DONATION:
+                        $item['detail'] = [
+                            'donation_type' => $detail->donation_type,
+                            'quantity' => $detail->donation_type === 'rice' ? $detail->quantity : null,
+                            'amount' => $detail->donation_type === 'money' ? $detail->amount : null,
+                        ];
+                        break;
+                    case TransactionItemType::FIDYAH:
+                        $item['detail'] = [
+                            'fidyah_type' => $detail->fidyah_type,
+                            'quantity' => $detail->fidyah_type === 'rice' ? $detail->quantity : null,
+                            'amount' => $detail->fidyah_type === 'money' ? $detail->amount : null,
+                        ];
+                        break;
+                    case TransactionItemType::WEALTH:
+                        $item['detail'] = [
+                            'amount' => $detail->amount,
+                        ];
+                        break;
+                }
+
+                return $item;
+            })
+            ->toArray();
+
+        return [
+            'id' => $transaction->id,
+            'transaction_number' => $transaction->transaction_number,
+            'date' => $transaction->date,
+            'customer' => $transaction->customer,
+            'address' => $transaction->address,
+            'wa_number' => $transaction->wa_number,
+            'officer_name' => $transaction->officer_name,
+            'items' => $details,
+        ];
+    }
 }
