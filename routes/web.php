@@ -27,6 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('transactions', [TransactionController::class, 'index'])->name('transactions');
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactionCreate');
+    Route::get('transactions/{id}', [TransactionController::class, 'show'])->name('transactionDetail');
+    Route::get('transactions/{id}/receipt', [TransactionController::class, 'receipt'])->name('transactionReceipt');
     Route::post('transactions/store', [TransactionController::class, 'store'])->name('transactionStore');
 
 });

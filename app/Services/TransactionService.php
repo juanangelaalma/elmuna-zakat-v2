@@ -24,6 +24,11 @@ class TransactionService implements TransactionServiceInterface
         return $this->repository->getList();
     }
 
+    public function getById(int $id): ?array
+    {
+        return $this->repository->getById($id);
+    }
+
     public function createTransaction(TransactionDTO $transaction): Transaction
     {
         DB::beginTransaction();

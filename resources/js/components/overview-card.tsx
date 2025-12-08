@@ -1,5 +1,4 @@
-import { Package, DollarSign, TrendingUp, ShoppingCart } from 'lucide-react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { TrendingUp } from 'lucide-react';
 
 const OverviewCard = ({ title, value, subtitle, icon: Icon, gradient, iconBg }) => {
     return (
@@ -26,9 +25,6 @@ const OverviewCard = ({ title, value, subtitle, icon: Icon, gradient, iconBg }) 
                     )}
                 </div>
             </div>
-
-            {/* Background Pattern */}
-            <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/5 dark:stroke-neutral-100/5" />
         </div>
     );
 };
