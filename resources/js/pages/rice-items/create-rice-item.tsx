@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { riceItems } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
+import { SharedData, type BreadcrumbItem } from '@/types';
 import { Head, usePage, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
@@ -8,10 +8,11 @@ import { Package, DollarSign, ArrowLeft, Save } from 'lucide-react';
 import { formatNumber, formatCurrency } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import InputError from '@/components/input-error';
 import { Form } from '@inertiajs/react';
 import { riceItemStore } from '@/routes'
+import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,15 +21,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Baru',
+        href: '',
     },
 ];
 
 export default function CreatePurchase() {
+    const { defaultValue } = usePage<SharedData>().props
 
     const { data, setData } = useForm({
         name: '',
         unit: '',
     });
+
+    useEffect(() => {
+        setData('unit', defaultValue.unit)
+    }, [defaultValue])
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -79,6 +86,7 @@ export default function CreatePurchase() {
                                             name="name"
                                             required
                                             autoFocus
+                                            value={data.name}
                                             tabIndex={1}
                                             placeholder="Masukkan nama"
                                             onChange={(e) => setData('name', e.target.value)}
@@ -95,10 +103,11 @@ export default function CreatePurchase() {
                                             name="unit"
                                             required
                                             tabIndex={1}
+                                            value={data.unit}
                                             placeholder="Masukkan jumlah dalam kg"
                                             onChange={(e) => setData('unit', e.target.value)}
                                         >
-                                        <InputError message={errors.unit} />
+                                            <InputError message={errors.unit} />
                                         </Input>
 
                                         {/* Action Buttons */}

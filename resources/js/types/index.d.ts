@@ -29,6 +29,7 @@ export interface SharedData {
     quote: { message: string; author: string };
     auth: Auth;
     sidebarOpen: boolean;
+    defaultValue: DefaultValue;
     [key: string]: unknown;
 }
 
@@ -73,4 +74,13 @@ export interface TransactionItem {
     customer: string;
     item_type: RICE_SALES_ID | ZAKAT_RICE_ID | INFAQ_ID | FIDYAH_ID | ZAKAT_MALL_ID;
     detail: RiceItem | RiceSalesItem | DonationItem | FidyahItem | WealthItem;
+}
+
+export interface DefaultValue {
+    rice_sales_quantity: number;
+    rice_sales_amount: number;
+    rice_quantity: number;
+    fidyah_quantity: number;
+    fidyah_amount: number;
+    unit: string;
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\DefaultValueController;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -31,6 +32,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('transactions/{id}/receipt', [TransactionController::class, 'receipt'])->name('transactionReceipt');
     Route::post('transactions/store', [TransactionController::class, 'store'])->name('transactionStore');
 
+    Route::get('default-value', [DefaultValueController::class, 'index'])->name('defaultValue');
+    Route::patch('default-value', [DefaultValueController::class, 'update'])->name('defaultValueUpdate');
 });
 
 require __DIR__.'/settings.php';

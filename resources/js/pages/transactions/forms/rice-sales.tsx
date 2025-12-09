@@ -1,8 +1,13 @@
 import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
 import { RiceSalesItem, TransactionItem } from "@/types";
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { useEffect } from "react";
 
 const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
+    const { defaultValue } = usePage<SharedData>().props
+
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
             setTransactionItem({ ...transactionItem, customer: e.target.value });
@@ -26,6 +31,15 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
             });
         }
     };
+
+    useEffect(() => {
+        if (transactionItem) {
+            setTransactionItem({
+                ...transactionItem,
+                detail: { ...transactionItem.detail, quantity: defaultValue.rice_sales_quantity, amount: defaultValue.rice_sales_amount },
+            });
+        }
+    }, [defaultValue]);
 
     return (
         <>
