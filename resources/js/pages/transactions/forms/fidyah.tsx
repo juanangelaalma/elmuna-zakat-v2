@@ -2,8 +2,13 @@ import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
 import { TransactionItem } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { useEffect } from "react";
 
 const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
+    const { defaultValue } = usePage<SharedData>().props
+
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
             setTransactionItem({ ...transactionItem, customer: e.target.value });
@@ -36,6 +41,15 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
             });
         }
     };
+
+    useEffect(() => {
+        if (transactionItem) {
+            setTransactionItem({
+                ...transactionItem,
+                detail: { ...transactionItem.detail, quantity: defaultValue.fidyah_quantity, amount: defaultValue.fidyah_amount },
+            });
+        }
+    }, [defaultValue]);
 
     return (
         <>

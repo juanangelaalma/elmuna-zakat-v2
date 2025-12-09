@@ -10,10 +10,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, purchases, riceItems, transactions } from '@/routes';
+import { dashboard, defaultValue, purchases, riceItems, transactions } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, ShoppingCart, Package2, TicketSlash } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, ShoppingCart, Package2, TicketSlash, Settings } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -42,6 +42,11 @@ const mainNavItems: NavItem[] = [
         title: 'Transaction',
         href: transactions(),
         icon: TicketSlash,
+    },
+    {
+        title: 'Default Value',
+        href: defaultValue(),
+        icon: Settings,
     }
 ];
 
