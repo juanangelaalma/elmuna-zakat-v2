@@ -8,6 +8,7 @@ use App\DTO\TransactionDTO;
 use App\Models\Transaction;
 use App\Constants\TransactionItemType;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection as SupportCollection;
 
 class TransactionRepository implements TransactionRepositoryInterface
 {
@@ -205,5 +206,95 @@ class TransactionRepository implements TransactionRepositoryInterface
             'officer_name' => $transaction->officer_name,
             'items' => $details,
         ];
+    }
+
+    public function getRiceSales(): SupportCollection
+    {
+        return DB::table('transaction_details as td')
+            ->join('rice_sales as rs', 'td.id', '=', 'rs.transaction_detail_id')
+            ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->where('td.type', TransactionItemType::RICE_SALES)
+            ->select([
+                'td.id',
+                'td.giver_name as customer',
+                'rs.quantity',
+                'rs.amount as total',
+                't.date',
+                't.transaction_number',
+            ])
+            ->orderBy('t.date', 'desc')
+            ->get();
+    }
+
+    public function getRice(): SupportCollection
+    {
+        return DB::table('transaction_details as td')
+            ->join('rices as r', 'td.id', '=', 'r.transaction_detail_id')
+            ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->where('td.type', TransactionItemType::RICE)
+            ->select([
+                'td.id',
+                'td.giver_name as customer',
+                'r.quantity',
+                't.date',
+                't.transaction_number',
+            ])
+            ->orderBy('t.date', 'desc')
+            ->get();
+    }
+
+    public function getDonations(): SupportCollection
+    {
+        return DB::table('transaction_details as td')
+            ->join('donations as d', 'td.id', '=', 'd.transaction_detail_id')
+            ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->where('td.type', TransactionItemType::DONATION)
+            ->select([
+                'td.id',
+                'td.giver_name as customer',
+                'd.donation_type as type',
+                'd.quantity',
+                'd.amount',
+                't.date',
+                't.transaction_number',
+            ])
+            ->orderBy('t.date', 'desc')
+            ->get();
+    }
+
+    public function getFidyah(): SupportCollection
+    {
+        return DB::table('transaction_details as td')
+            ->join('fidyahs as f', 'td.id', '=', 'f.transaction_detail_id')
+            ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->where('td.type', TransactionItemType::FIDYAH)
+            ->select([
+                'td.id',
+                'td.giver_name as customer',
+                'f.fidyah_type as type',
+                'f.quantity',
+                'f.amount',
+                't.date',
+                't.transaction_number',
+            ])
+            ->orderBy('t.date', 'desc')
+            ->get();
+    }
+
+    public function getWealths(): SupportCollection
+    {
+        return DB::table('transaction_details as td')
+            ->join('wealths as w', 'td.id', '=', 'w.transaction_detail_id')
+            ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->where('td.type', TransactionItemType::WEALTH)
+            ->select([
+                'td.id',
+                'td.giver_name as customer',
+                'w.amount',
+                't.date',
+                't.transaction_number',
+            ])
+            ->orderBy('t.date', 'desc')
+            ->get();
     }
 }

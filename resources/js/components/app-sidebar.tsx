@@ -29,6 +29,7 @@ import {
     TicketSlash,
 } from 'lucide-react';
 import AppLogo from './app-logo';
+import { donations, fidyahs, rice, riceSales, wealths } from '@/routes/transactions';
 
 const mainNavItems: NavItem[] = [
     {
@@ -54,8 +55,39 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Transaction',
-        href: transactions(),
         icon: TicketSlash,
+        children: [
+            {
+                title: 'All Transactions',
+                href: transactions(),
+                icon: TicketSlash,
+            },
+            {
+                title: 'Rice Sales',
+                href: riceSales(),
+                icon: ShoppingCart,
+            },
+            {
+                title: 'Rice',
+                href: rice(),
+                icon: Package2,
+            },
+            {
+                title: 'Donations',
+                href: donations(),
+                icon: ShoppingCart,
+            },
+            {
+                title: 'Fidyahs',
+                href: fidyahs(),
+                icon: Package2,
+            },
+            {
+                title: 'Wealths',
+                href: wealths(),
+                icon: ShoppingCart,
+            },
+        ]
     },
     {
         title: 'Default Value',
