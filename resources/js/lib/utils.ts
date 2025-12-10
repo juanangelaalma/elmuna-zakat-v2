@@ -33,8 +33,14 @@ export const formatCurrency = (num: number | string) => {
     }).format(Number(num));
 };
 
-export const autoOrderedNumber = (
-    _value: any,
-    _row: any,
-    globalIndex: number,
-) => globalIndex;
+export const autoOrderedNumber = (_value: any, _row: any, globalIndex: number) => globalIndex;
+
+export const formatDate = (dateString: string) => {
+    if (!dateString) return '-';
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('id-ID', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(date);
+};

@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use App\Factories\TransactionItemFactory;
 use App\Contracts\TransactionDetailServiceInterface;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection as SupportCollection;
 
 class TransactionService implements TransactionServiceInterface
 {
@@ -48,5 +49,30 @@ class TransactionService implements TransactionServiceInterface
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function getRiceSales(): SupportCollection
+    {
+        return $this->repository->getRiceSales();
+    }
+
+    public function getRice(): SupportCollection
+    {
+        return $this->repository->getRice();
+    }
+
+    public function getDonations(): SupportCollection
+    {
+        return $this->repository->getDonations();
+    }
+
+    public function getFidyah(): SupportCollection
+    {
+        return $this->repository->getFidyah();
+    }
+
+    public function getWealths(): SupportCollection
+    {
+        return $this->repository->getWealths();
     }
 }
