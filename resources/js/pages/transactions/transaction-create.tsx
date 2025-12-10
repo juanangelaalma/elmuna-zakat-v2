@@ -46,7 +46,7 @@ export default function TransactionCreate() {
     };
 
     const submit: FormEventHandler = (e) => {
-        console.log("SUBMIT")
+        console.log('SUBMIT');
         e.preventDefault();
         post('/transactions/store');
     };
@@ -104,7 +104,7 @@ export default function TransactionCreate() {
                                             *
                                         </span>
                                     </Label>
-                                    <DatePicker data={data} setData={setData} />
+                                    <DatePicker date={data.date} setDate={(date) => setData('date', date)} />
                                     {errors.date && (
                                         <p className="text-sm text-red-500">
                                             {errors.date}

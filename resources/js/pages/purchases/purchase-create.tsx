@@ -1,17 +1,20 @@
-import AppLayout from '@/layouts/app-layout';
-import { purchases } from '@/routes';
-import { type BreadcrumbItem } from '@/types';
-import { Head, usePage, useForm } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Link } from '@inertiajs/react';
-import { Package, DollarSign, ArrowLeft, Save } from 'lucide-react';
-import { formatNumber, formatCurrency } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import InputError from '@/components/input-error';
-import { Form } from '@inertiajs/react';
-import { purchaseStore } from '@/routes'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import AppLayout from '@/layouts/app-layout';
+import { formatCurrency, formatNumber } from '@/lib/utils';
+import { purchases, purchaseStore } from '@/routes';
+import { type BreadcrumbItem } from '@/types';
+import { Form, Head, Link, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, DollarSign, Package, Save } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -34,9 +37,10 @@ export default function PurchaseCreate() {
     });
 
     // Calculate total value
-    const totalValue = data.quantity && data.price_per_kg
-        ? parseFloat(data.quantity) * parseFloat(data.price_per_kg)
-        : 0;
+    const totalValue =
+        data.quantity && data.price_per_kg
+            ? parseFloat(data.quantity) * parseFloat(data.price_per_kg)
+            : 0;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -63,8 +67,8 @@ export default function PurchaseCreate() {
                 <div className="grid gap-6 lg:grid-cols-3">
                     {/* Form Card */}
                     <div className="lg:col-span-2">
-                        <div className="rounded-xl px-4 border border-sidebar-border/70 bg-white dark:bg-sidebar-accent shadow-sm">
-                            <div className="border-b border-gray-200 dark:border-gray-700 p-6 pl-0">
+                        <div className="rounded-xl border border-sidebar-border/70 bg-white px-4 shadow-sm dark:bg-sidebar-accent">
+                            <div className="border-b border-gray-200 p-6 pl-0 dark:border-gray-700">
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informasi Pembelian
                                 </h2>
@@ -73,19 +77,25 @@ export default function PurchaseCreate() {
                                 </p>
                             </div>
 
-                            <Form {...purchaseStore.form()} className="p-6 space-y-6 pl-0">
-
-
+                            <Form
+                                {...purchaseStore.form()}
+                                className="space-y-6 p-6 pl-0"
+                            >
                                 {({ processing, errors }) => (
                                     <>
                                         <Label htmlFor="rice_item_id">
-                                            Beras <span className="text-red-500">*</span>
+                                            Beras{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Select
                                             id="rice_item_id"
                                             name="rice_item_id"
                                             value={data.rice_item_id}
-                                            onValueChange={(value) => setData('rice_item_id', value)}
+                                            onValueChange={(value) =>
+                                                setData('rice_item_id', value)
+                                            }
                                         >
                                             <SelectTrigger>
                                                 <div className="flex items-center gap-2">
@@ -95,17 +105,22 @@ export default function PurchaseCreate() {
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {riceItems?.map((item) => (
-                                                    <SelectItem key={item.id} value={item.id.toString()}>
+                                                    <SelectItem
+                                                        key={item.id}
+                                                        value={item.id.toString()}
+                                                    >
                                                         {item.name}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
 
-
                                         {/* Quantity Input */}
                                         <Label htmlFor="quantity">
-                                            Jumlah (kg) <span className="text-red-500">*</span>
+                                            Jumlah (kg){' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Input
                                             id="quantity"
@@ -116,13 +131,23 @@ export default function PurchaseCreate() {
                                             tabIndex={1}
                                             autoComplete="quantity"
                                             placeholder="Masukkan jumlah dalam kg"
-                                            onChange={(e) => setData('quantity', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'quantity',
+                                                    e.target.value,
+                                                )
+                                            }
                                         >
-                                            <InputError message={errors.quantity} />
+                                            <InputError
+                                                message={errors.quantity}
+                                            />
                                         </Input>
 
                                         <Label htmlFor="price">
-                                            Harga per kg <span className="text-red-500">*</span>
+                                            Harga per kg{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Input
                                             id="price_per_kg"
@@ -132,25 +157,36 @@ export default function PurchaseCreate() {
                                             autoFocus
                                             tabIndex={1}
                                             placeholder="Masukkan jumlah dalam kg"
-                                            onChange={(e) => setData('price_per_kg', e.target.value)}
+                                            onChange={(e) =>
+                                                setData(
+                                                    'price_per_kg',
+                                                    e.target.value,
+                                                )
+                                            }
                                         >
-                                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-gray-500">
+                                            <span className="absolute top-1/2 right-3 -translate-y-1/2 text-sm font-medium text-gray-500">
                                                 IDR
                                             </span>
-                                            <InputError message={errors.price_per_kg} />
+                                            <InputError
+                                                message={errors.price_per_kg}
+                                            />
                                         </Input>
 
                                         {/* Action Buttons */}
-                                        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                        <div className="flex items-center justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                             <Link href={purchases().url}>
-                                                <Button type="button" variant="outline" className="cursor-pointer">
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    className="cursor-pointer"
+                                                >
                                                     Batal
                                                 </Button>
                                             </Link>
                                             <Button
                                                 type="submit"
                                                 disabled={processing}
-                                                className="gap-2 cursor-pointer"
+                                                className="cursor-pointer gap-2"
                                             >
                                                 {processing ? (
                                                     <>
@@ -173,37 +209,49 @@ export default function PurchaseCreate() {
 
                     {/* Summary Card */}
                     <div className="lg:col-span-1">
-                        <div className="rounded-xl border border-sidebar-border/70 bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-indigo-950 dark:to-indigo-900 shadow-sm p-6 sticky top-4">
-                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                        <div className="sticky top-4 rounded-xl border border-sidebar-border/70 bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 shadow-sm dark:from-indigo-950 dark:to-indigo-900">
+                            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
                                 Ringkasan
                             </h3>
 
                             <div className="space-y-4">
                                 {/* Quantity Summary */}
-                                <div className="flex items-center justify-between p-3 bg-white/50 dark:bg-white/10 rounded-lg">
+                                <div className="flex items-center justify-between rounded-lg bg-white/50 p-3 dark:bg-white/10">
                                     <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
                                             <Package className="h-5 w-5 text-white" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-600 dark:text-gray-400">Jumlah</p>
+                                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                                                Jumlah
+                                            </p>
                                             <p className="text-lg font-bold text-gray-900 dark:text-white">
-                                                {data.quantity ? `${formatNumber(parseFloat(data.quantity))} kg` : '-'}
+                                                {data.quantity
+                                                    ? `${formatNumber(parseFloat(data.quantity))} kg`
+                                                    : '-'}
                                             </p>
                                         </div>
                                     </div>
                                 </div>
 
                                 {/* Price Summary */}
-                                <div className="flex items-center justify-between p-3 bg-white/50 dark:bg-white/10 rounded-lg">
+                                <div className="flex items-center justify-between rounded-lg bg-white/50 p-3 dark:bg-white/10">
                                     <div className="flex items-center gap-3">
-                                        <div className="h-10 w-10 rounded-lg bg-emerald-500 flex items-center justify-center">
+                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500">
                                             <DollarSign className="h-5 w-5 text-white" />
                                         </div>
                                         <div>
-                                            <p className="text-xs text-gray-600 dark:text-gray-400">Harga/kg</p>
+                                            <p className="text-xs text-gray-600 dark:text-gray-400">
+                                                Harga/kg
+                                            </p>
                                             <p className="text-lg font-bold text-gray-900 dark:text-white">
-                                                {data.price_per_kg ? formatCurrency(parseFloat(data.price_per_kg)) : '-'}
+                                                {data.price_per_kg
+                                                    ? formatCurrency(
+                                                          parseFloat(
+                                                              data.price_per_kg,
+                                                          ),
+                                                      )
+                                                    : '-'}
                                             </p>
                                         </div>
                                     </div>
@@ -213,16 +261,19 @@ export default function PurchaseCreate() {
                                 <div className="border-t-2 border-indigo-200 dark:border-indigo-800"></div>
 
                                 {/* Total Value */}
-                                <div className="p-4 bg-white/70 dark:bg-white/20 rounded-lg">
-                                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Nilai</p>
-                                    <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-                                        {totalValue > 0 ? formatCurrency(totalValue) : 'Rp 0'}
+                                <div className="rounded-lg bg-white/70 p-4 dark:bg-white/20">
+                                    <p className="mb-1 text-sm text-gray-600 dark:text-gray-400">
+                                        Total Nilai
                                     </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                    <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                                        {totalValue > 0
+                                            ? formatCurrency(totalValue)
+                                            : 'Rp 0'}
+                                    </p>
+                                    <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                                         {data.quantity && data.price_per_kg
                                             ? `${formatNumber(parseFloat(data.quantity))} kg × ${formatCurrency(parseFloat(data.price_per_kg))}`
-                                            : 'Isi form untuk melihat total'
-                                        }
+                                            : 'Isi form untuk melihat total'}
                                     </p>
                                 </div>
                             </div>

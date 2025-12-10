@@ -30,7 +30,8 @@ const columns = [
 ];
 
 export default function Transactions() {
-    const { transactions, totalAmount, totalQuantity, numberOfTransactions } = usePage().props;
+    const { transactions, totalAmount, totalQuantity, numberOfTransactions } =
+        usePage().props;
 
     const onRowClick = (row) => {
         router.visit(`/transactions/${row.id}`);
@@ -52,7 +53,7 @@ export default function Transactions() {
 
                     <OverviewCard
                         title="Total Beras didapat"
-                        value={formatNumber(totalQuantity) + " kg"}
+                        value={formatNumber(totalQuantity) + ' kg'}
                         subtitle="Total Kuantitas Beras"
                         icon={Package}
                         gradient="from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900"

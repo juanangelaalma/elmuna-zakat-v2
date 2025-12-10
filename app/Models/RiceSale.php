@@ -12,4 +12,9 @@ class RiceSale extends Model
     {
         return $this->hasMany(PurchaseRiceAllocation::class);
     }
+
+    public function transactionDetail()
+    {
+        return $this->belongsTo(TransactionDetail::class);
+    }
 }

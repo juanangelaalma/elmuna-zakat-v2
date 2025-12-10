@@ -13,4 +13,9 @@ class Rice extends Model
         'quantity',
         'unit_type',
     ];
+
+    public function transactionDetail()
+    {
+        return $this->belongsTo(TransactionDetail::class);
+    }
 }

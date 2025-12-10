@@ -1,4 +1,4 @@
-import { HandCoins, Heart, Package, Utensils, Wallet } from "lucide-react";
+import { HandCoins, Heart, Package, Utensils, Wallet } from 'lucide-react';
 
 export const RICE_SALES_ID = 'RICE_SALES';
 export const ZAKAT_RICE_ID = 'RICE';

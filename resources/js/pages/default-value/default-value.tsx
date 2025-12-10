@@ -1,3 +1,4 @@
+import DefaultValueController from '@/actions/App/Http/Controllers/DefaultValueController';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
@@ -7,9 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import { defaultValue } from '@/routes';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Form } from '@inertiajs/react';
-import DefaultValueController from '@/actions/App/Http/Controllers/DefaultValueController';
-import { usePage } from '@inertiajs/react';
+import { Form, usePage } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -23,10 +22,9 @@ export default function DefaultValue() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-
             <div className="grid gap-6 lg:grid-cols-3">
                 {/* Form Card */}
-                <div className="rounded-xl dark:bg-sidebar-accent p-6">
+                <div className="rounded-xl p-6 dark:bg-sidebar-accent">
                     <Form
                         {...DefaultValueController.update.form()}
                         options={{
@@ -43,7 +41,9 @@ export default function DefaultValue() {
                                     />
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="rice_sales_quantity">Quantity</Label>
+                                        <Label htmlFor="rice_sales_quantity">
+                                            Quantity
+                                        </Label>
 
                                         <Input
                                             id="rice_sales_quantity"
@@ -52,7 +52,9 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan quantity"
-                                            defaultValue={data.rice_sales_quantity}
+                                            defaultValue={
+                                                data.rice_sales_quantity
+                                            }
                                         />
 
                                         <InputError
@@ -62,7 +64,9 @@ export default function DefaultValue() {
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="rice_sales_amount">Amount</Label>
+                                        <Label htmlFor="rice_sales_amount">
+                                            Amount
+                                        </Label>
 
                                         <Input
                                             id="rice_sales_amount"
@@ -71,7 +75,9 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan amount"
-                                            defaultValue={data.rice_sales_amount}
+                                            defaultValue={
+                                                data.rice_sales_amount
+                                            }
                                         />
 
                                         <InputError
@@ -88,7 +94,9 @@ export default function DefaultValue() {
                                     />
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="rice_quantity">Quantity</Label>
+                                        <Label htmlFor="rice_quantity">
+                                            Quantity
+                                        </Label>
 
                                         <Input
                                             id="rice_quantity"
@@ -114,7 +122,9 @@ export default function DefaultValue() {
                                     />
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="fidyah_quantity">Quantity</Label>
+                                        <Label htmlFor="fidyah_quantity">
+                                            Quantity
+                                        </Label>
 
                                         <Input
                                             id="fidyah_quantity"
@@ -133,7 +143,9 @@ export default function DefaultValue() {
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="fidyah_amount">Amount</Label>
+                                        <Label htmlFor="fidyah_amount">
+                                            Amount
+                                        </Label>
 
                                         <Input
                                             id="fidyah_amount"

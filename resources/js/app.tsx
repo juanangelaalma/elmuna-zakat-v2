@@ -1,5 +1,5 @@
-import '../css/app.css';
 import '@radix-ui/themes/styles.css';
+import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';

@@ -1,17 +1,31 @@
-import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
-import { TransactionItem } from "@/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { SharedData, TransactionItem } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { SharedData } from '@/types';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
-    const { defaultValue } = usePage<SharedData>().props
+const Fidyah = ({
+    transactionItem,
+    setTransactionItem,
+}: {
+    transactionItem: TransactionItem | null;
+    setTransactionItem: (item: TransactionItem) => void;
+}) => {
+    const { defaultValue } = usePage<SharedData>().props;
 
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
-            setTransactionItem({ ...transactionItem, customer: e.target.value });
+            setTransactionItem({
+                ...transactionItem,
+                customer: e.target.value,
+            });
         }
     };
 
@@ -19,7 +33,7 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
         if (transactionItem && 'fidyah_type' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, fidyah_type: value }
+                detail: { ...transactionItem.detail, fidyah_type: value },
             });
         }
     };
@@ -28,7 +42,10 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
         if (transactionItem && 'amount' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, amount: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    amount: Number(e.target.value),
+                },
             });
         }
     };
@@ -37,7 +54,10 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
         if (transactionItem && 'quantity' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: Number(e.target.value),
+                },
             });
         }
     };
@@ -46,7 +66,11 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
         if (transactionItem) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: defaultValue.fidyah_quantity, amount: defaultValue.fidyah_amount },
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: defaultValue.fidyah_quantity,
+                    amount: defaultValue.fidyah_amount,
+                },
             });
         }
     }, [defaultValue]);
@@ -65,11 +89,15 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
                 />
             </div>
 
-            {(transactionItem?.detail && 'fidyah_type' in transactionItem.detail) ? (
+            {transactionItem?.detail &&
+            'fidyah_type' in transactionItem.detail ? (
                 <>
                     <div className="grid grid-cols-1 gap-2 text-start">
                         <Label htmlFor="price">Tipe Fidyah</Label>
-                        <Select value={transactionItem?.detail.fidyah_type} onValueChange={handleFidyahTypeChange}>
+                        <Select
+                            value={transactionItem?.detail.fidyah_type}
+                            onValueChange={handleFidyahTypeChange}
+                        >
                             <SelectTrigger>
                                 <SelectValue placeholder="Pilih Tipe Fidyah" />
                             </SelectTrigger>
@@ -80,7 +108,7 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
                         </Select>
                     </div>
 
-                    {(transactionItem.detail.fidyah_type === 'money') ? (
+                    {transactionItem.detail.fidyah_type === 'money' ? (
                         <div className="grid grid-cols-1 gap-2 text-start">
                             <Label htmlFor="price">Amount</Label>
                             <Input
@@ -111,6 +139,6 @@ const Fidyah = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
             ) : null}
         </>
     );
-}
+};
 
 export default Fidyah;

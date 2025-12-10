@@ -1,17 +1,12 @@
-import AppLayout from '@/layouts/app-layout';
-import { riceItems } from '@/routes';
-import { SharedData, type BreadcrumbItem } from '@/types';
-import { Head, usePage, useForm } from '@inertiajs/react';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
-import { Link } from '@inertiajs/react';
-import { Package, DollarSign, ArrowLeft, Save } from 'lucide-react';
-import { formatNumber, formatCurrency } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import InputError from '@/components/input-error';
-import { Form } from '@inertiajs/react';
-import { riceItemStore } from '@/routes'
+import AppLayout from '@/layouts/app-layout';
+import { riceItems, riceItemStore } from '@/routes';
+import { SharedData, type BreadcrumbItem } from '@/types';
+import { Form, Head, Link, useForm, usePage } from '@inertiajs/react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -26,7 +21,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CreatePurchase() {
-    const { defaultValue } = usePage<SharedData>().props
+    const { defaultValue } = usePage<SharedData>().props;
 
     const { data, setData } = useForm({
         name: '',
@@ -34,8 +29,8 @@ export default function CreatePurchase() {
     });
 
     useEffect(() => {
-        setData('unit', defaultValue.unit)
-    }, [defaultValue])
+        setData('unit', defaultValue.unit);
+    }, [defaultValue]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -62,8 +57,8 @@ export default function CreatePurchase() {
                 <div className="grid gap-6 lg:grid-cols-3">
                     {/* Form Card */}
                     <div className="lg:col-span-2">
-                        <div className="rounded-xl px-4 border border-sidebar-border/70 bg-white dark:bg-sidebar-accent shadow-sm">
-                            <div className="border-b border-gray-200 dark:border-gray-700 p-6 pl-0">
+                        <div className="rounded-xl border border-sidebar-border/70 bg-white px-4 shadow-sm dark:bg-sidebar-accent">
+                            <div className="border-b border-gray-200 p-6 pl-0 dark:border-gray-700">
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                                     Informasi Pembelian
                                 </h2>
@@ -72,13 +67,17 @@ export default function CreatePurchase() {
                                 </p>
                             </div>
 
-                            <Form {...riceItemStore.form()} className="p-6 space-y-6 pl-0">
-
-
+                            <Form
+                                {...riceItemStore.form()}
+                                className="space-y-6 p-6 pl-0"
+                            >
                                 {({ processing, errors }) => (
                                     <>
                                         <Label htmlFor="name">
-                                            Nama <span className="text-red-500">*</span>
+                                            Nama{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Input
                                             id="name"
@@ -89,13 +88,20 @@ export default function CreatePurchase() {
                                             value={data.name}
                                             tabIndex={1}
                                             placeholder="Masukkan nama"
-                                            onChange={(e) => setData('name', e.target.value)}
+                                            onChange={(e) =>
+                                                setData('name', e.target.value)
+                                            }
                                         >
-                                            <InputError message={errors.quantity} />
+                                            <InputError
+                                                message={errors.quantity}
+                                            />
                                         </Input>
 
                                         <Label htmlFor="unit">
-                                            Unit <span className="text-red-500">*</span>
+                                            Unit{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
                                         </Label>
                                         <Input
                                             id="unit"
@@ -105,22 +111,28 @@ export default function CreatePurchase() {
                                             tabIndex={1}
                                             value={data.unit}
                                             placeholder="Masukkan jumlah dalam kg"
-                                            onChange={(e) => setData('unit', e.target.value)}
+                                            onChange={(e) =>
+                                                setData('unit', e.target.value)
+                                            }
                                         >
                                             <InputError message={errors.unit} />
                                         </Input>
 
                                         {/* Action Buttons */}
-                                        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                        <div className="flex items-center justify-end gap-3 border-t border-gray-200 pt-4 dark:border-gray-700">
                                             <Link href={riceItems().url}>
-                                                <Button type="button" variant="outline" className="cursor-pointer">
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    className="cursor-pointer"
+                                                >
                                                     Batal
                                                 </Button>
                                             </Link>
                                             <Button
                                                 type="submit"
                                                 disabled={processing}
-                                                className="gap-2 cursor-pointer"
+                                                className="cursor-pointer gap-2"
                                             >
                                                 {processing ? (
                                                     <>

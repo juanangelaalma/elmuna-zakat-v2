@@ -20,7 +20,8 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
             <SidebarMenu>
                 {items.map((item) => {
                     if (item.children && item.children.length > 0) {
-                        const isParentActive = item.children.some((child) => page.url.startsWith(resolveUrl(child.href!))
+                        const isParentActive = item.children.some((child) =>
+                            page.url.startsWith(resolveUrl(child.href!)),
                         );
 
                         return (
@@ -30,7 +31,7 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                             >
                                 <SidebarMenuItem>
                                     <SidebarCollapsibleTrigger
-                                        className='cursor-pointer'
+                                        className="cursor-pointer"
                                         icon={item.icon}
                                         isActive={isParentActive}
                                         tooltip={{ children: item.title }}
@@ -41,17 +42,29 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                 <SidebarCollapsibleContent>
                                     <SidebarMenu>
                                         {item.children.map((child) => (
-                                            <SidebarMenuItem className='ml-6' key={child.title}>
+                                            <SidebarMenuItem
+                                                className="ml-6"
+                                                key={child.title}
+                                            >
                                                 <SidebarMenuButton
                                                     asChild
                                                     isActive={page.url.startsWith(
                                                         resolveUrl(child.href!),
                                                     )}
-                                                    tooltip={{ children: child.title }}
+                                                    tooltip={{
+                                                        children: child.title,
+                                                    }}
                                                 >
-                                                    <Link href={child.href!} prefetch>
-                                                        {child.icon && <child.icon />}
-                                                        <span>{child.title}</span>
+                                                    <Link
+                                                        href={child.href!}
+                                                        prefetch
+                                                    >
+                                                        {child.icon && (
+                                                            <child.icon />
+                                                        )}
+                                                        <span>
+                                                            {child.title}
+                                                        </span>
                                                     </Link>
                                                 </SidebarMenuButton>
                                             </SidebarMenuItem>
@@ -67,7 +80,9 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                                     asChild
                                     isActive={
                                         !!item.href &&
-                                        page.url.startsWith(resolveUrl(item.href))
+                                        page.url.startsWith(
+                                            resolveUrl(item.href),
+                                        )
                                     }
                                     tooltip={{ children: item.title }}
                                 >
