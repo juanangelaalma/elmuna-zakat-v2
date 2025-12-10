@@ -1,16 +1,24 @@
-import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
-import { RiceSalesItem, TransactionItem } from "@/types";
+import { Label } from '@/components/ui/label';
+import { RiceSalesItem, SharedData, TransactionItem } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { SharedData } from '@/types';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
-    const { defaultValue } = usePage<SharedData>().props
+const RiceSale = ({
+    transactionItem,
+    setTransactionItem,
+}: {
+    transactionItem: TransactionItem | null;
+    setTransactionItem: (item: TransactionItem) => void;
+}) => {
+    const { defaultValue } = usePage<SharedData>().props;
 
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
-            setTransactionItem({ ...transactionItem, customer: e.target.value });
+            setTransactionItem({
+                ...transactionItem,
+                customer: e.target.value,
+            });
         }
     };
 
@@ -18,7 +26,10 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
         if (transactionItem && 'quantity' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: Number(e.target.value),
+                },
             });
         }
     };
@@ -27,7 +38,10 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
         if (transactionItem && 'amount' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, amount: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    amount: Number(e.target.value),
+                },
             });
         }
     };
@@ -36,7 +50,11 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
         if (transactionItem) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: defaultValue.rice_sales_quantity, amount: defaultValue.rice_sales_amount },
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: defaultValue.rice_sales_quantity,
+                    amount: defaultValue.rice_sales_amount,
+                },
             });
         }
     }, [defaultValue]);
@@ -60,7 +78,10 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
                 <Input
                     id="quantity"
                     type="number"
-                    value={(transactionItem?.detail as RiceSalesItem)?.quantity || ''}
+                    value={
+                        (transactionItem?.detail as RiceSalesItem)?.quantity ||
+                        ''
+                    }
                     onChange={handleQuantityChange}
                     placeholder="Quantity"
                     required
@@ -73,7 +94,9 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
                 <Input
                     id="amount"
                     type="number"
-                    value={(transactionItem?.detail as RiceSalesItem)?.amount || ''}
+                    value={
+                        (transactionItem?.detail as RiceSalesItem)?.amount || ''
+                    }
                     onChange={handleAmountChange}
                     placeholder="Amount"
                     required
@@ -82,6 +105,6 @@ const RiceSale = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
             </div>
         </>
     );
-}
+};
 
 export default RiceSale;

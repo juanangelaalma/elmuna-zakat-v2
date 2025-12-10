@@ -1,11 +1,20 @@
-import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
-import { WealthItem, TransactionItem } from "@/types";
+import { Label } from '@/components/ui/label';
+import { TransactionItem, WealthItem } from '@/types';
 
-const Wealth = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
+const Wealth = ({
+    transactionItem,
+    setTransactionItem,
+}: {
+    transactionItem: TransactionItem | null;
+    setTransactionItem: (item: TransactionItem) => void;
+}) => {
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
-            setTransactionItem({ ...transactionItem, customer: e.target.value });
+            setTransactionItem({
+                ...transactionItem,
+                customer: e.target.value,
+            });
         }
     };
 
@@ -13,7 +22,10 @@ const Wealth = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
         if (transactionItem && 'amount' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, amount: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    amount: Number(e.target.value),
+                },
             });
         }
     };
@@ -37,7 +49,9 @@ const Wealth = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
                 <Input
                     id="amount"
                     type="number"
-                    value={(transactionItem?.detail as WealthItem)?.amount || ''}
+                    value={
+                        (transactionItem?.detail as WealthItem)?.amount || ''
+                    }
                     onChange={handleAmountChange}
                     placeholder="Jumlah"
                     required
@@ -46,6 +60,6 @@ const Wealth = ({ transactionItem, setTransactionItem }: { transactionItem: Tran
             </div>
         </>
     );
-}
+};
 
 export default Wealth;

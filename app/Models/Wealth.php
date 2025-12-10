@@ -10,4 +10,9 @@ class Wealth extends Model
         'transaction_detail_id',
         'amount',
     ];
+
+    public function transactionDetail()
+    {
+        return $this->belongsTo(TransactionDetail::class);
+    }
 }

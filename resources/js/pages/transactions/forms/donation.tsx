@@ -1,12 +1,27 @@
-import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
-import { TransactionItem } from "@/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
+import { TransactionItem } from '@/types';
 
-const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
+const Donation = ({
+    transactionItem,
+    setTransactionItem,
+}: {
+    transactionItem: TransactionItem | null;
+    setTransactionItem: (item: TransactionItem) => void;
+}) => {
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
-            setTransactionItem({ ...transactionItem, customer: e.target.value });
+            setTransactionItem({
+                ...transactionItem,
+                customer: e.target.value,
+            });
         }
     };
 
@@ -14,7 +29,7 @@ const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
         if (transactionItem && 'donation_type' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, donation_type: value }
+                detail: { ...transactionItem.detail, donation_type: value },
             });
         }
     };
@@ -23,7 +38,10 @@ const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
         if (transactionItem && 'amount' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, amount: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    amount: Number(e.target.value),
+                },
             });
         }
     };
@@ -32,7 +50,10 @@ const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
         if (transactionItem && 'quantity' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: Number(e.target.value),
+                },
             });
         }
     };
@@ -51,11 +72,15 @@ const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
                 />
             </div>
 
-            {(transactionItem?.detail && 'donation_type' in transactionItem.detail) ? (
+            {transactionItem?.detail &&
+            'donation_type' in transactionItem.detail ? (
                 <>
                     <div className="grid grid-cols-1 gap-2 text-start">
                         <Label htmlFor="price">Tipe Donasi</Label>
-                        <Select value={transactionItem?.detail.donation_type} onValueChange={handleDonationTypeChange}>
+                        <Select
+                            value={transactionItem?.detail.donation_type}
+                            onValueChange={handleDonationTypeChange}
+                        >
                             <SelectTrigger>
                                 <SelectValue placeholder="Pilih Tipe Donasi" />
                             </SelectTrigger>
@@ -66,7 +91,7 @@ const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
                         </Select>
                     </div>
 
-                    {(transactionItem.detail.donation_type === 'money') ? (
+                    {transactionItem.detail.donation_type === 'money' ? (
                         <div className="grid grid-cols-1 gap-2 text-start">
                             <Label htmlFor="price">Amount</Label>
                             <Input
@@ -97,6 +122,6 @@ const Donation = ({ transactionItem, setTransactionItem }: { transactionItem: Tr
             ) : null}
         </>
     );
-}
+};
 
 export default Donation;

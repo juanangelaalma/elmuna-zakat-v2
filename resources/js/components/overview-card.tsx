@@ -1,11 +1,31 @@
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, type LucideIcon } from 'lucide-react';
 
-const OverviewCard = ({ title, value, subtitle, icon: Icon, gradient, iconBg }) => {
+interface OverviewCardProps {
+    title: string;
+    value: string;
+    subtitle: string;
+    icon: LucideIcon;
+    gradient: string;
+    iconBg: string;
+}
+
+const OverviewCard = ({
+    title,
+    value,
+    subtitle,
+    icon: Icon,
+    gradient,
+    iconBg,
+}: OverviewCardProps) => {
     return (
-        <div className={`relative overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border bg-gradient-to-br ${gradient} p-6 shadow-sm hover:shadow-md transition-shadow`}>
+        <div
+            className={`relative overflow-hidden rounded-xl border border-sidebar-border/70 bg-gradient-to-br dark:border-sidebar-border ${gradient} p-6 shadow-sm transition-shadow hover:shadow-md`}
+        >
             <div className="relative z-10 flex h-full flex-row gap-4">
                 <div className="flex items-start justify-between">
-                    <div className={`flex h-20 w-20 items-center justify-center rounded-xl ${iconBg} shadow-sm`}>
+                    <div
+                        className={`flex h-20 w-20 items-center justify-center rounded-xl ${iconBg} shadow-sm`}
+                    >
                         <Icon className="h-10 w-10 text-white" />
                     </div>
                 </div>
@@ -29,4 +49,4 @@ const OverviewCard = ({ title, value, subtitle, icon: Icon, gradient, iconBg }) 
     );
 };
 
-export { OverviewCard }
+export { OverviewCard };

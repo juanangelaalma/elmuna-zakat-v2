@@ -17,20 +17,24 @@ export function resolveUrl(url: NonNullable<InertiaLinkProps['href']>): string {
     return typeof url === 'string' ? url : url.url;
 }
 
-export const formatNumber = (num) => {
+export const formatNumber = (num: number | string) => {
     return new Intl.NumberFormat('id-ID', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
-    }).format(num);
+    }).format(Number(num));
 };
 
-export const formatCurrency = (num) => {
+export const formatCurrency = (num: number | string) => {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
         currency: 'IDR',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
-    }).format(num);
+    }).format(Number(num));
 };
 
-export const autoOrderedNumber = (_value: any, _row: any, globalIndex: number) => globalIndex;
+export const autoOrderedNumber = (
+    _value: any,
+    _row: any,
+    globalIndex: number,
+) => globalIndex;

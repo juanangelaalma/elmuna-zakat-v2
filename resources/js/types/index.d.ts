@@ -1,6 +1,12 @@
+import {
+    FIDYAH_ID,
+    INFAQ_ID,
+    RICE_SALES_ID,
+    ZAKAT_MALL_ID,
+    ZAKAT_RICE_ID,
+} from '@/lib/constant';
 import { InertiaLinkProps } from '@inertiajs/react';
 import { LucideIcon } from 'lucide-react';
-import { RICE_SALES_ID, ZAKAT_RICE_ID, INFAQ_ID, FIDYAH_ID, ZAKAT_MALL_ID } from '@/lib/constant';
 
 export interface Auth {
     user: User;
@@ -72,7 +78,12 @@ export interface WealthItem {
 
 export interface TransactionItem {
     customer: string;
-    item_type: RICE_SALES_ID | ZAKAT_RICE_ID | INFAQ_ID | FIDYAH_ID | ZAKAT_MALL_ID;
+    item_type:
+        | RICE_SALES_ID
+        | ZAKAT_RICE_ID
+        | INFAQ_ID
+        | FIDYAH_ID
+        | ZAKAT_MALL_ID;
     detail: RiceItem | RiceSalesItem | DonationItem | FidyahItem | WealthItem;
 }
 

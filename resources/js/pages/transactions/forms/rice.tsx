@@ -1,16 +1,24 @@
-import { Label } from "@/components/ui/label"
 import { Input } from '@/components/ui/input';
-import { RiceItem, TransactionItem } from "@/types";
+import { Label } from '@/components/ui/label';
+import { RiceItem, SharedData, TransactionItem } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { SharedData } from '@/types';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-const Rice = ({ transactionItem, setTransactionItem }: { transactionItem: TransactionItem | null, setTransactionItem: (item: TransactionItem) => void }) => {
-    const { defaultValue } = usePage<SharedData>().props
+const Rice = ({
+    transactionItem,
+    setTransactionItem,
+}: {
+    transactionItem: TransactionItem | null;
+    setTransactionItem: (item: TransactionItem) => void;
+}) => {
+    const { defaultValue } = usePage<SharedData>().props;
 
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
-            setTransactionItem({ ...transactionItem, customer: e.target.value });
+            setTransactionItem({
+                ...transactionItem,
+                customer: e.target.value,
+            });
         }
     };
 
@@ -18,7 +26,10 @@ const Rice = ({ transactionItem, setTransactionItem }: { transactionItem: Transa
         if (transactionItem && 'quantity' in transactionItem.detail) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: Number(e.target.value) }
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: Number(e.target.value),
+                },
             });
         }
     };
@@ -27,7 +38,10 @@ const Rice = ({ transactionItem, setTransactionItem }: { transactionItem: Transa
         if (transactionItem) {
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, quantity: defaultValue.rice_quantity },
+                detail: {
+                    ...transactionItem.detail,
+                    quantity: defaultValue.rice_quantity,
+                },
             });
         }
     }, [defaultValue]);
@@ -51,7 +65,9 @@ const Rice = ({ transactionItem, setTransactionItem }: { transactionItem: Transa
                 <Input
                     id="quantity"
                     type="number"
-                    value={(transactionItem?.detail as RiceItem)?.quantity || ''}
+                    value={
+                        (transactionItem?.detail as RiceItem)?.quantity || ''
+                    }
                     onChange={handleQuantityChange}
                     placeholder="Quantity"
                     required
@@ -60,6 +76,6 @@ const Rice = ({ transactionItem, setTransactionItem }: { transactionItem: Transa
             </div>
         </>
     );
-}
+};
 
 export default Rice;
