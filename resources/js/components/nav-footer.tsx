@@ -9,6 +9,7 @@ import {
 import { resolveUrl } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { type ComponentPropsWithoutRef } from 'react';
+import { Link, usePage } from '@inertiajs/react';
 
 export function NavFooter({
     items,
@@ -30,10 +31,8 @@ export function NavFooter({
                                 asChild
                                 className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
                             >
-                                <a
-                                    href={resolveUrl(item.href)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                <Link
+                                    href={item.href}
                                 >
                                     {item.icon && (
                                         <Icon
@@ -42,7 +41,7 @@ export function NavFooter({
                                         />
                                     )}
                                     <span>{item.title}</span>
-                                </a>
+                                </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     ))}
