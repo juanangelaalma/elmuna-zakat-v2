@@ -3,6 +3,7 @@ import CursorTracker from '@/components/animated/CursorTracker';
 import FloatingCard from '@/components/animated/FloatingCard';
 import GradientButton from '@/components/animated/GradientButton';
 import ParallaxSection from '@/components/animated/ParallaxSection';
+import AppLogo from '@/components/app-logo';
 import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
@@ -69,12 +70,7 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                             transition={{ duration: 0.6 }}
                             className="flex items-center gap-2"
                         >
-                            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent">
-                                <Sparkles className="h-5 w-5 text-white" />
-                            </div>
-                            <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                                ElmunaZakat
-                            </span>
+                            <AppLogo />
                         </motion.div>
 
                         <motion.div
