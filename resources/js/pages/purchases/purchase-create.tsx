@@ -160,7 +160,7 @@ export default function PurchaseCreate() {
                                             onChange={(e) =>
                                                 setData(
                                                     'price_per_kg',
-                                                    e.target.value,
+                                                    Number(e.target.value),
                                                 )
                                             }
                                         >
@@ -247,10 +247,10 @@ export default function PurchaseCreate() {
                                             <p className="text-lg font-bold text-gray-900 dark:text-white">
                                                 {data.price_per_kg
                                                     ? formatCurrency(
-                                                          parseFloat(
-                                                              data.price_per_kg,
-                                                          ),
-                                                      )
+                                                        parseFloat(
+                                                            data.price_per_kg,
+                                                        ),
+                                                    )
                                                     : '-'}
                                             </p>
                                         </div>
