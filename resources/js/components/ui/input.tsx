@@ -2,35 +2,68 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-function Input({ className, type, children, onChange, value, name, ...rest }: React.ComponentProps<"input">) {
-  const [displayValue, setDisplayValue] = React.useState<string>("")
-  const [cleanValue, setCleanValue] = React.useState<string>("")
+function Input({ className, type, children, onChange, value, name, ...rest }) {
+  const [displayValue, setDisplayValue] = React.useState("")
+  const [cleanValue, setCleanValue] = React.useState("")
 
-  const formatNumber = (val: string): string => {
-    const cleanVal = val.replace(/\D/g, "")
+  const formatNumber = (val: string) => {
+    if (!val) return ""
 
-    if (!cleanVal) return ""
-    return cleanVal.replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    const hasTrailingComma = val.endsWith(',')
+    const parts = val.split(',')
+    const integerPart = parts[0].replace(/\D/g, "")
+    const decimalPart = parts[1] !== undefined ? parts[1].replace(/\D/g, "") : null
+
+    if (!integerPart && decimalPart === null) return ""
+
+    const formattedInteger = integerPart ? integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".") : "0"
+
+    if (decimalPart !== null) {
+      return `${formattedInteger},${decimalPart}`
+    } else if (hasTrailingComma) {
+      return `${formattedInteger},`
+    } else {
+      return formattedInteger
+    }
   }
 
-  const getCleanValue = (val: string): string => {
-    return val.replace(/\./g, "")
+  const getCleanValue = (val: string) => {
+    return val.replace(/\./g, "").replace(/,/g, ".")
   }
 
   React.useEffect(() => {
     if (type === "number" && value !== undefined) {
       const stringValue = String(value)
-      const clean = getCleanValue(stringValue)
+      const displayFormat = stringValue.replace('.', ',')
+      const clean = getCleanValue(displayFormat)
       setCleanValue(clean)
-      setDisplayValue(formatNumber(stringValue))
+      setDisplayValue(formatNumber(displayFormat))
     }
   }, [value, type])
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     if (type === "number") {
       const inputValue = e.target.value
-      const clean = getCleanValue(inputValue)
-      const formatted = formatNumber(clean)
+
+      if (inputValue === "") {
+        setCleanValue("")
+        setDisplayValue("")
+        if (onChange) {
+          const syntheticEvent = {
+            ...e,
+            target: {
+              ...e.target,
+              name: name || e.target.name,
+              value: "",
+            },
+          }
+          onChange(syntheticEvent)
+        }
+        return
+      }
+
+      const formatted = formatNumber(inputValue)
+      const clean = getCleanValue(formatted)
 
       setCleanValue(clean)
       setDisplayValue(formatted)
@@ -43,8 +76,7 @@ function Input({ className, type, children, onChange, value, name, ...rest }: Re
             name: name || e.target.name,
             value: clean,
           },
-        } as React.ChangeEvent<HTMLInputElement>
-
+        }
         onChange(syntheticEvent)
       }
     } else {

@@ -52,7 +52,7 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan quantity"
-                                            defaultValue={
+                                            value={
                                                 data.rice_sales_quantity
                                             }
                                         />
@@ -75,7 +75,7 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan amount"
-                                            defaultValue={
+                                            value={
                                                 data.rice_sales_amount
                                             }
                                         />
@@ -105,7 +105,7 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan quantity"
-                                            defaultValue={data.rice_quantity}
+                                            value={data.rice_quantity}
                                         />
 
                                         <InputError
@@ -133,7 +133,7 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan quantity"
-                                            defaultValue={data.fidyah_quantity}
+                                            value={data.fidyah_quantity}
                                         />
 
                                         <InputError
@@ -154,7 +154,7 @@ export default function DefaultValue() {
                                             required
                                             type="number"
                                             placeholder="Masukkan amount"
-                                            defaultValue={data.fidyah_amount}
+                                            value={data.fidyah_amount}
                                         />
 
                                         <InputError
@@ -180,7 +180,7 @@ export default function DefaultValue() {
                                             required
                                             type="text"
                                             placeholder="Masukkan unit"
-                                            defaultValue={data.unit}
+                                            value={data.unit}
                                         />
 
                                         <InputError
