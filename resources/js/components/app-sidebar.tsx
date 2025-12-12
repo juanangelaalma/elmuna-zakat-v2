@@ -20,7 +20,7 @@ import {
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
-    BookOpen,
+BookOpen,
     Folder,
     LayoutGrid,
     Package2,
