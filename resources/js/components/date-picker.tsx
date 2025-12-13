@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
+import { useState } from 'react';
 
 interface DatePickerProps {
     date: any,
@@ -16,13 +17,15 @@ interface DatePickerProps {
 }
 
 const DatePicker = ({ date, setDate, className, name = 'date' }: DatePickerProps) => {
+    const [open, setOpen] = useState(false);
 
     const handleSetDate = (date: any) => {
         setDate(format(date, 'Y-M-dd'))
+        setOpen(false)
     }
 
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
