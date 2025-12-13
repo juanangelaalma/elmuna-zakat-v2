@@ -11,7 +11,7 @@ class PurchaseRiceRepository implements PurchaseRiceRepositoryInterface
 {
     public function getAll(array $relations = []): Collection
     {
-        return PurchaseRice::with($relations)->get();
+        return PurchaseRice::with($relations)->orderBy('date', 'DESC')->get();
     }
 
     public function find(int $id): PurchaseRice
