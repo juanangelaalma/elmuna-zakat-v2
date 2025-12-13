@@ -12,9 +12,15 @@ interface DatePickerProps {
     date: any,
     setDate: (date: any) => void,
     className?: string,
+    name: string
 }
 
-const DatePicker = ({ date, setDate, className }: DatePickerProps) => {
+const DatePicker = ({ date, setDate, className, name = 'date' }: DatePickerProps) => {
+
+    const handleSetDate = (date: any) => {
+        setDate(format(date, 'Y-M-dd'))
+    }
+
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -29,13 +35,15 @@ const DatePicker = ({ date, setDate, className }: DatePickerProps) => {
                     ) : (
                         <span>Pilih Tanggal</span>
                     )}
+                    
+                <input type='hidden' name={name} value={date} />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
                 <Calendar
                     mode="single"
                     selected={date}
-                    onSelect={(date) => setDate(date)}
+                    onSelect={handleSetDate}
                 />
             </PopoverContent>
         </Popover>

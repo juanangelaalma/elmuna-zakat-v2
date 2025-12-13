@@ -17,6 +17,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const columns = [
     { key: 'id', label: 'ID' },
+    { key: 'date', label: 'Tanggal' },
     { key: 'rice_item.name', label: 'Nama' },
     { key: 'quantity', label: 'Quantity' },
     { key: 'price_per_kg', label: 'Price(kg)', render: formatCurrency },

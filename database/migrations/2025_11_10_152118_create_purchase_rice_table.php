@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('purchase_rices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rice_item_id')->constrained('rice_items')->onDelete('cascade');
+            $table->date('date');
             $table->decimal('quantity', 10, 2);
             $table->decimal('price_per_kg', 10, 2);
             $table->foreignId('created_by')->constrained('users');

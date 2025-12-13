@@ -41,7 +41,7 @@ class DashboardController extends Controller
 
     private function getRiceStock($startDate, $endDate)
     {
-        $purchaseTotal = PurchaseRice::whereBetween('created_at', [$startDate, $endDate])
+        $purchaseTotal = PurchaseRice::whereBetween('date', [$startDate, $endDate])
             ->sum('quantity');
 
         $riceIncome = Rice::whereHas('transactionDetail.transaction', function ($query) use ($startDate, $endDate) {
@@ -152,7 +152,7 @@ class DashboardController extends Controller
 
     private function getPurchaseSummary($startDate, $endDate)
     {
-        $purchases = PurchaseRice::whereBetween('created_at', [$startDate, $endDate])
+        $purchases = PurchaseRice::whereBetween('date', [$startDate, $endDate])
             ->selectRaw('SUM(quantity) as total_quantity, SUM(quantity * price_per_kg) as total_value, COUNT(*) as count')
             ->first();
 

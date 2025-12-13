@@ -1,3 +1,4 @@
+import DatePicker from '@/components/date-picker';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,6 +35,7 @@ export default function PurchaseCreate() {
         rice_item_id: '',
         quantity: '',
         price_per_kg: '',
+        date: new Date().toISOString().split('T')[0]
     });
 
     // Calculate total value
@@ -83,6 +85,7 @@ export default function PurchaseCreate() {
                             >
                                 {({ processing, errors }) => (
                                     <>
+                                        <DatePicker name='date' date={data.date} setDate={(date) => setData('date', date)} />
                                         <Label htmlFor="rice_item_id">
                                             Beras{' '}
                                             <span className="text-red-500">
