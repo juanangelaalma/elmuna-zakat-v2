@@ -85,7 +85,20 @@ export default function PurchaseCreate() {
                             >
                                 {({ processing, errors }) => (
                                     <>
-                                        <DatePicker name='date' date={data.date} setDate={(date) => setData('date', date)} />
+                                        <div className="space-y-2">
+                                            <Label htmlFor="date">
+                                                Tanggal
+                                                <span className="ml-1 text-red-500">
+                                                    *
+                                                </span>
+                                            </Label>
+                                            <DatePicker name='date' date={data.date} setDate={(date) => setData('date', date)} />
+                                            {errors.date && (
+                                                <p className="text-sm text-red-500">
+                                                    {errors.date}
+                                                </p>
+                                            )}
+                                        </div>
                                         <Label htmlFor="rice_item_id">
                                             Beras{' '}
                                             <span className="text-red-500">
