@@ -7,7 +7,8 @@
     <style>
         @page {
             size: 110mm 220mm;
-            padding: 7mm 7mm;
+            margin: 0;
+            padding: 0;
         }
 
         * {
@@ -21,35 +22,47 @@
             font-size: 9pt;
             line-height: 1.4;
             color: #1a1a1a;
-            width: 90%;
-            margin: auto;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Wrapper untuk memutar konten 90 derajat berlawanan jarum jam */
+        .content-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 205mm; /* Lebar = Tinggi kertas DL border-less */
+            height: 105mm; /* Tinggi = Lebar kertas DL border-less */
+            transform: translate(-50%, -50%) rotate(90deg);
         }
 
         /* ── Header ── */
         .header {
             text-align: center;
-            padding-bottom: 6px;
+            padding-bottom: 4px;
             margin-bottom: 6px;
             border-bottom: 2px solid #1a1a1a;
         }
 
         .header .org-name {
-            font-size: 14pt;
+            font-size: 16pt;
             font-weight: bold;
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
         }
 
         .header .org-sub {
-            font-size: 7.5pt;
+            font-size: 8pt;
             color: #444;
-            line-height: 1.3;
+            line-height: 1.2;
         }
 
         .header .doc-title {
-            margin-top: 5px;
-            font-size: 9pt;
+            margin-top: 4px;
+            font-size: 10pt;
             font-weight: bold;
             letter-spacing: 0.5px;
             text-transform: uppercase;
@@ -62,6 +75,14 @@
             margin-bottom: 6px;
             padding-bottom: 6px;
             border-bottom: 1px dashed #999;
+            display: table;
+            width: 100%;
+        }
+
+        .info-col {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
         }
 
         .info-table {
@@ -136,15 +157,14 @@
         }
 
         .item-detail-table .ds {
-            width: 4mm;
+            width: 1mm;
             text-align: center;
+            padding: 0 5px;
         }
 
         /* ── Summary ── */
         .summary-section {
-            margin-bottom: 6px;
-            padding-bottom: 6px;
-            border-bottom: 1px dashed #999;
+            margin-top: 8px;
         }
 
         .summary-table {
@@ -199,9 +219,18 @@
             color: #666;
             font-style: italic;
         }
+
+        .print-date {
+            font-size: 7pt;
+            color: #888;
+            /* position: absolute; */
+            top: 20px;
+            right: 0px;
+        }
     </style>
 </head>
 <body>
+<div class="content-wrapper">
 
     {{-- ── Header ── --}}
     <div class="header">
@@ -214,42 +243,48 @@
 
     {{-- ── Info Transaksi ── --}}
     <div class="info-section">
-        <table class="info-table">
-            <tr>
-                <td class="label">No. Nota</td>
-                <td class="sep">:</td>
-                <td class="value">{{ $transaction['transaction_number'] }}</td>
-            </tr>
-            <tr>
-                <td class="label">Tanggal</td>
-                <td class="sep">:</td>
-                <td class="value">{{ \Carbon\Carbon::parse($transaction['date'])->translatedFormat('d F Y') }}</td>
-            </tr>
-            <tr>
-                <td class="label">Petugas</td>
-                <td class="sep">:</td>
-                <td class="value">{{ $transaction['officer_name'] }}</td>
-            </tr>
-            <tr>
-                <td class="label">Muzakki</td>
-                <td class="sep">:</td>
-                <td class="value">{{ $transaction['customer'] }}</td>
-            </tr>
-            @if($transaction['address'])
-            <tr>
-                <td class="label">Alamat</td>
-                <td class="sep">:</td>
-                <td class="value">{{ $transaction['address'] }}</td>
-            </tr>
-            @endif
-            @if($transaction['wa_number'])
-            <tr>
-                <td class="label">No. WhatsApp</td>
-                <td class="sep">:</td>
-                <td class="value">{{ $transaction['wa_number'] }}</td>
-            </tr>
-            @endif
-        </table>
+        <div class="info-col">
+            <table class="info-table">
+                <tr>
+                    <td class="label">No. Nota</td>
+                    <td class="sep">:</td>
+                    <td class="value">{{ $transaction['transaction_number'] }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Tanggal</td>
+                    <td class="sep">:</td>
+                    <td class="value">{{ \Carbon\Carbon::parse($transaction['date'])->translatedFormat('d F Y') }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Petugas</td>
+                    <td class="sep">:</td>
+                    <td class="value">{{ $transaction['officer_name'] }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="info-col">
+            <table class="info-table">
+                <tr>
+                    <td class="label">Muzakki (Ketua)</td>
+                    <td class="sep">:</td>
+                    <td class="value">{{ $transaction['customer'] }}</td>
+                </tr>
+                @if($transaction['address'])
+                <tr>
+                    <td class="label">Alamat</td>
+                    <td class="sep">:</td>
+                    <td class="value">{{ $transaction['address'] }}</td>
+                </tr>
+                @endif
+                @if($transaction['wa_number'])
+                <tr>
+                    <td class="label">No. WhatsApp</td>
+                    <td class="sep">:</td>
+                    <td class="value">{{ $transaction['wa_number'] }}</td>
+                </tr>
+                @endif
+            </table>
+        </div>
     </div>
 
     {{-- ── Rincian Item ── --}}
@@ -264,133 +299,155 @@
                 'FIDYAH'     => 'Fidyah',
                 'WEALTH'     => 'Zakat Mall',
             ];
-        @endphp
 
-        @forelse($transaction['items'] as $item)
-            @php
-                $label = $itemTypeLabels[$item['item_type']] ?? $item['item_type'];
-            @endphp
-
-            <div class="item">
-                <div class="item-name">{{ $label }}</div>
-                <table class="item-detail-table">
-                    @if($item['customer'] !== $transaction['customer'])
-                    <tr>
-                        <td class="dl">Atas Nama</td>
-                        <td class="ds">:</td>
-                        <td>{{ $item['customer'] }}</td>
-                    </tr>
-                    @endif
-
-                    @if($item['item_type'] === 'RICE_SALES')
-                        <tr>
-                            <td class="dl">Jumlah Beras</td>
-                            <td class="ds">:</td>
-                            <td>{{ $item['detail']['quantity'] }} kg</td>
-                        </tr>
-                        <tr>
-                            <td class="dl">Harga</td>
-                            <td class="ds">:</td>
-                            <td>Rp {{ number_format($item['detail']['amount'], 0, ',', '.') }}</td>
-                        </tr>
-
-                    @elseif($item['item_type'] === 'RICE')
-                        <tr>
-                            <td class="dl">Jumlah Beras</td>
-                            <td class="ds">:</td>
-                            <td>{{ $item['detail']['quantity'] }} kg</td>
-                        </tr>
-
-                    @elseif($item['item_type'] === 'DONATION')
-                        <tr>
-                            <td class="dl">Jenis</td>
-                            <td class="ds">:</td>
-                            <td>{{ $item['detail']['donation_type'] === 'money' ? 'Uang' : 'Beras' }}</td>
-                        </tr>
-                        @if($item['detail']['donation_type'] === 'money')
-                        <tr>
-                            <td class="dl">Nominal</td>
-                            <td class="ds">:</td>
-                            <td>Rp {{ number_format($item['detail']['amount'], 0, ',', '.') }}</td>
-                        </tr>
-                        @else
-                        <tr>
-                            <td class="dl">Jumlah Beras</td>
-                            <td class="ds">:</td>
-                            <td>{{ $item['detail']['quantity'] }} kg</td>
-                        </tr>
-                        @endif
-
-                    @elseif($item['item_type'] === 'FIDYAH')
-                        <tr>
-                            <td class="dl">Jenis</td>
-                            <td class="ds">:</td>
-                            <td>{{ $item['detail']['fidyah_type'] === 'money' ? 'Uang' : 'Beras' }}</td>
-                        </tr>
-                        @if($item['detail']['fidyah_type'] === 'money')
-                        <tr>
-                            <td class="dl">Nominal</td>
-                            <td class="ds">:</td>
-                            <td>Rp {{ number_format($item['detail']['amount'], 0, ',', '.') }}</td>
-                        </tr>
-                        @else
-                        <tr>
-                            <td class="dl">Jumlah Beras</td>
-                            <td class="ds">:</td>
-                            <td>{{ $item['detail']['quantity'] }} kg</td>
-                        </tr>
-                        @endif
-
-                    @elseif($item['item_type'] === 'WEALTH')
-                        <tr>
-                            <td class="dl">Nominal</td>
-                            <td class="ds">:</td>
-                            <td>Rp {{ number_format($item['detail']['amount'], 0, ',', '.') }}</td>
-                        </tr>
-                    @endif
-                </table>
-            </div>
-        @empty
-            <p class="no-item">Tidak ada item dalam transaksi ini.</p>
-        @endforelse
-    </div>
-
-    {{-- ── Ringkasan Total ── --}}
-    <div class="summary-section">
-        @php
-            $moneyTotal = 0;
-            $riceTotal  = 0;
+            // 1) Grouping Data
+            $groupedItems = [];
 
             foreach ($transaction['items'] as $item) {
-                if (isset($item['detail']['amount'])) {
-                    $moneyTotal += $item['detail']['amount'];
+                $type = $item['item_type'];
+                
+                // Kumpulkan subtype (money/rice) tapi jangan pisahkan group bedasarkan ini
+                $currentSubType = '';
+                if ($type === 'DONATION' && isset($item['detail']['donation_type'])) {
+                    $currentSubType = $item['detail']['donation_type'];
+                } elseif ($type === 'FIDYAH' && isset($item['detail']['fidyah_type'])) {
+                    $currentSubType = $item['detail']['fidyah_type'];
                 }
-                if ($item['item_type'] !== 'RICE_SALES' && isset($item['detail']['quantity'])) {
-                    $riceTotal += $item['detail']['quantity'];
+
+                $groupKey = $type; // Gabungkan semua subtipe ke dalam tipe utamanya
+
+                if (!isset($groupedItems[$groupKey])) {
+                    $groupedItems[$groupKey] = [
+                        'item_type' => $type,
+                        'sub_types' => [], // Simpan array sub_types
+                        'label'     => $itemTypeLabels[$type] ?? $type,
+                        'count'     => 0,
+                        'customers' => [],
+                        'quantity'  => 0,
+                        'amount'    => 0,
+                    ];
+                }
+
+                $groupedItems[$groupKey]['count'] += 1;
+                
+                if ($currentSubType && !in_array($currentSubType, $groupedItems[$groupKey]['sub_types'])) {
+                    $groupedItems[$groupKey]['sub_types'][] = $currentSubType;
+                }
+                
+                // Tambahkan customer jika unik
+                if (!in_array($item['customer'], $groupedItems[$groupKey]['customers'])) {
+                    $groupedItems[$groupKey]['customers'][] = $item['customer'];
+                }
+
+                if (isset($item['detail']['quantity'])) {
+                    $groupedItems[$groupKey]['quantity'] += $item['detail']['quantity'];
+                }
+                if (isset($item['detail']['amount'])) {
+                    $groupedItems[$groupKey]['amount'] += $item['detail']['amount'];
                 }
             }
         @endphp
 
-        <table class="summary-table">
-            <tr>
-                <td class="s-label">Total Uang</td>
-                <td class="s-sep">:</td>
-                <td class="s-value">Rp {{ number_format($moneyTotal, 0, ',', '.') }}</td>
-            </tr>
-            <tr>
-                <td class="s-label">Total Beras</td>
-                <td class="s-sep">:</td>
-                <td class="s-value">{{ $riceTotal }} kg</td>
+        <table class="item-detail-table" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="text-align: left; padding-bottom: 5px; width: 40%">Keterangan</th>
+                    <th style="text-align: left; padding-bottom: 5px; width: 35%">Atas Nama (Muzakki)</th>
+                    <th style="text-align: right; padding-bottom: 5px; width: 10%">Kuantitas</th>
+                    <th style="text-align: right; padding-bottom: 5px; width: 15%">Total Nominal</th>
+                </tr>
+            </thead>
+            <tbody>
+            @forelse($groupedItems as $group)
+                @php
+                    $displayLabel = $group['label'];
+                    if ($group['count'] > 1) {
+                        $displayLabel .= " (" . $group['count'] . ")";
+                    }
+                    
+                    // Format penamaan label jika ada uang & beras
+                    if (count($group['sub_types']) > 0) {
+                        if (in_array('money', $group['sub_types']) && in_array('rice', $group['sub_types'])) {
+                            $displayLabel .= " - Beras & Uang";
+                        } elseif (in_array('money', $group['sub_types'])) {
+                            $displayLabel .= " - Uang";
+                        } elseif (in_array('rice', $group['sub_types'])) {
+                            $displayLabel .= " - Beras";
+                        }
+                    }
+
+                    $customerNames = implode(', ', $group['customers']);
+                @endphp
+
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 4px 0; font-weight: bold;">{{ $displayLabel }}</td>
+                    <td style="padding: 4px 0;">{{ $customerNames }}</td>
+                    <td style="text-align: right; padding: 4px 0; font-weight: bold;">
+                        @if($group['quantity'] > 0)
+                            {{ $group['quantity'] }} kg
+                        @else
+                            -
+                        @endif
+                    </td>
+                    <td style="text-align: right; padding: 4px 0;">
+                        @if($group['amount'] > 0)
+                            Rp {{ number_format($group['amount'], 0, ',', '.') }}
+                        @else
+                            -
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="4" class="no-item" style="text-align: center; padding: 10px;">Tidak ada item dalam transaksi ini.</td>
+                </tr>
+            @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    @php
+        $moneyTotal = 0;
+        $riceTotal  = 0;
+
+        foreach ($transaction['items'] as $item) {
+            if (isset($item['detail']['amount'])) {
+                $moneyTotal += $item['detail']['amount'];
+            }
+            if ($item['item_type'] !== 'RICE_SALES' && isset($item['detail']['quantity'])) {
+                $riceTotal += $item['detail']['quantity'];
+            }
+        }
+    @endphp
+
+    <table style="width: 100%; font-size: 9pt;position: absolute; bottom: 60px; left: 0;">
+        <tr>
+            <!-- Letak tanda tangan / info ringkas -->
+            <td style="width: 40%; vertical-align: top; text-align: center; font-size: 8.5pt;">
+                <div style="font-weight: bold;">Jazakumullahu Khairan</div>
+                    <div style="color: #555; margin-top: 2px;">Semoga menjadi amal ibadah yang berkah</div>
+                    <div class="print-date">Dicetak: {{ now()->timezone('Asia/Jakarta')->locale('id_ID')->translatedFormat('d F Y, H:i') }} WIB</div>
+                </td>
+                
+                <!-- Letak Total Uang & Beras -->
+                <td style="width: 60%; vertical-align: top;">
+                    <table class="summary-table" style="width: 100%;">
+                        <tr>
+                            <td class="s-label" style="text-align: right; padding-right: 15px;">Total Uang</td>
+                            <td class="s-sep" style="width: 5px;">:</td>
+                            <td class="s-value" style="width: 30%;">Rp {{ number_format($moneyTotal, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="s-label" style="text-align: right; padding-right: 15px;">Total Beras</td>
+                            <td class="s-sep" style="width: 5px;">:</td>
+                            <td class="s-value" style="width: 30%; font-weight: bold;">{{ $riceTotal }} kg</td>
+                        </tr>
+                    </table>
+                </td>
             </tr>
         </table>
     </div>
 
-    {{-- ── Footer ── --}}
-    <div class="footer">
-        <div class="thanks">Jazakumullahu Khairan</div>
-        <div class="bless">Semoga menjadi amal ibadah yang berkah</div>
-        <div class="timestamp">Dicetak: {{ now()->locale('id')->translatedFormat('d F Y, H:i') }} WIB</div>
-    </div>
-
+</div> <!-- /.content-wrapper -->
 </body>
 </html>
