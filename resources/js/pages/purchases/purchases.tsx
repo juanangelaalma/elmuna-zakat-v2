@@ -24,7 +24,7 @@ const columns = [
 ];
 
 export default function Purchases() {
-    const { purchases, totalQuantity, totalValue, numberOfTransactions } =
+    const { purchases, totalQuantity, totalValue, totalStocks } =
         usePage().props;
 
     const onRowClick = (row) => {
@@ -55,10 +55,10 @@ export default function Purchases() {
                     />
 
                     <OverviewCard
-                        title="Total Transactions"
-                        value={formatNumber(numberOfTransactions)}
-                        subtitle="Jumlah transaksi"
-                        icon={ShoppingCart}
+                        title="Total Stocks"
+                        value={formatNumber(totalStocks)}
+                        subtitle="Jumlah stok beras saat ini"
+                        icon={Package}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
                     />

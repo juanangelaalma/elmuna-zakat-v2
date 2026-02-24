@@ -70,4 +70,9 @@ class PurchaseRiceService implements PurchaseRiceServiceInterface
             throw new \Exception('Stok tidak cukup untuk memenuhi transaksi.');
         }
     }
+
+    public function getTotalStocks(): int
+    {
+        return $this->repository->getTotalAvailablePurchaseRices();
+    }
 }

@@ -27,6 +27,8 @@ import {
     Settings,
     ShoppingCart,
     TicketSlash,
+    Receipt,
+    Trash2,
 } from 'lucide-react';
 import AppLogo from './app-logo';
 import { donations, fidyahs, rice, riceSales, wealths } from '@/routes/transactions';
@@ -87,7 +89,17 @@ const mainNavItems: NavItem[] = [
                 href: wealths(),
                 icon: ShoppingCart,
             },
+            {
+                title: 'Transaksi Dihapus',
+                href: '/transactions/trash',
+                icon: Trash2,
+            },
         ]
+    },
+    {
+        title: 'Expenses',
+        href: '/expenses',
+        icon: Receipt,
     },
 ];
 

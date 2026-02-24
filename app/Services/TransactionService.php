@@ -30,6 +30,11 @@ class TransactionService implements TransactionServiceInterface
         return $this->repository->getById($id);
     }
 
+    public function getByIdWithTrashed(int $id): ?array
+    {
+        return $this->repository->getByIdWithTrashed($id);
+    }
+
     public function createTransaction(TransactionDTO $transaction): Transaction
     {
         DB::beginTransaction();
@@ -49,6 +54,21 @@ class TransactionService implements TransactionServiceInterface
             DB::rollBack();
             throw $e;
         }
+    }
+
+    public function deleteTransaction(int $id): bool
+    {
+        return $this->repository->deleteTransaction($id);
+    }
+
+    public function getTrashedList(): SupportCollection
+    {
+        return $this->repository->getTrashedList();
+    }
+
+    public function restoreTransaction(int $id): bool
+    {
+        return $this->repository->restoreTransaction($id);
     }
 
     public function getRiceSales(): SupportCollection
