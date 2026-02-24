@@ -46,6 +46,11 @@ class PurchaseRiceRepository implements PurchaseRiceRepositoryInterface
             ->get();
     }
 
+    public function getTotalAvailablePurchaseRices(): int
+    {
+        return $this->getAvailablePurchaseRices()->sum('remaining_quantity');
+    }
+
     public function decrementPurchaseRiceQuantity(PurchaseRice $purchaseRice, $riceSale, $quantity): void
     {
         PurchaseRiceAllocation::create([

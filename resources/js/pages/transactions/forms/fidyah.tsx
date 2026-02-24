@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { SharedData, TransactionItem } from '@/types';
+import { FidyahItem, SharedData, TransactionItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { useEffect } from 'react';
 
@@ -31,9 +31,15 @@ const Fidyah = ({
 
     const handleFidyahTypeChange = (value: string) => {
         if (transactionItem && 'fidyah_type' in transactionItem.detail) {
+            // Reset field yang tidak relevan saat tipe berganti
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, fidyah_type: value },
+                detail: {
+                    ...transactionItem.detail,
+                    fidyah_type: value,
+                    quantity: value === 'rice' ? (transactionItem.detail.quantity ?? defaultValue.fidyah_quantity) : null,
+                    amount: value === 'money' ? (transactionItem.detail.amount ?? defaultValue.fidyah_amount) : null,
+                },
             });
         }
     };
@@ -63,14 +69,16 @@ const Fidyah = ({
     };
 
     useEffect(() => {
-        if (transactionItem) {
+        if (transactionItem && 'fidyah_type' in transactionItem.detail) {
+            const currentType = (transactionItem.detail as FidyahItem).fidyah_type;
+            // Set hanya field yang sesuai tipe saat ini
             setTransactionItem({
                 ...transactionItem,
                 detail: {
-                    ...transactionItem.detail,
-                    quantity: defaultValue.fidyah_quantity,
-                    amount: defaultValue.fidyah_amount,
-                },
+                    ...(transactionItem.detail as FidyahItem),
+                    quantity: currentType !== 'money' ? defaultValue.fidyah_quantity : null,
+                    amount: currentType === 'money' ? defaultValue.fidyah_amount : null,
+                } as FidyahItem,
             });
         }
     }, [defaultValue]);
@@ -90,7 +98,7 @@ const Fidyah = ({
             </div>
 
             {transactionItem?.detail &&
-            'fidyah_type' in transactionItem.detail ? (
+                'fidyah_type' in transactionItem.detail ? (
                 <>
                     <div className="grid grid-cols-1 gap-2 text-start">
                         <Label htmlFor="price">Tipe Fidyah</Label>

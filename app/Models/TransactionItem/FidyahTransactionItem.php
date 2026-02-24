@@ -19,6 +19,16 @@ class FidyahTransactionItem implements TransactionItemInterface
     public function process($transactionDetail): void
     {
         $this->item['detail']['transaction_detail_id'] = $transactionDetail->id;
+        
+        // Sanitasi: pastikan kolom yang tidak relevan bernilai null
+        if (isset($this->item['detail']['fidyah_type'])) {
+            if ($this->item['detail']['fidyah_type'] === 'money') {
+                $this->item['detail']['quantity'] = null;
+            } elseif ($this->item['detail']['fidyah_type'] === 'rice') {
+                $this->item['detail']['amount'] = null;
+            }
+        }
+
         $this->fidyahService->createFidyah($this->item['detail']);
     }
 }

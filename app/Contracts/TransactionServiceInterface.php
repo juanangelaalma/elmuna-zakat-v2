@@ -11,7 +11,11 @@ interface TransactionServiceInterface
 {
     public function getList(): Collection;
     public function getById(int $id): ?array;
+    public function getByIdWithTrashed(int $id): ?array;
     public function createTransaction(TransactionDTO $transaction): Transaction;
+    public function deleteTransaction(int $id): bool;
+    public function getTrashedList(): SupportCollection;
+    public function restoreTransaction(int $id): bool;
     public function getRiceSales(): SupportCollection;
     public function getRice(): SupportCollection;
     public function getDonations(): SupportCollection;

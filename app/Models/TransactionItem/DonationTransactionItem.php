@@ -19,6 +19,15 @@ class DonationTransactionItem implements TransactionItemInterface
     public function process($transactionDetail): void
     {
         $this->item['detail']['transaction_detail_id'] = $transactionDetail->id;
+
+        if (isset($this->item['detail']['donation_type'])) {
+            if ($this->item['detail']['donation_type'] === 'money') {
+                $this->item['detail']['quantity'] = null;
+            } elseif ($this->item['detail']['donation_type'] === 'rice') {
+                $this->item['detail']['amount'] = null;
+            }
+        }
+
         $this->donationService->createDonation($this->item['detail']);
     }
 }

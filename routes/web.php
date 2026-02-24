@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{PurchaseController, RiceItemController, DashboardController};
+use App\Http\Controllers\{PurchaseController, RiceItemController, DashboardController, ExpenseController};
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +16,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    Route::resource('expenses', ExpenseController::class);
+
     Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases');
     Route::get('purchases/create', [PurchaseController::class, 'create'])->name('purchaseCreate');
     Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchaseStore');
@@ -25,10 +27,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('rice-item/store', [RiceItemController::class, 'store'])->name('riceItemStore');
     
     Route::get('transactions/index', [TransactionController::class, 'index'])->name('transactions');
+    Route::get('transactions/trash', [TransactionController::class, 'trash'])->name('transactions.trash');
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactionCreate');
     Route::get('transactions/{id}', [TransactionController::class, 'show'])->name('transactionDetail');
     Route::get('transactions/{id}/receipt', [TransactionController::class, 'receipt'])->name('transactionReceipt');
     Route::post('transactions/store', [TransactionController::class, 'store'])->name('transactionStore');
+    Route::delete('transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
+    Route::patch('transactions/{id}/restore', [TransactionController::class, 'restore'])->name('transactions.restore');
     
     // Transaction detail routes
     Route::get('transactions/details/rice-sales', [TransactionController::class, 'riceSales'])->name('transactions.riceSales');

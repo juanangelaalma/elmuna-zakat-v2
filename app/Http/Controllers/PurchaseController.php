@@ -19,9 +19,9 @@ class PurchaseController extends Controller
         $purchases = $this->service->getAllPurchaseRiceWithRiceItem();
         $totalQuantity = $purchases->sum('quantity');
         $totalValue = $purchases->sum(fn($item) => $item->quantity * $item->price_per_kg);
-        $numberOfTransactions = $purchases->count();
+        $totalStocks = $this->service->getTotalStocks();
 
-        return Inertia::render('purchases/purchases', compact('purchases', 'totalQuantity', 'totalValue', 'numberOfTransactions'));
+        return Inertia::render('purchases/purchases', compact('purchases', 'totalQuantity', 'totalValue', 'totalStocks'));
     }
 
     public function create()

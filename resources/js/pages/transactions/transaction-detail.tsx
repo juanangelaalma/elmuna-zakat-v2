@@ -1,12 +1,20 @@
 import { OverviewCard } from '@/components/overview-card';
 import { Button } from '@/components/ui/button';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
 import { RICE_SALES_ID } from '@/lib/constant';
 import { formatCurrency } from '@/lib/utils';
 import TransactionItemDetailCard from '@/pages/transactions/forms/transaction-item-detail-card';
 import { transactions } from '@/routes';
 import { BreadcrumbItem, TransactionItem } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
     Calendar,
@@ -15,8 +23,10 @@ import {
     Package,
     Phone,
     Printer,
+    Trash2,
     User,
 } from 'lucide-react';
+import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -61,6 +71,14 @@ export default function TransactionDetail() {
 
     const handleGenerateReceipt = () => {
         window.open(`/transactions/${transaction.id}/receipt`, '_blank');
+    };
+
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+    const handleDelete = () => {
+        router.delete(`/transactions/${transaction.id}`, {
+            preserveScroll: false,
+        });
     };
 
     return (
@@ -128,6 +146,37 @@ export default function TransactionDetail() {
                                     <Printer className="h-4 w-4" />
                                     Cetak Struk
                                 </Button>
+                                <Button
+                                    variant="destructive"
+                                    className="gap-2"
+                                    onClick={() => setShowDeleteDialog(true)}
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                    Hapus Transaksi
+                                </Button>
+                                <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle>Hapus Transaksi?</DialogTitle>
+                                            <DialogDescription>
+                                                Transaksi <strong>{transaction.transaction_number}</strong> akan dihapus.
+                                                Jika berisi penjualan beras, stok akan dikembalikan.
+                                                Transaksi dapat dipulihkan dari halaman <em>Trash</em>.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <DialogFooter>
+                                            <Button variant="outline" onClick={() => setShowDeleteDialog(false)}>
+                                                Batal
+                                            </Button>
+                                            <Button
+                                                variant="destructive"
+                                                onClick={handleDelete}
+                                            >
+                                                Ya, Hapus
+                                            </Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
                             </div>
                         </div>
                     </div>

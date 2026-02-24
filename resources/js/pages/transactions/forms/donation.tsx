@@ -7,7 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { TransactionItem } from '@/types';
+import { DonationItem, TransactionItem } from '@/types';
 
 const Donation = ({
     transactionItem,
@@ -27,9 +27,15 @@ const Donation = ({
 
     const handleDonationTypeChange = (value: string) => {
         if (transactionItem && 'donation_type' in transactionItem.detail) {
+            // Reset field yang tidak relevan saat tipe berganti
             setTransactionItem({
                 ...transactionItem,
-                detail: { ...transactionItem.detail, donation_type: value },
+                detail: {
+                    ...(transactionItem.detail as DonationItem),
+                    donation_type: value,
+                    quantity: value === 'rice' ? (transactionItem.detail as DonationItem).quantity : null,
+                    amount: value === 'money' ? (transactionItem.detail as DonationItem).amount : null,
+                } as DonationItem,
             });
         }
     };
@@ -73,7 +79,7 @@ const Donation = ({
             </div>
 
             {transactionItem?.detail &&
-            'donation_type' in transactionItem.detail ? (
+                'donation_type' in transactionItem.detail ? (
                 <>
                     <div className="grid grid-cols-1 gap-2 text-start">
                         <Label htmlFor="price">Tipe Donasi</Label>

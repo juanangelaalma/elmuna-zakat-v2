@@ -73,9 +73,28 @@ class TransactionController extends Controller
         }
 
         $pdf = Pdf::loadView('receipt', compact('transaction'))
-            ->setPaper([0, 0, 165, 500], 'portrait'); // 58mm width in points (58mm = ~165pt)
+            ->setPaper([0, 0, 311.81, 623.62], 'portrait'); // Ukuran amplop DL: 110mm x 220mm
 
         return $pdf->stream('struk-' . $transaction['transaction_number'] . '.pdf');
+    }
+
+    public function destroy($id)
+    {
+        $transaction = $this->service->getById(strval($id));
+
+        if (!$transaction) {
+            abort(404, 'Transaction not found');
+        }
+
+        $this->service->deleteTransaction(intval($id));
+
+        return redirect()->route('transactions')->with('success', 'Transaksi berhasil dihapus.');
+    }
+
+    public function trash()
+    {
+        $trashedTransactions = $this->service->getTrashedList();
+        return Inertia::render('transactions/trash', compact('trashedTransactions'));
     }
     
     private function summarizeTransactions($transactions)
