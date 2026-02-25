@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { getEffectiveValues } from '@/lib/transaction-item-utils';
 import {
     FIDYAH_ID,
     INFAQ_ID,
@@ -91,6 +92,7 @@ const TransactionItemDetailCard = ({ item }: { item: TransactionItem }) => {
 
             case FIDYAH_ID:
                 const fidyah = item.detail as FidyahItem;
+                const fidyahValues = getEffectiveValues(fidyah);
                 return (
                     <>
                         <DetailItem
@@ -102,18 +104,18 @@ const TransactionItemDetailCard = ({ item }: { item: TransactionItem }) => {
                             }
                         />
                         {fidyah.fidyah_type === 'money' &&
-                            fidyah.amount !== null && (
+                            fidyahValues.amount > 0 && (
                                 <DetailItem
                                     label="Jumlah"
-                                    value={formatCurrency(fidyah.amount)}
+                                    value={formatCurrency(fidyahValues.amount)}
                                     highlight
                                 />
                             )}
                         {fidyah.fidyah_type === 'rice' &&
-                            fidyah.quantity !== null && (
+                            fidyahValues.quantity > 0 && (
                                 <DetailItem
-                                    label="Quantity"
-                                    value={`${fidyah.quantity} Kg`}
+                                    label="Kuantitas"
+                                    value={`${fidyahValues.quantity} Kg`}
                                     highlight
                                 />
                             )}

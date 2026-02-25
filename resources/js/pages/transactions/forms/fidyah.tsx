@@ -68,6 +68,27 @@ const Fidyah = ({
         }
     };
 
+    const handleDayCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (transactionItem && 'day_count' in transactionItem.detail) {
+            setTransactionItem({
+                ...transactionItem,
+                detail: {
+                    ...transactionItem.detail,
+                    day_count: Number(e.target.value),
+                },
+            });
+        }
+    };
+
+    const getTotal = () => {
+        if (!transactionItem || !('fidyah_type' in transactionItem.detail)) return 0;
+
+        const { fidyah_type, amount, quantity, day_count } = transactionItem.detail as FidyahItem;
+        const value = fidyah_type === 'money' ? (amount ?? 0) : (quantity ?? 0);
+
+        return value * (day_count ?? 0);
+    };
+
     useEffect(() => {
         if (transactionItem && 'fidyah_type' in transactionItem.detail) {
             const currentType = (transactionItem.detail as FidyahItem).fidyah_type;
@@ -118,7 +139,7 @@ const Fidyah = ({
 
                     {transactionItem.detail.fidyah_type === 'money' ? (
                         <div className="grid grid-cols-1 gap-2 text-start">
-                            <Label htmlFor="price">Amount</Label>
+                            <Label htmlFor="price">Jumlah (Rp)</Label>
                             <Input
                                 id="price"
                                 type="number"
@@ -131,7 +152,7 @@ const Fidyah = ({
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-2 text-start">
-                            <Label htmlFor="quantity">Quantity</Label>
+                            <Label htmlFor="quantity">Kuantitas (Kg)</Label>
                             <Input
                                 id="quantity"
                                 type="number"
@@ -143,6 +164,33 @@ const Fidyah = ({
                             />
                         </div>
                     )}
+
+                    <div className="grid grid-cols-1 gap-2 text-start">
+                        <Label htmlFor="day_count">Jumlah Hari</Label>
+                        <Input
+                            id="day_count"
+                            type="number"
+                            value={transactionItem?.detail.day_count || ''}
+                            onChange={handleDayCountChange}
+                            placeholder="Jumlah Hari"
+                            required
+                            className="w-full"
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-2 text-start">
+                        <Label htmlFor="total">Total ( {transactionItem.detail.fidyah_type === 'money' ? 'Rp' : 'Kg'} )</Label>
+                        <Input
+                            id="total"
+                            type="number"
+                            value={getTotal()}
+                            placeholder="Total"
+                            required
+                            className="w-full"
+                            disabled
+                        />
+                    </div>
+
                 </>
             ) : null}
         </>

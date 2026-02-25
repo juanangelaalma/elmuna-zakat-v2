@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\FidyahHelper;
 use App\Services\WhatsAppService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SendWhatsAppNotification implements ShouldQueue
 {
@@ -34,6 +36,9 @@ class SendWhatsAppNotification implements ShouldQueue
 
     private function buildMessage(): string
     {
+        // Normalize: fold day_count into quantity/amount upfront
+        $items = FidyahHelper::normalizeItems($this->items);
+
         $itemTypeLabels = [
             'RICE_SALES' => 'Penjualan Beras',
             'RICE'       => 'Zakat Fitrah (Beras)',
@@ -44,7 +49,7 @@ class SendWhatsAppNotification implements ShouldQueue
 
         // --- group item (sama dengan logika di receipt) ---
         $groupedItems = [];
-        foreach ($this->items as $item) {
+        foreach ($items as $item) {
             $type           = $item['item_type'];
             $currentSubType = '';
 
@@ -86,7 +91,7 @@ class SendWhatsAppNotification implements ShouldQueue
         // --- hitung total keseluruhan ---
         $moneyTotal = 0;
         $riceTotal  = 0;
-        foreach ($this->items as $item) {
+        foreach ($items as $item) {
             if (isset($item['detail']['amount'])) {
                 $moneyTotal += $item['detail']['amount'];
             }

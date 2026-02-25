@@ -11,7 +11,7 @@ class TransactionItemFactory
     public static function create($item): TransactionItemInterface
     {
         return match ($item['item_type']) {
-            TransactionItemType::RICE_SALES => app(RiceSaleTransactionItem::class, ['item' => $item]),  // Menggunakan app() untuk dependency injection
+            TransactionItemType::RICE_SALES => app(RiceSaleTransactionItem::class, ['item' => $item]),
             TransactionItemType::RICE => app(RiceTransactionItem::class, ['item' => $item]),
             TransactionItemType::DONATION => app(DonationTransactionItem::class, ['item' => $item]),
             TransactionItemType::FIDYAH => app(FidyahTransactionItem::class, ['item' => $item]),
