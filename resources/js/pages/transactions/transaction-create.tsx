@@ -45,6 +45,17 @@ export default function TransactionCreate() {
         setData('items', items);
     };
 
+    const normalizePhoneNumber = (phone: string): string => {
+        // Hapus semua karakter non-digit
+        const digits = phone.replace(/\D/g, '');
+        if (digits.startsWith('0')) {
+            return '62' + digits.slice(1);
+        } else if (!digits.startsWith('62')) {
+            return '62' + digits;
+        }
+        return digits;
+    };
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post('/transactions/store');
@@ -153,14 +164,17 @@ export default function TransactionCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="wa_number">Wa Number</Label>
+                                    <Label htmlFor="wa_number">Nomor WhatsApp</Label>
                                     <Input
                                         id="wa_number"
                                         value={data.wa_number}
                                         onChange={(e) =>
                                             setData('wa_number', e.target.value)
                                         }
-                                        placeholder="Nomor WhatsApp (Contoh: 08123456789)"
+                                        onBlur={(e) =>
+                                            setData('wa_number', normalizePhoneNumber(e.target.value))
+                                        }
+                                        placeholder="08xxx / 628xxx / 8xxx"
                                         required
                                     />
                                     {errors.wa_number && (
