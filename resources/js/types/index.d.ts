@@ -70,6 +70,7 @@ export interface FidyahItem {
     fidyah_type: string;
     amount: number | null;
     quantity: number | null;
+    day_count: number | null;
 }
 
 export interface WealthItem {
@@ -79,11 +80,11 @@ export interface WealthItem {
 export interface TransactionItem {
     customer: string;
     item_type:
-        | RICE_SALES_ID
-        | ZAKAT_RICE_ID
-        | INFAQ_ID
-        | FIDYAH_ID
-        | ZAKAT_MALL_ID;
+    | RICE_SALES_ID
+    | ZAKAT_RICE_ID
+    | INFAQ_ID
+    | FIDYAH_ID
+    | ZAKAT_MALL_ID;
     detail: RiceItem | RiceSalesItem | DonationItem | FidyahItem | WealthItem;
 }
 

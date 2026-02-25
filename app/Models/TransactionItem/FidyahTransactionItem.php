@@ -24,8 +24,10 @@ class FidyahTransactionItem implements TransactionItemInterface
         if (isset($this->item['detail']['fidyah_type'])) {
             if ($this->item['detail']['fidyah_type'] === 'money') {
                 $this->item['detail']['quantity'] = null;
+                $this->item['detail']['amount'] = $this->item['detail']['amount'] * $this->item['detail']['day_count'];
             } elseif ($this->item['detail']['fidyah_type'] === 'rice') {
                 $this->item['detail']['amount'] = null;
+                $this->item['detail']['quantity'] = $this->item['detail']['quantity'] * $this->item['detail']['day_count'];
             }
         }
 
