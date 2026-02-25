@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SendWhatsAppNotification implements ShouldQueue
 {
@@ -76,10 +77,10 @@ class SendWhatsAppNotification implements ShouldQueue
             }
 
             if (isset($item['detail']['quantity'])) {
-                $groupedItems[$type]['quantity'] += $item['detail']['quantity'];
+                $groupedItems[$type]['quantity'] += $item['detail']['day_count'] ? $item['detail']['quantity'] * $item['detail']['day_count'] : $item['detail']['quantity'];
             }
             if (isset($item['detail']['amount'])) {
-                $groupedItems[$type]['amount'] += $item['detail']['amount'];
+                $groupedItems[$type]['amount'] += $item['detail']['day_count'] ? $item['detail']['amount'] * $item['detail']['day_count'] : $item['detail']['amount'];
             }
         }
 
@@ -88,10 +89,10 @@ class SendWhatsAppNotification implements ShouldQueue
         $riceTotal  = 0;
         foreach ($this->items as $item) {
             if (isset($item['detail']['amount'])) {
-                $moneyTotal += $item['detail']['amount'];
+                $moneyTotal += $item['detail']['day_count'] ? $item['detail']['amount'] * $item['detail']['day_count'] : $item['detail']['amount'];
             }
             if ($item['item_type'] !== 'RICE_SALES' && isset($item['detail']['quantity'])) {
-                $riceTotal += $item['detail']['quantity'];
+                $riceTotal += $item['detail']['day_count'] ? $item['detail']['quantity'] * $item['detail']['day_count'] : $item['detail']['quantity'];
             }
         }
 

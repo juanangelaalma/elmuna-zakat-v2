@@ -107,18 +107,20 @@ const TransactionItemCard = ({
                             }
                         />
                         {fidyah.fidyah_type === 'money' &&
-                            fidyah.amount !== null && (
+                            fidyah.amount !== null &&
+                            fidyah.day_count !== null && (
                                 <DetailItem
                                     label="Jumlah"
-                                    value={formatCurrency(fidyah.amount)}
+                                    value={formatCurrency(fidyah.amount * fidyah.day_count)}
                                     highlight
                                 />
                             )}
                         {fidyah.fidyah_type === 'rice' &&
-                            fidyah.quantity !== null && (
+                            fidyah.quantity !== null &&
+                            fidyah.day_count !== null && (
                                 <DetailItem
-                                    label="Quantity"
-                                    value={`${fidyah.quantity} Kg`}
+                                    label="Kuantitas"
+                                    value={`${fidyah.quantity * fidyah.day_count} Kg`}
                                     highlight
                                 />
                             )}

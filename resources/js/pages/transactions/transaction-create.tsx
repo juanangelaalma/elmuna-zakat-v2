@@ -62,15 +62,15 @@ export default function TransactionCreate() {
     };
 
     const moneyTotal = data.items.reduce((total, item) => {
-        if ('amount' in item.detail) {
-            return total + (item.detail.amount ?? 0);
+        if ('amount' in item.detail && 'day_count' in item.detail) {
+            return total + ((item.detail.day_count ?? 1) * (item.detail.amount ?? 0));
         }
         return total;
     }, 0);
 
     const riceTotal = data.items.reduce((total, item) => {
-        if (item.item_type !== RICE_SALES_ID && 'quantity' in item.detail) {
-            return total + (item.detail.quantity ?? 0);
+        if (item.item_type !== RICE_SALES_ID && 'quantity' in item.detail && 'day_count' in item.detail) {
+            return total + ((item.detail.day_count ?? 1) * (item.detail.quantity ?? 0));
         }
         return total;
     }, 0);

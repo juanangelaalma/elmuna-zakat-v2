@@ -30,6 +30,7 @@ const TransactionItemForm = ({
         detail: {
             quantity: null,
             amount: null,
+            day_count: null,
             donation_type: '',
             fidyah_type: '',
         },
