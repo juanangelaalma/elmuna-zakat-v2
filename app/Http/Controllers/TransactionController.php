@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contracts\TransactionServiceInterface;
 use App\DTO\TransactionDTO;
 use App\Http\Requests\TransactionStoreRequest;
+use App\Jobs\SendWhatsAppNotification;
 use Inertia\Inertia;
 use Illuminate\Support\Carbon;
 use App\Utils\TransactionNumberGenerator;
@@ -59,7 +60,19 @@ class TransactionController extends Controller
             $validatedData['items']
         );
 
-        $this->service->createTransaction($newTransaction);
+        $createdTransaction = $this->service->createTransaction($newTransaction);
+
+        if (!empty($validatedData['wa_number'])) {
+            SendWhatsAppNotification::dispatch(
+                $validatedData['wa_number'],
+                $validatedData['customer'],
+                $validatedData['address'],
+                $validatedData['officer_name'],
+                $createdTransaction->transaction_number,
+                $validatedData['date'],
+                $validatedData['items'],
+            );
+        }
 
         return redirect()->route('transactions');
     }

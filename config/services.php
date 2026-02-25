@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'chatery' => [
+        'base_url'  => env('CHATERY_BASE_URL', 'https://app.chatery.id/api'),
+        'api_key'   => env('CHATERY_API_KEY'),
+        'session_id' => env('CHATERY_SESSION_ID'),
+    ],
+
 ];
