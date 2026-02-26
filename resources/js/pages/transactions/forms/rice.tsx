@@ -61,7 +61,7 @@ const Rice = ({
             </div>
 
             <div className="grid grid-cols-1 gap-2 text-start">
-                <Label htmlFor="quantity">Quantity</Label>
+                <Label htmlFor="quantity">Jumlah</Label>
                 <Input
                     id="quantity"
                     type="number"
@@ -69,7 +69,7 @@ const Rice = ({
                         (transactionItem?.detail as RiceItem)?.quantity || ''
                     }
                     onChange={handleQuantityChange}
-                    placeholder="Quantity"
+                    placeholder="Jumlah"
                     required
                     className="w-full"
                 />

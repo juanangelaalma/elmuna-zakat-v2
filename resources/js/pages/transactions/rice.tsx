@@ -14,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: transactions().url,
     },
     {
-        title: 'Zakat Beras',
+        title: 'Zakat Fitrah',
     },
 ];
 
@@ -22,7 +22,7 @@ const columns = [
     { key: 'id', label: 'No', render: autoOrderedNumber },
     { key: 'transaction_number', label: 'Nomor Transaksi' },
     { key: 'customer', label: 'Muzakki' },
-    { key: 'quantity', label: 'Quantity', render: (value) => `${formatNumber(value)} kg` },
+    { key: 'quantity', label: 'Jumlah', render: (value) => `${formatNumber(value)} kg` },
     { key: 'date', label: 'Tanggal', render: formatDate },
 ];
 
@@ -35,7 +35,7 @@ export default function Rice() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Zakat Beras" />
+            <Head title="Zakat Fitrah" />
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid gap-4 md:grid-cols-2">
                     <OverviewCard
@@ -48,9 +48,9 @@ export default function Rice() {
                     />
 
                     <OverviewCard
-                        title="Total Records"
+                        title="Total Transaksi"
                         value={formatNumber(numberOfRecords)}
-                        subtitle="Jumlah record"
+                        subtitle="Jumlah data"
                         icon={ShoppingCart}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
@@ -62,10 +62,10 @@ export default function Rice() {
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Daftar Zakat Beras
+                                    Daftar Zakat Fitrah
                                 </h2>
                                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    Daftar semua zakat beras
+                                    Daftar semua zakat fitrah
                                 </p>
                             </div>
                             <Button onClick={handleExport} className="cursor-pointer">

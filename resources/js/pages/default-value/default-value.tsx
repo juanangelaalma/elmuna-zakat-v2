@@ -12,7 +12,7 @@ import { Form, usePage } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Default Value',
+        title: 'Pengaturan Nilai',
         href: defaultValue().url,
     },
 ];
@@ -37,12 +37,12 @@ export default function DefaultValue() {
                                 <div className="mb-10 space-y-3">
                                     <HeadingSmall
                                         title="Penjualan Beras"
-                                        description="Update penjualan beras default value"
+                                        description="Ubah nilai standar penjualan beras"
                                     />
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="rice_sales_quantity">
-                                            Quantity
+                                            Jumlah
                                         </Label>
 
                                         <Input
@@ -51,7 +51,7 @@ export default function DefaultValue() {
                                             name="rice_sales_quantity"
                                             required
                                             type="number"
-                                            placeholder="Masukkan quantity"
+                                            placeholder="Masukkan jumlah"
                                             value={
                                                 data.rice_sales_quantity
                                             }
@@ -65,7 +65,7 @@ export default function DefaultValue() {
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="rice_sales_amount">
-                                            Amount
+                                            Nominal
                                         </Label>
 
                                         <Input
@@ -74,7 +74,7 @@ export default function DefaultValue() {
                                             name="rice_sales_amount"
                                             required
                                             type="number"
-                                            placeholder="Masukkan amount"
+                                            placeholder="Masukkan nominal"
                                             value={
                                                 data.rice_sales_amount
                                             }
@@ -89,13 +89,13 @@ export default function DefaultValue() {
 
                                 <div className="mb-10 space-y-3">
                                     <HeadingSmall
-                                        title="Beras"
-                                        description="Update beras default value"
+                                        title="Zakat Fitrah"
+                                        description="Ubah nilai standar zakat fitrah"
                                     />
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="rice_quantity">
-                                            Quantity
+                                            Jumlah
                                         </Label>
 
                                         <Input
@@ -104,7 +104,7 @@ export default function DefaultValue() {
                                             name="rice_quantity"
                                             required
                                             type="number"
-                                            placeholder="Masukkan quantity"
+                                            placeholder="Masukkan jumlah"
                                             value={data.rice_quantity}
                                         />
 
@@ -118,12 +118,12 @@ export default function DefaultValue() {
                                 <div className="mb-10 space-y-3">
                                     <HeadingSmall
                                         title="Fidyah"
-                                        description="Update fidyah default value"
+                                        description="Ubah nilai standar fidyah"
                                     />
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="fidyah_quantity">
-                                            Quantity
+                                            Jumlah
                                         </Label>
 
                                         <Input
@@ -132,7 +132,7 @@ export default function DefaultValue() {
                                             name="fidyah_quantity"
                                             required
                                             type="number"
-                                            placeholder="Masukkan quantity"
+                                            placeholder="Masukkan jumlah"
                                             value={data.fidyah_quantity}
                                         />
 
@@ -144,7 +144,7 @@ export default function DefaultValue() {
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="fidyah_amount">
-                                            Amount
+                                            Nominal
                                         </Label>
 
                                         <Input
@@ -153,7 +153,7 @@ export default function DefaultValue() {
                                             name="fidyah_amount"
                                             required
                                             type="number"
-                                            placeholder="Masukkan amount"
+                                            placeholder="Masukkan nominal"
                                             value={data.fidyah_amount}
                                         />
 
@@ -166,12 +166,12 @@ export default function DefaultValue() {
 
                                 <div className="mb-10 space-y-3">
                                     <HeadingSmall
-                                        title="Unit"
-                                        description="Update unit default value"
+                                        title="Satuan"
+                                        description="Ubah nilai standar satuan"
                                     />
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="unit">Unit</Label>
+                                        <Label htmlFor="unit">Satuan</Label>
 
                                         <Input
                                             id="unit"
@@ -179,7 +179,7 @@ export default function DefaultValue() {
                                             name="unit"
                                             required
                                             type="text"
-                                            placeholder="Masukkan unit"
+                                            placeholder="Masukkan satuan"
                                             value={data.unit}
                                         />
 
@@ -195,7 +195,7 @@ export default function DefaultValue() {
                                         disabled={processing}
                                         data-test="update-profile-button"
                                     >
-                                        Save
+                                        Simpan
                                     </Button>
 
                                     <Transition
@@ -206,7 +206,7 @@ export default function DefaultValue() {
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-neutral-600">
-                                            Saved
+                                            Tersimpan
                                         </p>
                                     </Transition>
                                 </div>

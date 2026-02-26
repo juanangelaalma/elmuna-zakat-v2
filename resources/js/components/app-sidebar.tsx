@@ -40,64 +40,64 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Purchase',
+        title: 'Pembelian',
         icon: ShoppingCart, // Parent icon
         children: [
             {
-                title: 'Purchase',
+                title: 'Data Pembelian',
                 href: purchases(),
                 icon: ShoppingCart,
             },
             {
-                title: 'RiceItem',
+                title: 'Stok Beras',
                 href: riceItems(), // Assuming riceItems() function exists for the route
                 icon: Package2,
             },
         ],
     },
     {
-        title: 'Transaction',
+        title: 'Transaksi',
         icon: TicketSlash,
         children: [
             {
-                title: 'All Transactions',
+                title: 'Semua Transaksi',
                 href: transactions(),
                 icon: TicketSlash,
             },
             {
-                title: 'Rice Sales',
+                title: 'Penjualan Beras',
                 href: riceSales(),
                 icon: ShoppingCart,
             },
             {
-                title: 'Rice',
+                title: 'Zakat Fitrah',
                 href: rice(),
                 icon: Package2,
             },
             {
-                title: 'Donations',
+                title: 'Infak/Sedekah',
                 href: donations(),
                 icon: ShoppingCart,
             },
             {
-                title: 'Fidyahs',
+                title: 'Fidyah',
                 href: fidyahs(),
                 icon: Package2,
             },
             {
-                title: 'Wealths',
+                title: 'Zakat Mal',
                 href: wealths(),
                 icon: ShoppingCart,
             },
             {
-                title: 'Transaksi Dihapus',
+                title: 'Sampah Transaksi',
                 href: '/transactions/trash',
                 icon: Trash2,
             },
         ]
     },
     {
-        title: 'Expenses',
+        title: 'Pengeluaran',
         href: '/expenses',
         icon: Receipt,
     },
@@ -105,7 +105,7 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Default Value',
+        title: 'Pengaturan Nilai',
         href: defaultValue(),
         icon: Settings,
     },

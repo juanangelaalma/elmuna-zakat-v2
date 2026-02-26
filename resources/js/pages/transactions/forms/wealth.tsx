@@ -45,7 +45,7 @@ const Wealth = ({
             </div>
 
             <div className="grid grid-cols-1 gap-2 text-start">
-                <Label htmlFor="amount">Jumlah</Label>
+                <Label htmlFor="amount">Nominal</Label>
                 <Input
                     id="amount"
                     type="number"
@@ -53,7 +53,7 @@ const Wealth = ({
                         (transactionItem?.detail as WealthItem)?.amount || ''
                     }
                     onChange={handleAmountChange}
-                    placeholder="Jumlah"
+                    placeholder="Nominal"
                     required
                     className="w-full"
                 />
