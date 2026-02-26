@@ -172,7 +172,7 @@ export default function PurchaseCreate() {
                                             required
                                             autoFocus
                                             tabIndex={1}
-                                            placeholder="Masukkan jumlah dalam kg"
+                                            placeholder="Masukkan harga per kg"
                                             onChange={(e) =>
                                                 setData(
                                                     'price_per_kg',
@@ -231,7 +231,7 @@ export default function PurchaseCreate() {
                             </h3>
 
                             <div className="space-y-4">
-                                {/* Quantity Summary */}
+                                {/* Ringkasan Jumlah */}
                                 <div className="flex items-center justify-between rounded-lg bg-white/50 p-3 dark:bg-white/10">
                                     <div className="flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500">
@@ -250,7 +250,7 @@ export default function PurchaseCreate() {
                                     </div>
                                 </div>
 
-                                {/* Price Summary */}
+                                {/* Ringkasan Harga */}
                                 <div className="flex items-center justify-between rounded-lg bg-white/50 p-3 dark:bg-white/10">
                                     <div className="flex items-center gap-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500">

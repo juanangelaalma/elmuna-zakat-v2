@@ -11,7 +11,7 @@ import { useEffect } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Brand',
+        title: 'Item Beras',
         href: riceItems().url,
     },
     {
@@ -34,16 +34,16 @@ export default function CreatePurchase() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Pembelian Baru" />
+            <Head title="Tambah Beras" />
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                            Brand Baru
+                            Item Beras Baru
                         </h1>
                         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                            Tambahkan data brand baru
+                            Tambahkan data item beras baru
                         </p>
                     </div>
                     <Link href={riceItems().url}>
@@ -60,10 +60,10 @@ export default function CreatePurchase() {
                         <div className="rounded-xl border border-sidebar-border/70 bg-white px-4 shadow-sm dark:bg-sidebar-accent">
                             <div className="border-b border-gray-200 p-6 pl-0 dark:border-gray-700">
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Informasi Pembelian
+                                    Informasi Item Beras
                                 </h2>
                                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    Isi form di bawah untuk menambah pembelian
+                                    Isi form di bawah untuk menambah item beras
                                 </p>
                             </div>
 
@@ -93,12 +93,12 @@ export default function CreatePurchase() {
                                             }
                                         >
                                             <InputError
-                                                message={errors.quantity}
+                                                message={errors.name}
                                             />
                                         </Input>
 
                                         <Label htmlFor="unit">
-                                            Unit{' '}
+                                            Satuan{' '}
                                             <span className="text-red-500">
                                                 *
                                             </span>
@@ -110,7 +110,7 @@ export default function CreatePurchase() {
                                             required
                                             tabIndex={1}
                                             value={data.unit}
-                                            placeholder="Masukkan jumlah dalam kg"
+                                            placeholder="Masukkan satuan (kg/liter/dll)"
                                             onChange={(e) =>
                                                 setData('unit', e.target.value)
                                             }

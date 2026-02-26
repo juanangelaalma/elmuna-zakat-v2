@@ -22,7 +22,7 @@ const columns = [
     { key: 'id', label: 'No', render: autoOrderedNumber },
     { key: 'transaction_number', label: 'Nomor Transaksi' },
     { key: 'customer', label: 'Muzakki' },
-    { key: 'quantity', label: 'Quantity', render: (value) => `${formatNumber(value)} kg` },
+    { key: 'quantity', label: 'Jumlah', render: (value) => `${formatNumber(value)} kg` },
     { key: 'total', label: 'Total', render: formatCurrency },
     { key: 'date', label: 'Tanggal', render: formatDate },
 ];
@@ -58,9 +58,9 @@ export default function RiceSales() {
                     />
 
                     <OverviewCard
-                        title="Total Records"
+                        title="Total Transaksi"
                         value={formatNumber(numberOfRecords)}
-                        subtitle="Jumlah record"
+                        subtitle="Jumlah data"
                         icon={ShoppingCart}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"

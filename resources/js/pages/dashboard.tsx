@@ -173,7 +173,7 @@ export default function Dashboard() {
 
                             <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 mt-6 dark:bg-emerald-950">
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Zakat Beras
+                                    Zakat Fitrah
                                 </span>
                                 <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                                     {formatNumber(riceStock.zakat_rice)} kg
@@ -181,7 +181,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Infaq/Donasi Beras
+                                    Infak/Sedekah Beras
                                 </span>
                                 <span className="font-semibold text-purple-600 dark:text-purple-400">
                                     {formatNumber(riceStock.donation_rice)} kg
@@ -221,7 +221,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Zakat Mall
+                                    Zakat Mal
                                 </span>
                                 <span className="font-semibold text-blue-600 dark:text-blue-400">
                                     {formatCurrency(incomeSummary.zakat_mall)}
@@ -229,7 +229,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Infaq
+                                    Infak
                                 </span>
                                 <span className="font-semibold text-purple-600 dark:text-purple-400">
                                     {formatCurrency(incomeSummary.infaq)}
@@ -271,7 +271,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex items-center justify-between rounded-lg bg-orange-50 p-3 dark:bg-orange-950">
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Kuantitas Terjual
+                                    Jumlah Terjual
                                 </span>
                                 <span className="font-semibold text-orange-600 dark:text-orange-400">
                                     {formatNumber(salesSummary.total_quantity)}{' '}
@@ -306,7 +306,7 @@ export default function Dashboard() {
                             </div>
                             <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
                                 <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Kuantitas Dibeli
+                                    Jumlah Dibeli
                                 </span>
                                 <span className="font-semibold text-purple-600 dark:text-purple-400">
                                     {formatNumber(
@@ -422,9 +422,9 @@ export default function Dashboard() {
                             <Bar
                                 dataKey="zakat_mall"
                                 fill="#3b82f6"
-                                name="Zakat Mall"
+                                name="Zakat Mal"
                             />
-                            <Bar dataKey="infaq" fill="#a855f7" name="Infaq" />
+                            <Bar dataKey="infaq" fill="#a855f7" name="Infak" />
                             <Bar
                                 dataKey="fidyah"
                                 fill="#ec4899"
@@ -436,7 +436,7 @@ export default function Dashboard() {
 
                 <Card className="border-sidebar-border/70 p-6 dark:border-sidebar-border">
                     <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                        Tren Penjualan Beras (Kuantitas)
+                        Tren Penjualan Beras (Jumlah)
                     </h3>
                     <ResponsiveContainer width="100%" height={300}>
                         <LineChart data={dailyTrends}>
@@ -467,7 +467,7 @@ export default function Dashboard() {
                                 dataKey="rice_sales_quantity"
                                 stroke="#f97316"
                                 strokeWidth={2}
-                                name="Kuantitas Terjual"
+                                name="Jumlah Terjual"
                             />
                         </LineChart>
                     </ResponsiveContainer>

@@ -62,19 +62,19 @@ const RiceSale = ({
     return (
         <>
             <div className="grid grid-cols-1 gap-2 text-start">
-                <Label htmlFor="customer">Customer</Label>
+                <Label htmlFor="customer">Muzakki</Label>
                 <Input
                     id="customer"
                     value={transactionItem?.customer}
                     onChange={handleCustomerChange}
-                    placeholder="Nama Customer"
+                    placeholder="Nama Muzakki"
                     required
                     className="w-full"
                 />
             </div>
 
             <div className="grid grid-cols-1 gap-2 text-start">
-                <Label htmlFor="quantity">Quantity</Label>
+                <Label htmlFor="quantity">Jumlah (Kg)</Label>
                 <Input
                     id="quantity"
                     type="number"
@@ -83,14 +83,14 @@ const RiceSale = ({
                         ''
                     }
                     onChange={handleQuantityChange}
-                    placeholder="Quantity"
+                    placeholder="Jumlah"
                     required
                     className="w-full"
                 />
             </div>
 
             <div className="grid grid-cols-1 gap-2 text-start">
-                <Label htmlFor="amount">Jumlah</Label>
+                <Label htmlFor="amount">Nominal</Label>
                 <Input
                     id="amount"
                     type="number"
@@ -98,7 +98,7 @@ const RiceSale = ({
                         (transactionItem?.detail as RiceSalesItem)?.amount || ''
                     }
                     onChange={handleAmountChange}
-                    placeholder="Amount"
+                    placeholder="Nominal"
                     required
                     className="w-full"
                 />

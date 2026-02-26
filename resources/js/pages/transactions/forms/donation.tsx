@@ -82,13 +82,13 @@ const Donation = ({
                 'donation_type' in transactionItem.detail ? (
                 <>
                     <div className="grid grid-cols-1 gap-2 text-start">
-                        <Label htmlFor="price">Tipe Donasi</Label>
+                        <Label htmlFor="price">Tipe Infak/Sedekah</Label>
                         <Select
                             value={transactionItem?.detail.donation_type}
                             onValueChange={handleDonationTypeChange}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Pilih Tipe Donasi" />
+                                <SelectValue placeholder="Pilih Tipe Infak/Sedekah" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem value="money">Uang</SelectItem>
@@ -99,26 +99,26 @@ const Donation = ({
 
                     {transactionItem.detail.donation_type === 'money' ? (
                         <div className="grid grid-cols-1 gap-2 text-start">
-                            <Label htmlFor="price">Amount</Label>
+                            <Label htmlFor="price">Nominal</Label>
                             <Input
                                 id="price"
                                 type="number"
                                 value={transactionItem?.detail.amount || ''}
                                 onChange={handleAmountChange}
-                                placeholder="Amount"
+                                placeholder="Nominal"
                                 required
                                 className="w-full"
                             />
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-2 text-start">
-                            <Label htmlFor="quantity">Quantity</Label>
+                            <Label htmlFor="quantity">Jumlah</Label>
                             <Input
                                 id="quantity"
                                 type="number"
                                 value={transactionItem?.detail.quantity || ''}
                                 onChange={handleQuantityChange}
-                                placeholder="Quantity"
+                                placeholder="Jumlah"
                                 required
                                 className="w-full"
                             />

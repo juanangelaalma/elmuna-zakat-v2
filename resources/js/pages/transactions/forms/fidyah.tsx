@@ -139,26 +139,26 @@ const Fidyah = ({
 
                     {transactionItem.detail.fidyah_type === 'money' ? (
                         <div className="grid grid-cols-1 gap-2 text-start">
-                            <Label htmlFor="price">Jumlah (Rp)</Label>
+                            <Label htmlFor="price">Nominal (Rp)</Label>
                             <Input
                                 id="price"
                                 type="number"
                                 value={transactionItem?.detail.amount || ''}
                                 onChange={handleAmountChange}
-                                placeholder="Amount"
+                                placeholder="Nominal"
                                 required
                                 className="w-full"
                             />
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 gap-2 text-start">
-                            <Label htmlFor="quantity">Kuantitas (Kg)</Label>
+                            <Label htmlFor="quantity">Jumlah (Kg)</Label>
                             <Input
                                 id="quantity"
                                 type="number"
                                 value={transactionItem?.detail.quantity || ''}
                                 onChange={handleQuantityChange}
-                                placeholder="Quantity"
+                                placeholder="Jumlah"
                                 required
                                 className="w-full"
                             />

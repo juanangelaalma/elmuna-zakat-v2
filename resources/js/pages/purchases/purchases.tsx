@@ -19,8 +19,8 @@ const columns = [
     { key: 'id', label: 'ID' },
     { key: 'date', label: 'Tanggal' },
     { key: 'rice_item.name', label: 'Nama' },
-    { key: 'quantity', label: 'Quantity' },
-    { key: 'price_per_kg', label: 'Price(kg)', render: formatCurrency },
+    { key: 'quantity', label: 'Jumlah' },
+    { key: 'price_per_kg', label: 'Harga/kg', render: formatCurrency },
 ];
 
 export default function Purchases() {
@@ -37,7 +37,7 @@ export default function Purchases() {
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid gap-4 md:grid-cols-3">
                     <OverviewCard
-                        title="Total Quantity"
+                        title="Total Jumlah"
                         value={`${formatNumber(totalQuantity)} kg`}
                         subtitle="Total pembelian beras"
                         icon={Package}
@@ -46,7 +46,7 @@ export default function Purchases() {
                     />
 
                     <OverviewCard
-                        title="Total Value"
+                        title="Total Nilai"
                         value={formatCurrency(totalValue)}
                         subtitle="Nilai total pembelian"
                         icon={DollarSign}
@@ -55,9 +55,9 @@ export default function Purchases() {
                     />
 
                     <OverviewCard
-                        title="Total Stocks"
+                        title="Total Stok"
                         value={formatNumber(totalStocks)}
-                        subtitle="Jumlah stok beras saat ini"
+                        subtitle="Jumlah jenis beras saat ini"
                         icon={Package}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"

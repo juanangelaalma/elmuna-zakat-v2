@@ -120,7 +120,7 @@ export default function TransactionCreate() {
 
                                 <div className="space-y-2">
                                     <Label htmlFor="customer">
-                                        Customer
+                                        Muzakki
                                         <span className="ml-1 text-red-500">
                                             *
                                         </span>
@@ -131,7 +131,7 @@ export default function TransactionCreate() {
                                         onChange={(e) =>
                                             setData('customer', e.target.value)
                                         }
-                                        placeholder="Nama Customer"
+                                        placeholder="Nama Muzakki"
                                         required
                                     />
                                     {errors.customer && (
@@ -142,7 +142,7 @@ export default function TransactionCreate() {
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="address">Address</Label>
+                                    <Label htmlFor="address">Alamat</Label>
                                     <Input
                                         id="address"
                                         value={data.address}
@@ -182,7 +182,7 @@ export default function TransactionCreate() {
 
                                 <div className="space-y-2">
                                     <Label htmlFor="officer_name">
-                                        Officer Name
+                                        Nama Petugas
                                     </Label>
                                     <Input
                                         id="officer_name"

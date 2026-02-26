@@ -14,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: transactions().url,
     },
     {
-        title: 'Infaq',
+        title: 'Infak/Sedekah',
     },
 ];
 
@@ -29,12 +29,12 @@ const columns = [
     },
     {
         key: 'quantity',
-        label: 'Quantity',
+        label: 'Jumlah',
         render: (value) => value ? `${formatNumber(value)} kg` : '-'
     },
     {
         key: 'amount',
-        label: 'Amount',
+        label: 'Nominal',
         render: (value) => value ? formatCurrency(value) : '-'
     },
     { key: 'date', label: 'Tanggal', render: formatDate },
@@ -49,7 +49,7 @@ export default function Donations() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Infaq" />
+            <Head title="Infak/Sedekah" />
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="grid gap-4 md:grid-cols-3">
                     <OverviewCard
@@ -71,9 +71,9 @@ export default function Donations() {
                     />
 
                     <OverviewCard
-                        title="Total Records"
+                        title="Total Transaksi"
                         value={formatNumber(numberOfRecords)}
-                        subtitle="Jumlah record"
+                        subtitle="Jumlah data"
                         icon={ShoppingCart}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
@@ -85,10 +85,10 @@ export default function Donations() {
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                                    Daftar Infaq
+                                    Daftar Infak/Sedekah
                                 </h2>
                                 <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    Daftar semua infaq
+                                    Daftar semua infaq/sedekah
                                 </p>
                             </div>
                             <Button onClick={handleExport} className="cursor-pointer">

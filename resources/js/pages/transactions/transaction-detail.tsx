@@ -161,7 +161,7 @@ export default function TransactionDetail() {
                                             <DialogDescription>
                                                 Transaksi <strong>{transaction.transaction_number}</strong> akan dihapus.
                                                 Jika berisi penjualan beras, stok akan dikembalikan.
-                                                Transaksi dapat dipulihkan dari halaman <em>Trash</em>.
+                                                Transaksi dapat dipulihkan dari halaman <em>Sampah</em>.
                                             </DialogDescription>
                                         </DialogHeader>
                                         <DialogFooter>
@@ -191,7 +191,7 @@ export default function TransactionDetail() {
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                 <InfoItem
                                     icon={User}
-                                    label="Customer"
+                                    label="Muzakki"
                                     value={transaction.customer}
                                 />
                                 <InfoItem

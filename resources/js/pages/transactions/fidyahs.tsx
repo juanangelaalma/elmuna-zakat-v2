@@ -29,12 +29,12 @@ const columns = [
     },
     {
         key: 'quantity',
-        label: 'Quantity',
+        label: 'Jumlah',
         render: (value) => value ? `${formatNumber(value)} kg` : '-'
     },
     {
         key: 'amount',
-        label: 'Amount',
+        label: 'Nominal',
         render: (value) => value ? formatCurrency(value) : '-'
     },
     { key: 'date', label: 'Tanggal', render: formatDate },
@@ -71,9 +71,9 @@ export default function Fidyahs() {
                     />
 
                     <OverviewCard
-                        title="Total Records"
+                        title="Total Transaksi"
                         value={formatNumber(numberOfRecords)}
-                        subtitle="Jumlah record"
+                        subtitle="Jumlah data"
                         icon={ShoppingCart}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"

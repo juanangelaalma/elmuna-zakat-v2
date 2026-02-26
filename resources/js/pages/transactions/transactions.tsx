@@ -19,14 +19,14 @@ const columns = [
     { key: 'id', label: 'No', render: autoOrderedNumber }, // auto-ordered number
     { key: 'transaction_number', label: 'Nomor Transaksi' },
     { key: 'date', label: 'Tanggal' },
-    { key: 'customer', label: 'Nama' },
+    { key: 'customer', label: 'Muzakki' },
     { key: 'officer_name', label: 'Petugas' },
     {
         key: 'total_transaction_amount',
-        label: 'Total Amount',
+        label: 'Total Nominal',
         render: formatCurrency,
     },
-    { key: 'total_transaction_quantity', label: 'Total Quantity' },
+    { key: 'total_transaction_quantity', label: 'Total Jumlah (Kg)' },
 ];
 
 export default function Transactions() {
@@ -61,7 +61,7 @@ export default function Transactions() {
                     />
 
                     <OverviewCard
-                        title="Total Transactions"
+                        title="Total Transaksi"
                         value={formatNumber(numberOfTransactions)}
                         subtitle="Jumlah transaksi"
                         icon={ShoppingCart}

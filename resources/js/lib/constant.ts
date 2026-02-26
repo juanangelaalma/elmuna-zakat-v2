@@ -14,12 +14,12 @@ export const TRANSACTION_ITEM_TYPES = [
     },
     {
         id: ZAKAT_RICE_ID,
-        label: 'Zakat Beras',
+        label: 'Zakat Fitrah',
         icon: HandCoins,
     },
     {
         id: INFAQ_ID,
-        label: 'Infaq',
+        label: 'Infak/Sedekah',
         icon: Heart,
     },
     {
@@ -29,7 +29,7 @@ export const TRANSACTION_ITEM_TYPES = [
     },
     {
         id: ZAKAT_MALL_ID,
-        label: 'Zakat Mall',
+        label: 'Zakat Mal',
         icon: Wallet,
     },
 ];
