@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { RICE_SALES_ID } from '@/lib/constant';
+import { getEffectiveValues } from '@/lib/transaction-item-utils';
 import TransactionItemDialog from '@/pages/transactions/transaction-item-dialog';
 import { transactions } from '@/routes';
 import { BreadcrumbItem, SharedData, TransactionItem } from '@/types';
@@ -62,17 +63,12 @@ export default function TransactionCreate() {
     };
 
     const moneyTotal = data.items.reduce((total, item) => {
-        if ('amount' in item.detail && 'day_count' in item.detail) {
-            return total + ((item.detail.day_count ?? 1) * (item.detail.amount ?? 0));
-        }
-        return total;
+        return total + getEffectiveValues(item.detail).amount;
     }, 0);
 
     const riceTotal = data.items.reduce((total, item) => {
-        if (item.item_type !== RICE_SALES_ID && 'quantity' in item.detail && 'day_count' in item.detail) {
-            return total + ((item.detail.day_count ?? 1) * (item.detail.quantity ?? 0));
-        }
-        return total;
+        if (item.item_type === RICE_SALES_ID) return total;
+        return total + getEffectiveValues(item.detail).quantity;
     }, 0);
 
     const handleDeleteItem = (item: TransactionItem) => {
