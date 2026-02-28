@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{PurchaseController, RiceItemController, DashboardController, ExpenseController};
+use App\Http\Controllers\PrintSettingController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +52,27 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('default-value', [DefaultValueController::class, 'index'])->name('defaultValue');
     Route::patch('default-value', [DefaultValueController::class, 'update'])->name('defaultValueUpdate');
+
+    // Print Management — static routes MUST be defined before the resource route
+    // to avoid being caught by the {printSetting} wildcard parameter
+    Route::post('settings/print-management/check-ip', [PrintSettingController::class, 'checkIp'])
+        ->name('print-settings.check-ip');
+    Route::get('settings/print-management/printers/json', [PrintSettingController::class, 'indexJson'])
+        ->name('print-settings.json');
+
+    Route::resource('settings/print-management', PrintSettingController::class)
+        ->names('print-settings')
+        ->parameters(['print-management' => 'printSetting']);
+    Route::post('settings/print-management/{printSetting}/set-default', [PrintSettingController::class, 'setDefault'])
+        ->name('print-settings.set-default');
+    Route::post('settings/print-management/{printSetting}/test-connection', [PrintSettingController::class, 'testConnection'])
+        ->name('print-settings.test-connection');
+    Route::post('settings/print-management/{printSetting}/test-print', [PrintSettingController::class, 'testPrint'])
+        ->name('print-settings.test-print');
+
+    // Print struk ke printer
+    Route::post('transactions/{id}/print-to-printer', [TransactionController::class, 'printToPrinter'])
+        ->name('transactions.print-to-printer');
 });
 
 require __DIR__.'/settings.php';

@@ -24,6 +24,7 @@ import {
     Folder,
     LayoutGrid,
     Package2,
+    Printer,
     Settings,
     ShoppingCart,
     TicketSlash,
@@ -108,6 +109,11 @@ const footerNavItems: NavItem[] = [
         title: 'Pengaturan Nilai',
         href: defaultValue(),
         icon: Settings,
+    },
+    {
+        title: 'Print Management',
+        href: '/settings/print-management',
+        icon: Printer,
     },
 ];
 

@@ -6,6 +6,9 @@ use App\Contracts\TransactionServiceInterface;
 use App\DTO\TransactionDTO;
 use App\Http\Requests\TransactionStoreRequest;
 use App\Jobs\SendWhatsAppNotification;
+use App\Models\PrintSetting;
+use App\Services\PrintService;
+use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use Illuminate\Support\Carbon;
 use App\Utils\TransactionNumberGenerator;
@@ -15,7 +18,8 @@ class TransactionController extends Controller
 {
     public function __construct(
         private TransactionServiceInterface $service,
-        private TransactionNumberGenerator $transactionNumberGenerator
+        private TransactionNumberGenerator $transactionNumberGenerator,
+        private PrintService $printService
     ) {}
 
     public function index()
@@ -102,6 +106,70 @@ class TransactionController extends Controller
         $this->service->deleteTransaction(intval($id));
 
         return redirect()->route('transactions')->with('success', 'Transaksi berhasil dihapus.');
+    }
+
+    /**
+     * Kirim struk transaksi langsung ke printer via PrintService.
+     * Digunakan oleh tombol "Print ke Printer" di halaman detail transaksi.
+     */
+    public function printToPrinter(\Illuminate\Http\Request $request, $id): JsonResponse
+    {
+        try {
+            $transaction = $this->service->getById(strval($id));
+
+            if (!$transaction) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transaksi tidak ditemukan.',
+                ], 404);
+            }
+
+            // Ambil printer: jika ada printer_id di request gunakan itu, jika tidak ambil default aktif
+            $printerId = $request->input('printer_id');
+            if ($printerId) {
+                $printer = PrintSetting::where('id', $printerId)->where('is_active', true)->first();
+            } else {
+                $printer = PrintSetting::where('is_default', true)->where('is_active', true)->first();
+            }
+
+            if (!$printer) {
+                return response()->json([
+                    'success'          => false,
+                    'message'          => 'Tidak ada printer default yang aktif. Silakan pilih printer atau atur printer default di menu Print Management.',
+                    'no_default'       => true,
+                ], 422);
+            }
+
+            // Generate PDF struk
+            $pdf = Pdf::loadView('receipt', compact('transaction'))
+                ->setPaper([0, 0, 311.81, 623.62], 'portrait');
+
+            // Simpan ke file temporary
+            $filename = 'struk-' . $transaction['transaction_number'] . '-' . time() . '.pdf';
+            $tempDir  = storage_path('app/temp');
+
+            if (!is_dir($tempDir)) {
+                mkdir($tempDir, 0755, true);
+            }
+
+            $pdfPath = $tempDir . '/' . $filename;
+            $pdf->save($pdfPath);
+
+            // Kirim ke printer
+            $result = $this->printService->print($printer, $pdfPath);
+
+            // Hapus file temporary
+            if (file_exists($pdfPath)) {
+                unlink($pdfPath);
+            }
+
+            return response()->json($result, $result['success'] ? 200 : 500);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function trash()

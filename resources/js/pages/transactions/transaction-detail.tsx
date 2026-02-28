@@ -18,13 +18,17 @@ import { Head, Link, router, usePage } from '@inertiajs/react';
 import {
     ArrowLeft,
     Calendar,
+    CheckCircle2,
     DollarSign,
+    Loader2,
     MapPin,
     Package,
     Phone,
     Printer,
     Trash2,
     User,
+    WifiOff,
+    XCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -50,10 +54,25 @@ interface Transaction {
     items: TransactionItem[];
 }
 
+// Printer selection modal for when no default printer is set
+interface PrinterOption {
+    id: number;
+    name: string;
+    ip_address: string;
+    protocol: string;
+    paper_size: string;
+    is_active: boolean;
+}
+
+type PrintStatus = 'idle' | 'loading' | 'success' | 'error';
+
+interface Toast {
+    type: 'success' | 'error';
+    message: string;
+}
+
 export default function TransactionDetail() {
     const { transaction } = usePage<{ transaction: Transaction }>().props;
-
-    console.log(transaction.items);
 
     const moneyTotal = transaction.items.reduce((total, item) => {
         if ('amount' in item.detail) {
@@ -74,6 +93,66 @@ export default function TransactionDetail() {
     };
 
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [printStatus, setPrintStatus] = useState<PrintStatus>('idle');
+    const [printToast, setPrintToast] = useState<Toast | null>(null);
+    const [showPrinterModal, setShowPrinterModal] = useState(false);
+    const [availablePrinters, setAvailablePrinters] = useState<PrinterOption[]>([]);
+
+    const showToast = (type: 'success' | 'error', message: string) => {
+        setPrintToast({ type, message });
+        setTimeout(() => setPrintToast(null), 4000);
+    };
+
+    const sendToPrinter = async (printerId?: number) => {
+        setPrintStatus('loading');
+        setShowPrinterModal(false);
+
+        try {
+            const csrfToken = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '';
+            const url = `/transactions/${transaction.id}/print-to-printer`;
+            const body = printerId ? JSON.stringify({ printer_id: printerId }) : undefined;
+
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                body,
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+                setPrintStatus('success');
+                showToast('success', 'Struk berhasil dikirim ke printer!');
+                setTimeout(() => setPrintStatus('idle'), 3000);
+            } else if (data.no_default) {
+                // No default printer — fetch available printers and show modal
+                setPrintStatus('idle');
+                const csrfToken2 = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content ?? '';
+                const printersRes = await fetch('/settings/print-management/printers/json', {
+                    headers: { Accept: 'application/json', 'X-CSRF-TOKEN': csrfToken2 },
+                });
+                if (printersRes.ok) {
+                    const printersData = await printersRes.json();
+                    setAvailablePrinters(printersData.printers ?? []);
+                    setShowPrinterModal(true);
+                } else {
+                    showToast('error', 'Tidak ada printer default aktif. Silakan atur printer di menu Print Management.');
+                }
+            } else {
+                setPrintStatus('error');
+                showToast('error', data.message ?? 'Printer tidak tersedia, coba cek koneksi.');
+                setTimeout(() => setPrintStatus('idle'), 3000);
+            }
+        } catch {
+            setPrintStatus('error');
+            showToast('error', 'Gagal menghubungi server. Coba lagi.');
+            setTimeout(() => setPrintStatus('idle'), 3000);
+        }
+    };
 
     const handleDelete = () => {
         router.delete(`/transactions/${transaction.id}`, {
@@ -86,6 +165,77 @@ export default function TransactionDetail() {
             <Head
                 title={`Detail Transaksi - ${transaction.transaction_number}`}
             />
+
+            {/* Print Toast */}
+            {printToast && (
+                <div className="fixed right-4 top-4 z-50">
+                    <div
+                        className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium shadow-lg ${
+                            printToast.type === 'success'
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-red-600 text-white'
+                        }`}
+                    >
+                        {printToast.type === 'success' ? (
+                            <CheckCircle2 className="h-4 w-4 shrink-0" />
+                        ) : (
+                            <XCircle className="h-4 w-4 shrink-0" />
+                        )}
+                        {printToast.message}
+                    </div>
+                </div>
+            )}
+
+            {/* Printer Selection Modal */}
+            {showPrinterModal && (
+                <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
+                    <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-gray-900">
+                        <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Pilih Printer</h3>
+                        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                            Tidak ada printer default aktif. Pilih printer dari daftar berikut:
+                        </p>
+                        {availablePrinters.length === 0 ? (
+                            <div className="flex flex-col items-center gap-3 py-6 text-center">
+                                <WifiOff className="h-10 w-10 text-gray-300" />
+                                <p className="text-sm text-gray-500">Tidak ada printer aktif yang tersedia.</p>
+                                <Link
+                                    href="/settings/print-management"
+                                    className="text-sm font-medium text-emerald-600 hover:underline"
+                                >
+                                    Tambah printer di Print Management →
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="space-y-2">
+                                {availablePrinters.map((p) => (
+                                    <button
+                                        key={p.id}
+                                        onClick={() => sendToPrinter(p.id)}
+                                        className="flex w-full items-center gap-3 rounded-lg border border-gray-200 p-3 text-left hover:border-emerald-400 hover:bg-emerald-50 dark:border-gray-700 dark:hover:border-emerald-600 dark:hover:bg-emerald-900/20"
+                                    >
+                                        <Printer className="h-5 w-5 shrink-0 text-gray-400" />
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-900 dark:text-white">{p.name}</p>
+                                            <p className="text-xs text-gray-500">
+                                                {p.ip_address} · {p.protocol.toUpperCase()} · {p.paper_size}
+                                            </p>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                        <div className="mt-4 flex justify-end">
+                            <button
+                                onClick={() => setShowPrinterModal(false)}
+                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+                            >
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 {/* Overview Cards - Summary */}
                 <div className="grid gap-4 md:grid-cols-2">
@@ -145,6 +295,30 @@ export default function TransactionDetail() {
                                 >
                                     <Printer className="h-4 w-4" />
                                     Cetak Struk
+                                </Button>
+                                <Button
+                                    id="btn-print-printer"
+                                    variant="outline"
+                                    onClick={() => sendToPrinter()}
+                                    disabled={printStatus === 'loading'}
+                                    className="gap-2"
+                                >
+                                    {printStatus === 'loading' ? (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    ) : printStatus === 'success' ? (
+                                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                                    ) : printStatus === 'error' ? (
+                                        <XCircle className="h-4 w-4 text-red-500" />
+                                    ) : (
+                                        <Printer className="h-4 w-4" />
+                                    )}
+                                    {printStatus === 'loading'
+                                        ? 'Mengirim...'
+                                        : printStatus === 'success'
+                                          ? 'Terkirim!'
+                                          : printStatus === 'error'
+                                            ? 'Gagal'
+                                            : '🖨️ Print ke Printer'}
                                 </Button>
                                 <Button
                                     variant="destructive"
