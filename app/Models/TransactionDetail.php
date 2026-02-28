@@ -15,4 +15,29 @@ class TransactionDetail extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
+
+    public function rice()
+    {
+        return $this->hasOne(Rice::class);
+    }
+
+    public function riceSale()
+    {
+        return $this->hasOne(RiceSale::class);
+    }
+
+    public function donation()
+    {
+        return $this->hasOne(Donation::class);
+    }
+
+    public function fidyah()
+    {
+        return $this->hasOne(Fidyah::class);
+    }
+
+    public function wealth()
+    {
+        return $this->hasOne(Wealth::class);
+    }
 }
