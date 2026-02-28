@@ -10,4 +10,9 @@ class Transaction extends Model
     use SoftDeletes;
 
     protected $guarded = ["id"];
+
+    public function details()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
 }
