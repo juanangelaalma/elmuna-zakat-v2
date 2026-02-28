@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{PurchaseController, RiceItemController, DashboardController, ExpenseController};
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ZakatLiveDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -12,6 +13,10 @@ Route::get('/', function () {
         'canRegister' => Features::enabled(Features::registration()),
     ]);
 })->name('home');
+
+// Public live dashboard — no auth required
+Route::get('/zakat-live', [ZakatLiveDashboardController::class, 'index'])->name('zakat-live');
+Route::get('/zakat-live/data', [ZakatLiveDashboardController::class, 'data'])->name('zakat-live.data');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

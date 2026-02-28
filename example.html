@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Zakat Masjid Al Munawwar (Bahasa Indonesia Baku)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#2d6a4f",
+                        secondary: "#d4a017",
+                        "background-light": "#f8fafc",
+                        "surface-white": "#ffffff",
+                        "text-dark": "#1e293b",
+                        "text-muted": "#64748b"
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'card': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025)'
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 40s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-dark font-display min-h-screen flex flex-col overflow-hidden selection:bg-primary/20 selection:text-primary">
+<div class="flex-1 flex flex-col p-4 md:p-6 lg:p-8 gap-6 relative">
+<header class="flex items-center justify-between border-b border-slate-200 pb-6">
+<div class="flex items-center gap-4">
+<div class="size-14 bg-white rounded-full flex items-center justify-center text-primary border border-slate-100 shadow-soft">
+<span class="material-symbols-outlined text-4xl">mosque</span>
+</div>
+<div>
+<h1 class="text-3xl font-bold tracking-tight text-slate-800">Masjid Al Munawwar</h1>
+<p class="text-text-muted text-sm font-medium">Dashboard Zakat Real-Time</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-3 bg-white px-5 py-2.5 rounded-xl border border-slate-100 shadow-soft">
+<span class="material-symbols-outlined text-secondary text-3xl">calendar_month</span>
+<div class="flex flex-col text-right">
+<span class="text-xs text-text-muted uppercase font-bold tracking-wider">Masehi</span>
+<span class="text-base font-bold text-slate-700">07 April 2024</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-white px-5 py-2.5 rounded-xl border border-slate-100 shadow-soft">
+<span class="material-symbols-outlined text-primary text-3xl">nights_stay</span>
+<div class="flex flex-col text-right">
+<span class="text-xs text-text-muted uppercase font-bold tracking-wider">Hijriah</span>
+<span class="text-base font-bold text-secondary">27 Ramadan 1445 H</span>
+</div>
+</div>
+<div class="flex items-center gap-3 bg-gradient-to-br from-primary to-[#1b4332] px-6 py-2 rounded-xl shadow-lg shadow-primary/20 text-white">
+<span class="material-symbols-outlined text-2xl">schedule</span>
+<span class="text-3xl font-bold font-mono tracking-widest">12:30:45</span>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-white p-6 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
+<div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-secondary">group</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-1">
+<div class="p-1.5 bg-slate-50 rounded-lg">
+<span class="material-symbols-outlined text-secondary">person</span>
+</div>
+<p class="text-text-muted text-sm font-bold uppercase tracking-wider">Muzakki Hari Ini</p>
+</div>
+<p class="text-5xl font-bold text-slate-800 mt-3">125 <span class="text-xl font-medium text-slate-400">Orang</span></p>
+<div class="mt-4 flex items-center gap-1 text-sm text-green-700 bg-green-100 w-fit px-2.5 py-1 rounded-full font-medium">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+12% dari kemarin</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-white p-6 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
+<div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-primary">grain</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-1">
+<div class="p-1.5 bg-slate-50 rounded-lg">
+<span class="material-symbols-outlined text-primary">grain</span>
+</div>
+<p class="text-text-muted text-sm font-bold uppercase tracking-wider">Beras Terkumpul (kg)</p>
+</div>
+<p class="text-5xl font-bold text-secondary mt-3">450 <span class="text-xl font-medium text-slate-400">kg</span></p>
+<div class="mt-4 flex items-center gap-1 text-sm text-green-700 bg-green-100 w-fit px-2.5 py-1 rounded-full font-medium">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+5% dari kemarin</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-white p-6 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
+<div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-9xl text-emerald-600">payments</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-1">
+<div class="p-1.5 bg-slate-50 rounded-lg">
+<span class="material-symbols-outlined text-emerald-600">payments</span>
+</div>
+<p class="text-text-muted text-sm font-bold uppercase tracking-wider">Total Dana Terhimpun</p>
+</div>
+<p class="text-5xl font-bold text-slate-800 mt-3 tracking-tight">Rp 15.0jt</p>
+<div class="mt-4 flex items-center gap-1 text-sm text-green-700 bg-green-100 w-fit px-2.5 py-1 rounded-full font-medium">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+8.5% dari kemarin</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-0">
+<div class="lg:col-span-4 flex flex-col gap-6 h-full">
+<div class="bg-surface-white p-6 rounded-2xl shadow-card border border-slate-100 flex flex-col justify-between flex-1">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="text-lg font-bold text-slate-800">Status Stok Beras</h3>
+<p class="text-sm text-text-muted mt-1 font-medium">Target: 5000 kg</p>
+</div>
+<div class="bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
+<span class="text-secondary text-sm font-bold">75% Tercapai</span>
+</div>
+</div>
+<div class="relative h-14 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200 mb-6 shadow-inner">
+<div class="absolute top-0 left-0 h-full bg-gradient-to-r from-primary/80 to-primary w-[75%] flex items-center justify-end px-4 shadow-lg">
+<span class="text-white font-bold text-base drop-shadow-sm">3.750 kg</span>
+</div>
+</div>
+<div class="flex items-center justify-between bg-slate-50 p-4 rounded-xl mt-auto border border-slate-100">
+<div class="flex items-center gap-3">
+<div class="p-2.5 bg-white rounded-lg text-secondary shadow-sm">
+<span class="material-symbols-outlined">sell</span>
+</div>
+<div>
+<p class="text-xs text-text-muted uppercase font-bold tracking-wider">Harga Beras Saat Ini</p>
+<p class="text-slate-800 font-bold text-lg">Rp 12.000 <span class="text-slate-400 font-normal text-sm">/ porsi</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-white p-6 rounded-2xl shadow-card border border-slate-100 flex-1 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-lg font-bold text-slate-800">Tren Penghimpunan Beras</h3>
+<span class="text-xs font-semibold text-primary bg-primary/10 px-2 py-1 rounded">7 Hari Terakhir</span>
+</div>
+<div class="flex-1 flex items-end justify-between gap-3 h-40">
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-24 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-secondary/80 rounded-t-md transition-all group-hover:bg-secondary" style="height: 40%"></div>
+</div>
+<span class="text-xs text-text-muted font-bold">Sen</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-32 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-secondary/80 rounded-t-md transition-all group-hover:bg-secondary" style="height: 60%"></div>
+</div>
+<span class="text-xs text-text-muted font-bold">Sel</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-20 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-secondary/80 rounded-t-md transition-all group-hover:bg-secondary" style="height: 45%"></div>
+</div>
+<span class="text-xs text-text-muted font-bold">Rab</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-36 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-secondary/80 rounded-t-md transition-all group-hover:bg-secondary" style="height: 75%"></div>
+</div>
+<span class="text-xs text-text-muted font-bold">Kam</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-40 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-secondary/80 rounded-t-md transition-all group-hover:bg-secondary" style="height: 85%"></div>
+</div>
+<span class="text-xs text-text-muted font-bold">Jum</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-28 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-primary/80 rounded-t-md transition-all group-hover:bg-primary" style="height: 55%"></div>
+</div>
+<span class="text-xs text-text-muted font-bold">Sab</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group">
+<div class="w-full bg-slate-100 rounded-t-md relative h-32 transition-all group-hover:bg-slate-200 overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-primary/80 rounded-t-md transition-all group-hover:bg-primary" style="height: 65%"></div>
+</div>
+<span class="text-xs text-primary font-bold bg-primary/10 px-1 rounded">Min</span>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 bg-surface-white rounded-2xl shadow-card border border-slate-100 overflow-hidden flex flex-col h-full">
+<div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+<h3 class="text-lg font-bold text-slate-800">Rekapitulasi</h3>
+<button class="text-xs font-bold bg-white text-primary px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm hover:shadow-md transition">Lihat Semua</button>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-white sticky top-0 z-10 shadow-sm">
+<tr>
+<th class="p-4 text-xs font-bold text-text-muted uppercase tracking-wider bg-slate-50/50">Kategori Zakat</th>
+<th class="p-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right bg-slate-50/50">Jumlah Muzakki</th>
+<th class="p-4 text-xs font-bold text-text-muted uppercase tracking-wider text-right bg-slate-50/50">Total Terkumpul</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-sm">
+<tr class="hover:bg-slate-50 transition-colors group">
+<td class="p-4 font-semibold text-slate-700 flex items-center gap-3">
+<div class="size-2.5 rounded-full bg-primary shadow-sm ring-2 ring-primary/20"></div>
+                            Zakat Fitrah (Beras)
+                        </td>
+<td class="p-4 text-slate-500 text-right font-medium">85</td>
+<td class="p-4 text-secondary font-bold text-right group-hover:text-secondary/80">Rp 4.250.000</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors group">
+<td class="p-4 font-semibold text-slate-700 flex items-center gap-3">
+<div class="size-2.5 rounded-full bg-secondary shadow-sm ring-2 ring-secondary/20"></div>
+                            Zakat Mal
+                        </td>
+<td class="p-4 text-slate-500 text-right font-medium">12</td>
+<td class="p-4 text-secondary font-bold text-right group-hover:text-secondary/80">Rp 10.500.000</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors group">
+<td class="p-4 font-semibold text-slate-700 flex items-center gap-3">
+<div class="size-2.5 rounded-full bg-blue-500 shadow-sm ring-2 ring-blue-500/20"></div>
+                            Infaq &amp; Sedekah
+                        </td>
+<td class="p-4 text-slate-500 text-right font-medium">20</td>
+<td class="p-4 text-secondary font-bold text-right group-hover:text-secondary/80">Rp 250.000</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors group">
+<td class="p-4 font-semibold text-slate-700 flex items-center gap-3">
+<div class="size-2.5 rounded-full bg-purple-500 shadow-sm ring-2 ring-purple-500/20"></div>
+                            Fidyah
+                        </td>
+<td class="p-4 text-slate-500 text-right font-medium">8</td>
+<td class="p-4 text-secondary font-bold text-right group-hover:text-secondary/80">Rp 400.000</td>
+</tr>
+<tr class="hover:bg-slate-50 transition-colors group">
+<td class="p-4 font-semibold text-slate-700 flex items-center gap-3">
+<div class="size-2.5 rounded-full bg-orange-500 shadow-sm ring-2 ring-orange-500/20"></div>
+                            Zakat Fitrah (Toko)
+                        </td>
+<td class="p-4 text-slate-500 text-right font-medium">45</td>
+<td class="p-4 text-secondary font-bold text-right group-hover:text-secondary/80">Rp 1.200.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="lg:col-span-3 bg-gradient-to-br from-primary to-[#1b4332] rounded-2xl shadow-xl shadow-primary/20 p-6 flex flex-col justify-center items-center text-center relative overflow-hidden h-full">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+<div class="relative z-10 w-full flex flex-col items-center">
+<div class="w-20 h-20 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 backdrop-blur-md ring-1 ring-white/20 shadow-lg">
+<span class="material-symbols-outlined text-5xl text-white">volunteer_activism</span>
+</div>
+<h3 class="text-white/80 text-sm font-bold uppercase tracking-wider mb-2">Estimasi Penerima Manfaat</h3>
+<p class="text-white text-6xl font-bold mb-1 tracking-tight">1.250</p>
+<p class="text-secondary text-lg font-serif italic mb-8 font-medium">Dapat disalurkan kepada 1.250 Keluarga</p>
+<div class="w-full h-px bg-white/20 mb-6"></div>
+<div class="grid grid-cols-2 gap-4 w-full">
+<div class="bg-black/20 p-4 rounded-xl backdrop-blur-sm border border-white/5">
+<p class="text-xs text-white/70 mb-1 uppercase tracking-wide font-semibold">Paket Beras</p>
+<p class="text-2xl font-bold text-white">750</p>
+</div>
+<div class="bg-black/20 p-4 rounded-xl backdrop-blur-sm border border-white/5">
+<p class="text-xs text-white/70 mb-1 uppercase tracking-wide font-semibold">Santunan</p>
+<p class="text-2xl font-bold text-white">500</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 w-full max-w-2xl px-4 pointer-events-none">
+<div class="bg-white/90 backdrop-blur-md border border-slate-200 px-8 py-5 rounded-full shadow-2xl flex items-center justify-center text-center ring-4 ring-white/50">
+<p class="text-primary italic font-serif text-xl font-medium">
+            "Naungan orang beriman di hari Kiamat adalah sedekahnya." 
+            <span class="text-slate-500 text-sm not-italic ml-2 font-sans font-normal">- HR. Ahmad</span>
+</p>
+</div>
+</div>
+</div>
+<footer class="bg-white border-t border-slate-200 h-16 flex items-center relative overflow-hidden z-30 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<div class="bg-primary px-8 h-full flex items-center z-10 shrink-0 shadow-lg relative">
+<div class="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-black/10 to-transparent"></div>
+<span class="text-white font-bold uppercase tracking-wider text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-xl animate-pulse">favorite</span>
+            Apresiasi
+        </span>
+</div>
+<div class="marquee-container flex-1 py-2 bg-slate-50">
+<div class="marquee-content flex gap-16 items-center px-4">
+<span class="font-bold text-slate-700">Jazakumullah Khairan kepada Muzakki hari ini:</span>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Hamba Allah</span>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">Rp 500.000</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Ahmad Fauzi</span>
+<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-sm font-bold">25 kg Beras</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Siti Aminah</span>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">Rp 1.000.000</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Hamba Allah</span>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">Rp 200.000</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Budi Santoso</span>
+<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-sm font-bold">10 kg Beras</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Keluarga Besar H. Rahmat</span>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">Rp 5.000.000</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Rina Wati</span>
+<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">Rp 150.000</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-slate-500 text-sm font-medium">Hamba Allah</span>
+<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-sm font-bold">50 kg Beras</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
