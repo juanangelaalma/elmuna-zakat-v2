@@ -447,12 +447,26 @@ function renderMarquee(marqueeData) {
         el.innerHTML = '<span class="font-bold text-slate-700 text-sm">Belum ada muzakki hari ini…</span>';
         return;
     }
-    const items = marqueeData.map(d =>
-        `<div class="flex items-center gap-2 shrink-0">
-            <span class="text-slate-500 text-sm font-medium">${d.name}</span>
-            <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-bold">${d.created_at ?? ''}</span>
-        </div>`
-    ).join('<span class="text-slate-300 shrink-0">•</span>');
+    const items = marqueeData.map(d => {
+        let badges = [];
+        if (d.quantity > 0) {
+            let unit = (d.type.includes('Beras') || d.type.includes('Masjid') || d.type === 'Zakat Fitrah') ? ' kg Beras' : ' kg Beras';
+            badges.push(`<span class="bg-amber-100 text-amber-700 px-2 py-0.5 rounded text-sm font-bold">${d.quantity}${unit}</span>`);
+        }
+        if (d.amount > 0) {
+            const rp = d.amount.toLocaleString('id-ID');
+            badges.push(`<span class="bg-green-100 text-green-700 px-2 py-0.5 rounded text-sm font-bold">Rp ${rp}</span>`);
+        }
+
+        let badgeHtml = badges.length > 0 
+            ? badges.join('') 
+            : `<span class="bg-slate-200 text-slate-600 px-2 py-0.5 rounded text-sm font-bold">${d.created_at ?? ''}</span>`;
+
+        return `<div class="flex items-center gap-3 shrink-0">
+            <span class="text-slate-500 text-sm font-medium">${d.name} <span class="text-slate-400 text-xs">(${d.type})</span></span>
+            <div class="flex items-center gap-1.5">${badgeHtml}</div>
+        </div>`;
+    }).join('<span class="text-slate-300 shrink-0 mx-2">•</span>');
     // Duplicate for seamless loop
     el.innerHTML = items + '<span class="inline-block w-24"></span>' + items;
 }

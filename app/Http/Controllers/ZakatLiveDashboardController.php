@@ -297,17 +297,38 @@ class ZakatLiveDashboardController extends Controller
     {
         $today = Carbon::today()->toDateString();
 
-        return TransactionDetail::whereHas('transaction', fn($q) =>
-            $q->whereDate('date', $today)
-        )->latest('id')
-            ->get(['giver_name', 'type', 'created_at', 'amount', 'quantity'])
-            ->map(fn($t) => [
-                'name'       => $t->giver_name,
-                'type'       => $this->typeLabel($t->type),
-                'amount_fmt' => 'Rp ' . number_format($t->amount, 0, ',', '.'),
-                'quantity'   => $t->quantity,
-                'created_at' => $t->created_at?->format('H:i'),
-            ])
+        return TransactionDetail::with(['rice', 'riceSale', 'donation', 'fidyah', 'wealth'])
+            ->whereHas('transaction', fn($q) =>
+                $q->whereDate('date', $today)
+            )->latest('id')
+            ->get(['id', 'giver_name', 'type', 'created_at'])
+            ->map(function ($t) {
+                $amount = 0;
+                $quantity = 0;
+
+                if ($t->type === TransactionItemType::RICE) {
+                    $quantity = $t->rice?->quantity ?? 0;
+                } elseif ($t->type === TransactionItemType::RICE_SALES) {
+                    $amount = $t->riceSale?->amount ?? 0;
+                    $quantity = $t->riceSale?->quantity ?? 0;
+                } elseif ($t->type === TransactionItemType::DONATION) {
+                    $amount = $t->donation?->amount ?? 0;
+                    $quantity = $t->donation?->quantity ?? 0;
+                } elseif ($t->type === TransactionItemType::FIDYAH) {
+                    $amount = $t->fidyah?->amount ?? 0;
+                    $quantity = $t->fidyah?->quantity ?? 0;
+                } elseif ($t->type === TransactionItemType::WEALTH) {
+                    $amount = $t->wealth?->amount ?? 0;
+                }
+
+                return [
+                    'name'       => $t->giver_name,
+                    'type'       => $this->typeLabel($t->type),
+                    'created_at' => $t->created_at?->format('H:i'),
+                    'amount'     => (float) $amount,
+                    'quantity'   => (float) $quantity,
+                ];
+            })
             ->toArray();
     }
 
