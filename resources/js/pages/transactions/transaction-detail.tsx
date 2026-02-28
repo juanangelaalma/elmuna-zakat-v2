@@ -172,8 +172,8 @@ export default function TransactionDetail() {
                     <div
                         className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium shadow-lg ${
                             printToast.type === 'success'
-                                ? 'bg-emerald-600 text-white'
-                                : 'bg-red-600 text-white'
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-destructive text-white'
                         }`}
                     >
                         {printToast.type === 'success' ? (
@@ -189,18 +189,18 @@ export default function TransactionDetail() {
             {/* Printer Selection Modal */}
             {showPrinterModal && (
                 <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-                    <div className="mx-4 w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-gray-900">
-                        <h3 className="mb-1 text-lg font-semibold text-gray-900 dark:text-white">Pilih Printer</h3>
-                        <p className="mb-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="mx-4 w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-xl">
+                        <h3 className="mb-1 text-lg font-semibold text-card-foreground">Pilih Printer</h3>
+                        <p className="mb-4 text-sm text-muted-foreground">
                             Tidak ada printer default aktif. Pilih printer dari daftar berikut:
                         </p>
                         {availablePrinters.length === 0 ? (
                             <div className="flex flex-col items-center gap-3 py-6 text-center">
-                                <WifiOff className="h-10 w-10 text-gray-300" />
-                                <p className="text-sm text-gray-500">Tidak ada printer aktif yang tersedia.</p>
+                                <WifiOff className="h-10 w-10 text-muted-foreground/40" />
+                                <p className="text-sm text-muted-foreground">Tidak ada printer aktif yang tersedia.</p>
                                 <Link
                                     href="/settings/print-management"
-                                    className="text-sm font-medium text-emerald-600 hover:underline"
+                                    className="text-sm font-medium text-primary hover:underline"
                                 >
                                     Tambah printer di Print Management →
                                 </Link>
@@ -211,12 +211,12 @@ export default function TransactionDetail() {
                                     <button
                                         key={p.id}
                                         onClick={() => sendToPrinter(p.id)}
-                                        className="flex w-full items-center gap-3 rounded-lg border border-gray-200 p-3 text-left hover:border-emerald-400 hover:bg-emerald-50 dark:border-gray-700 dark:hover:border-emerald-600 dark:hover:bg-emerald-900/20"
+                                        className="flex w-full items-center gap-3 rounded-lg border border-border p-3 text-left hover:border-primary/50 hover:bg-primary/5"
                                     >
-                                        <Printer className="h-5 w-5 shrink-0 text-gray-400" />
+                                        <Printer className="h-5 w-5 shrink-0 text-muted-foreground" />
                                         <div>
-                                            <p className="text-sm font-medium text-gray-900 dark:text-white">{p.name}</p>
-                                            <p className="text-xs text-gray-500">
+                                            <p className="text-sm font-medium text-foreground">{p.name}</p>
+                                            <p className="text-xs text-muted-foreground">
                                                 {p.ip_address} · {p.protocol.toUpperCase()} · {p.paper_size}
                                             </p>
                                         </div>
@@ -225,12 +225,12 @@ export default function TransactionDetail() {
                             </div>
                         )}
                         <div className="mt-4 flex justify-end">
-                            <button
+                            <Button
+                                variant="outline"
                                 onClick={() => setShowPrinterModal(false)}
-                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                             >
                                 Batal
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>

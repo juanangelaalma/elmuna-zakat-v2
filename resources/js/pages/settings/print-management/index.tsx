@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -155,7 +156,7 @@ export default function PrintManagementIndex({ printers }: Props) {
     const OnlineBadge = ({ status }: { status: OnlineStatus }) => {
         if (status === 'checking') {
             return (
-                <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                     <Loader2 className="h-3 w-3 animate-spin" />
                     Cek...
                 </span>
@@ -163,7 +164,7 @@ export default function PrintManagementIndex({ printers }: Props) {
         }
         if (status === 'online') {
             return (
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300">
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
                     <CheckCircle2 className="h-3 w-3" />
                     Online
                 </span>
@@ -171,14 +172,14 @@ export default function PrintManagementIndex({ printers }: Props) {
         }
         if (status === 'offline') {
             return (
-                <span className="inline-flex items-center gap-1 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900 dark:text-red-300">
+                <span className="inline-flex items-center gap-1 rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive">
                     <WifiOff className="h-3 w-3" />
                     Offline
                 </span>
             );
         }
         return (
-            <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-800">
+            <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                 <XCircle className="h-3 w-3" />
                 Unknown
             </span>
@@ -196,8 +197,8 @@ export default function PrintManagementIndex({ printers }: Props) {
                         key={toast.id}
                         className={`flex items-center gap-2 rounded-lg px-4 py-3 text-sm font-medium shadow-lg transition-all ${
                             toast.type === 'success'
-                                ? 'bg-emerald-600 text-white'
-                                : 'bg-red-600 text-white'
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-destructive text-white'
                         }`}
                     >
                         {toast.type === 'success' ? (
@@ -213,24 +214,24 @@ export default function PrintManagementIndex({ printers }: Props) {
             {/* Delete confirmation modal */}
             {deleteConfirm !== null && (
                 <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50">
-                    <div className="mx-4 w-full max-w-sm rounded-xl bg-white p-6 shadow-xl dark:bg-gray-900">
-                        <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Hapus Printer?</h3>
-                        <p className="mb-6 text-sm text-gray-600 dark:text-gray-400">
+                    <div className="mx-4 w-full max-w-sm rounded-xl border border-border bg-card p-6 shadow-xl">
+                        <h3 className="mb-2 text-lg font-semibold text-card-foreground">Hapus Printer?</h3>
+                        <p className="mb-6 text-sm text-muted-foreground">
                             Printer ini akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.
                         </p>
                         <div className="flex justify-end gap-3">
-                            <button
+                            <Button
+                                variant="outline"
                                 onClick={() => setDeleteConfirm(null)}
-                                className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                             >
                                 Batal
-                            </button>
-                            <button
+                            </Button>
+                            <Button
+                                variant="destructive"
                                 onClick={() => deletePrinter(deleteConfirm)}
-                                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
                             >
                                 Ya, Hapus
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -240,50 +241,48 @@ export default function PrintManagementIndex({ printers }: Props) {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">Print Management</h1>
-                        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        <h1 className="text-xl font-semibold text-foreground">Print Management</h1>
+                        <p className="mt-1 text-sm text-muted-foreground">
                             Kelola printer jaringan WiFi/LAN untuk mencetak struk zakat.
                         </p>
                     </div>
-                    <Link
-                        href="/settings/print-management/create"
-                        className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
-                    >
-                        <Plus className="h-4 w-4" />
-                        Tambah Printer
-                    </Link>
+                    <Button asChild>
+                        <Link href="/settings/print-management/create">
+                            <Plus className="h-4 w-4" />
+                            Tambah Printer
+                        </Link>
+                    </Button>
                 </div>
 
                 {/* Table */}
                 <div className="overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                     {printers.length === 0 ? (
                         <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-                            <Printer className="h-12 w-12 text-gray-300 dark:text-gray-600" />
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                            <Printer className="h-12 w-12 text-muted-foreground/40" />
+                            <p className="text-sm text-muted-foreground">
                                 Belum ada printer yang ditambahkan.
                             </p>
-                            <Link
-                                href="/settings/print-management/create"
-                                className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
-                            >
-                                <Plus className="h-4 w-4" />
-                                Tambah Printer Pertama
-                            </Link>
+                            <Button asChild>
+                                <Link href="/settings/print-management/create">
+                                    <Plus className="h-4 w-4" />
+                                    Tambah Printer Pertama
+                                </Link>
+                            </Button>
                         </div>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b border-sidebar-border/70 bg-muted/30 dark:border-sidebar-border">
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Nama</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">IP Address</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Port</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Protokol</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Kertas</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Status Online</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Default</th>
-                                        <th className="px-4 py-3 text-left font-medium text-gray-600 dark:text-gray-400">Aktif</th>
-                                        <th className="px-4 py-3 text-right font-medium text-gray-600 dark:text-gray-400">Aksi</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Nama</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">IP Address</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Port</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Protokol</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Kertas</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status Online</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Default</th>
+                                        <th className="px-4 py-3 text-left font-medium text-muted-foreground">Aktif</th>
+                                        <th className="px-4 py-3 text-right font-medium text-muted-foreground">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -293,19 +292,19 @@ export default function PrintManagementIndex({ printers }: Props) {
                                             className="border-b border-sidebar-border/40 last:border-0 hover:bg-muted/20 dark:border-sidebar-border/40"
                                         >
                                             <td className="px-4 py-3">
-                                                <div className="font-medium text-gray-900 dark:text-white">{printer.name}</div>
+                                                <div className="font-medium text-foreground">{printer.name}</div>
                                                 {printer.notes && (
-                                                    <div className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">{printer.notes}</div>
+                                                    <div className="mt-0.5 text-xs text-muted-foreground">{printer.notes}</div>
                                                 )}
                                             </td>
-                                            <td className="px-4 py-3 font-mono text-gray-700 dark:text-gray-300">{printer.ip_address}</td>
-                                            <td className="px-4 py-3 font-mono text-gray-700 dark:text-gray-300">{printer.port}</td>
+                                            <td className="px-4 py-3 font-mono text-foreground/80">{printer.ip_address}</td>
+                                            <td className="px-4 py-3 font-mono text-foreground/80">{printer.port}</td>
                                             <td className="px-4 py-3">
-                                                <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium uppercase text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+                                                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium uppercase text-primary">
                                                     {printer.protocol}
                                                 </span>
                                             </td>
-                                            <td className="px-4 py-3 text-gray-700 dark:text-gray-300">{printer.paper_size}</td>
+                                            <td className="px-4 py-3 text-foreground/80">{printer.paper_size}</td>
                                             <td className="px-4 py-3">
                                                 <button
                                                     onClick={() => checkConnection(printer.id)}
@@ -317,21 +316,21 @@ export default function PrintManagementIndex({ printers }: Props) {
                                             </td>
                                             <td className="px-4 py-3">
                                                 {printer.is_default ? (
-                                                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900 dark:text-amber-300">
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
                                                         <Star className="h-3 w-3 fill-current" />
                                                         Default
                                                     </span>
                                                 ) : (
-                                                    <span className="text-xs text-gray-400">—</span>
+                                                    <span className="text-xs text-muted-foreground">—</span>
                                                 )}
                                             </td>
                                             <td className="px-4 py-3">
                                                 {printer.is_active ? (
-                                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300">
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
                                                         Aktif
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-800">
+                                                    <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                                                         Nonaktif
                                                     </span>
                                                 )}
@@ -341,7 +340,7 @@ export default function PrintManagementIndex({ printers }: Props) {
                                                     {/* Edit */}
                                                     <Link
                                                         href={`/settings/print-management/${printer.id}/edit`}
-                                                        className="rounded-md p-1.5 text-gray-500 hover:bg-muted hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                                                        className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
                                                         title="Edit"
                                                     >
                                                         <Edit className="h-4 w-4" />
@@ -352,7 +351,7 @@ export default function PrintManagementIndex({ printers }: Props) {
                                                         <button
                                                             onClick={() => setDefault(printer.id)}
                                                             disabled={loadingActions[`default-${printer.id}`]}
-                                                            className="rounded-md p-1.5 text-amber-500 hover:bg-amber-50 hover:text-amber-700 disabled:opacity-50 dark:hover:bg-amber-900/30"
+                                                            className="rounded-md p-1.5 text-secondary-foreground hover:bg-secondary/30 disabled:opacity-50"
                                                             title="Jadikan Default"
                                                         >
                                                             {loadingActions[`default-${printer.id}`] ? (
@@ -367,7 +366,7 @@ export default function PrintManagementIndex({ printers }: Props) {
                                                     <button
                                                         onClick={() => testPrint(printer.id)}
                                                         disabled={loadingActions[`test-${printer.id}`]}
-                                                        className="rounded-md p-1.5 text-blue-500 hover:bg-blue-50 hover:text-blue-700 disabled:opacity-50 dark:hover:bg-blue-900/30"
+                                                        className="rounded-md p-1.5 text-primary hover:bg-primary/10 disabled:opacity-50"
                                                         title="Test Print"
                                                     >
                                                         {loadingActions[`test-${printer.id}`] ? (
@@ -380,7 +379,7 @@ export default function PrintManagementIndex({ printers }: Props) {
                                                     {/* Delete */}
                                                     <button
                                                         onClick={() => setDeleteConfirm(printer.id)}
-                                                        className="rounded-md p-1.5 text-red-500 hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-900/30"
+                                                        className="rounded-md p-1.5 text-destructive hover:bg-destructive/10"
                                                         title="Hapus"
                                                     >
                                                         <Trash2 className="h-4 w-4" />
@@ -396,8 +395,8 @@ export default function PrintManagementIndex({ printers }: Props) {
                 </div>
 
                 {/* Legend */}
-                <div className="rounded-lg border border-sidebar-border/50 bg-muted/20 p-4 text-xs text-gray-500 dark:border-sidebar-border dark:text-gray-400">
-                    <p className="font-medium text-gray-700 dark:text-gray-300">Catatan:</p>
+                <div className="rounded-lg border border-sidebar-border/50 bg-muted/20 p-4 text-xs text-muted-foreground dark:border-sidebar-border">
+                    <p className="font-medium text-foreground">Catatan:</p>
                     <ul className="mt-1 list-inside list-disc space-y-1">
                         <li>Klik badge <strong>Status Online</strong> untuk cek ulang koneksi printer.</li>
                         <li>Protokol <strong>RAW</strong> (port 9100) untuk printer thermal ESC/POS.</li>

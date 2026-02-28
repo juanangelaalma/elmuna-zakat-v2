@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -165,6 +166,12 @@ export default function PrintManagementForm({ printer }: Props) {
         }
     };
 
+    // Shared input class
+    const inputBase =
+        'w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground outline-none transition focus:ring-2 focus:ring-ring placeholder:text-muted-foreground';
+    const inputNormal = `${inputBase} border-input`;
+    const inputError = `${inputBase} border-destructive focus:ring-destructive/40`;
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={isEdit ? 'Edit Printer' : 'Tambah Printer'} />
@@ -172,17 +179,16 @@ export default function PrintManagementForm({ printer }: Props) {
             <div className="flex flex-1 flex-col gap-4 p-4">
                 {/* Header */}
                 <div className="flex items-center gap-3">
-                    <Link
-                        href="/settings/print-management"
-                        className="rounded-lg border border-gray-300 p-2 text-gray-500 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-800"
-                    >
-                        <ChevronLeft className="h-4 w-4" />
-                    </Link>
+                    <Button variant="outline" size="icon" asChild>
+                        <Link href="/settings/print-management">
+                            <ChevronLeft className="h-4 w-4" />
+                        </Link>
+                    </Button>
                     <div>
-                        <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        <h1 className="text-xl font-semibold text-foreground">
                             {isEdit ? 'Edit Printer' : 'Tambah Printer Baru'}
                         </h1>
-                        <p className="mt-0.5 text-sm text-gray-500 dark:text-gray-400">
+                        <p className="mt-0.5 text-sm text-muted-foreground">
                             {isEdit ? `Mengedit: ${printer?.name}` : 'Tambahkan printer jaringan WiFi/LAN baru.'}
                         </p>
                     </div>
@@ -190,35 +196,31 @@ export default function PrintManagementForm({ printer }: Props) {
 
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
-                    <div className="rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-gray-900">
-                        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <div className="rounded-xl border border-sidebar-border/70 bg-card p-6 dark:border-sidebar-border">
+                        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                             Informasi Printer
                         </h2>
 
                         <div className="space-y-4">
                             {/* Nama */}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Nama Printer <span className="text-red-500">*</span>
+                                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                                    Nama Printer <span className="text-destructive">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     value={form.name}
                                     onChange={(e) => handleChange('name', e.target.value)}
                                     placeholder="Contoh: Printer Kasir Utama"
-                                    className={`w-full rounded-lg border px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white ${
-                                        errors.name
-                                            ? 'border-red-400 focus:ring-red-400'
-                                            : 'border-gray-300 dark:border-gray-600'
-                                    }`}
+                                    className={errors.name ? inputError : inputNormal}
                                 />
-                                {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+                                {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
                             </div>
 
                             {/* IP Address + Cek Koneksi */}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    IP Address <span className="text-red-500">*</span>
+                                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                                    IP Address <span className="text-destructive">*</span>
                                 </label>
                                 <div className="flex gap-2">
                                     <input
@@ -226,17 +228,13 @@ export default function PrintManagementForm({ printer }: Props) {
                                         value={form.ip_address}
                                         onChange={(e) => handleChange('ip_address', e.target.value)}
                                         placeholder="Contoh: 192.168.1.100"
-                                        className={`flex-1 rounded-lg border px-3 py-2 font-mono text-sm outline-none transition focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white ${
-                                            errors.ip_address
-                                                ? 'border-red-400 focus:ring-red-400'
-                                                : 'border-gray-300 dark:border-gray-600'
-                                        }`}
+                                        className={`flex-1 font-mono ${errors.ip_address ? inputError : inputNormal}`}
                                     />
-                                    <button
+                                    <Button
                                         type="button"
+                                        variant="outline"
                                         onClick={checkConnection}
                                         disabled={connectionStatus === 'checking'}
-                                        className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
                                     >
                                         {connectionStatus === 'checking' ? (
                                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -244,9 +242,9 @@ export default function PrintManagementForm({ printer }: Props) {
                                             <Zap className="h-4 w-4" />
                                         )}
                                         Cek Koneksi
-                                    </button>
+                                    </Button>
                                 </div>
-                                {errors.ip_address && <p className="mt-1 text-xs text-red-500">{errors.ip_address}</p>}
+                                {errors.ip_address && <p className="mt-1 text-xs text-destructive">{errors.ip_address}</p>}
 
                                 {/* Connection status feedback */}
                                 {connectionStatus !== 'idle' && connectionStatus !== 'checking' && (
@@ -254,7 +252,7 @@ export default function PrintManagementForm({ printer }: Props) {
                                         className={`mt-2 flex items-center gap-2 rounded-lg px-3 py-2 text-xs ${
                                             connectionStatus === 'online'
                                                 ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
-                                                : 'bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300'
+                                                : 'bg-destructive/10 text-destructive'
                                         }`}
                                     >
                                         {connectionStatus === 'online' ? (
@@ -270,18 +268,18 @@ export default function PrintManagementForm({ printer }: Props) {
                             {/* Protokol + Port */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Protokol <span className="text-red-500">*</span>
+                                    <label className="mb-1.5 block text-sm font-medium text-foreground">
+                                        Protokol <span className="text-destructive">*</span>
                                     </label>
                                     <select
                                         value={form.protocol}
                                         onChange={(e) => handleChange('protocol', e.target.value as 'raw' | 'ipp')}
-                                        className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                                        className={inputNormal}
                                     >
                                         <option value="raw">RAW (ESC/POS)</option>
                                         <option value="ipp">IPP (Internet Printing Protocol)</option>
                                     </select>
-                                    <p className="mt-1 text-xs text-gray-500">
+                                    <p className="mt-1 text-xs text-muted-foreground">
                                         {form.protocol === 'raw'
                                             ? 'Untuk printer thermal ESC/POS (port default: 9100)'
                                             : 'Untuk printer yang mendukung IPP (port default: 631)'}
@@ -289,8 +287,8 @@ export default function PrintManagementForm({ printer }: Props) {
                                 </div>
 
                                 <div>
-                                    <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        Port <span className="text-red-500">*</span>
+                                    <label className="mb-1.5 block text-sm font-medium text-foreground">
+                                        Port <span className="text-destructive">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -298,20 +296,16 @@ export default function PrintManagementForm({ printer }: Props) {
                                         onChange={(e) => handleChange('port', parseInt(e.target.value) || 0)}
                                         min={1}
                                         max={65535}
-                                        className={`w-full rounded-lg border px-3 py-2 font-mono text-sm outline-none transition focus:ring-2 focus:ring-emerald-500 dark:bg-gray-800 dark:text-white ${
-                                            errors.port
-                                                ? 'border-red-400 focus:ring-red-400'
-                                                : 'border-gray-300 dark:border-gray-600'
-                                        }`}
+                                        className={`font-mono ${errors.port ? inputError : inputNormal}`}
                                     />
-                                    {errors.port && <p className="mt-1 text-xs text-red-500">{errors.port}</p>}
+                                    {errors.port && <p className="mt-1 text-xs text-destructive">{errors.port}</p>}
                                 </div>
                             </div>
 
                             {/* Ukuran Kertas */}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Ukuran Kertas <span className="text-red-500">*</span>
+                                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                                    Ukuran Kertas <span className="text-destructive">*</span>
                                 </label>
                                 <div className="flex gap-3">
                                     {(['58mm', '80mm', 'a4'] as const).map((size) => (
@@ -319,8 +313,8 @@ export default function PrintManagementForm({ printer }: Props) {
                                             key={size}
                                             className={`flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2.5 text-sm transition ${
                                                 form.paper_size === size
-                                                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300'
-                                                    : 'border-gray-300 text-gray-700 hover:border-gray-400 dark:border-gray-600 dark:text-gray-300'
+                                                    ? 'border-primary bg-primary/10 text-primary'
+                                                    : 'border-input text-foreground hover:border-ring'
                                             }`}
                                         >
                                             <input
@@ -339,23 +333,23 @@ export default function PrintManagementForm({ printer }: Props) {
 
                             {/* Catatan */}
                             <div>
-                                <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Catatan <span className="text-xs font-normal text-gray-400">(opsional)</span>
+                                <label className="mb-1.5 block text-sm font-medium text-foreground">
+                                    Catatan <span className="text-xs font-normal text-muted-foreground">(opsional)</span>
                                 </label>
                                 <textarea
                                     value={form.notes ?? ''}
                                     onChange={(e) => handleChange('notes', e.target.value)}
                                     placeholder="Catatan tambahan tentang printer ini..."
                                     rows={3}
-                                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none transition focus:ring-2 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                                    className={inputNormal}
                                 />
                             </div>
                         </div>
                     </div>
 
                     {/* Toggles */}
-                    <div className="rounded-xl border border-sidebar-border/70 bg-white p-6 dark:border-sidebar-border dark:bg-gray-900">
-                        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    <div className="rounded-xl border border-sidebar-border/70 bg-card p-6 dark:border-sidebar-border">
+                        <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
                             Pengaturan
                         </h2>
 
@@ -363,8 +357,8 @@ export default function PrintManagementForm({ printer }: Props) {
                             {/* Is Default */}
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Jadikan Default</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    <p className="text-sm font-medium text-foreground">Jadikan Default</p>
+                                    <p className="text-xs text-muted-foreground">
                                         Printer ini akan digunakan secara otomatis saat mencetak struk.
                                     </p>
                                 </div>
@@ -372,7 +366,7 @@ export default function PrintManagementForm({ printer }: Props) {
                                     type="button"
                                     onClick={() => handleChange('is_default', !form.is_default)}
                                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                        form.is_default ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'
+                                        form.is_default ? 'bg-primary' : 'bg-muted'
                                     }`}
                                 >
                                     <span
@@ -386,8 +380,8 @@ export default function PrintManagementForm({ printer }: Props) {
                             {/* Is Active */}
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Aktif</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                    <p className="text-sm font-medium text-foreground">Aktif</p>
+                                    <p className="text-xs text-muted-foreground">
                                         Printer nonaktif tidak akan muncul sebagai pilihan saat mencetak.
                                     </p>
                                 </div>
@@ -395,7 +389,7 @@ export default function PrintManagementForm({ printer }: Props) {
                                     type="button"
                                     onClick={() => handleChange('is_active', !form.is_active)}
                                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                                        form.is_active ? 'bg-emerald-500' : 'bg-gray-300 dark:bg-gray-600'
+                                        form.is_active ? 'bg-primary' : 'bg-muted'
                                     }`}
                                 >
                                     <span
@@ -410,24 +404,19 @@ export default function PrintManagementForm({ printer }: Props) {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
-                        <button
-                            type="submit"
-                            disabled={submitting}
-                            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-60"
-                        >
+                        <Button type="submit" disabled={submitting}>
                             {submitting ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
                                 <Save className="h-4 w-4" />
                             )}
                             {isEdit ? 'Simpan Perubahan' : 'Tambah Printer'}
-                        </button>
-                        <Link
-                            href="/settings/print-management"
-                            className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
-                        >
-                            Batal
-                        </Link>
+                        </Button>
+                        <Button variant="outline" asChild>
+                            <Link href="/settings/print-management">
+                                Batal
+                            </Link>
+                        </Button>
                     </div>
                 </form>
             </div>
