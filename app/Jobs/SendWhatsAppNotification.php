@@ -153,6 +153,9 @@ class SendWhatsAppNotification implements ShouldQueue
         $message .= "💰 Total Uang  : {$formattedMoney}\n";
         $message .= "🌾 Total Beras : {$formattedRice}\n\n";
 
+        $message .= "Dashboard zakat bisa diakses melalui:\n";
+        $message .= config('app.url') . "/zakat-live\n\n";
+
         $message .= "_Jazakumullahu Khairan_\n";
         $message .= "_Semoga menjadi amal ibadah yang berkah_ 🤲";
 
