@@ -190,6 +190,34 @@ export default function DefaultValue() {
                                     </div>
                                 </div>
 
+                                <div className="mb-10 space-y-3">
+                                    <HeadingSmall
+                                        title="Estimasi Penerima Manfaat"
+                                        description="Jumlah kg beras per orang untuk kalkulasi estimasi penerima manfaat"
+                                    />
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="beneficiary_rice_kg">
+                                            Kg Beras per Orang
+                                        </Label>
+
+                                        <Input
+                                            id="beneficiary_rice_kg"
+                                            className="mt-1 block w-full"
+                                            name="beneficiary_rice_kg"
+                                            required
+                                            type="number"
+                                            placeholder="Misal: 5"
+                                            value={data.beneficiary_rice_kg}
+                                        />
+
+                                        <InputError
+                                            className="mt-2"
+                                            message={errors.beneficiary_rice_kg}
+                                        />
+                                    </div>
+                                </div>
+
                                 <div className="flex items-center gap-4">
                                     <Button
                                         disabled={processing}

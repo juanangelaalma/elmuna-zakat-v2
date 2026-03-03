@@ -13,5 +13,6 @@ class DefaultValue extends Model
         'fidyah_quantity',
         'fidyah_amount',
         'unit',
+        'beneficiary_rice_kg',
     ];
 }
