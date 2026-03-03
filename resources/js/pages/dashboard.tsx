@@ -3,7 +3,7 @@ import { OverviewCard } from '@/components/overview-card';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { formatCurrency, formatNumber } from '@/lib/utils';
+import { formatCurrency, formatDate, formatNumber } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router, useForm, usePage } from '@inertiajs/react';
@@ -40,7 +40,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Dashboard() {
     const {
         filters,
-        riceStock,
+        riceIncome,
         salesSummary,
         incomeSummary,
         transactionSummary,
@@ -97,234 +97,218 @@ export default function Dashboard() {
                     </div>
                 </div>
 
+                <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Menampilkan data periode {startDate === endDate ? formatDate(startDate) : `${formatDate(startDate)} - ${formatDate(endDate)}`}
+                    </p>
+                </div>
+
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <OverviewCard
-                        title="Stok Beras Saat Ini"
-                        value={formatNumber(riceStock.current_stock) + ' kg'}
-                        subtitle="Stok beras tersedia"
-                        icon={Warehouse}
-                        gradient="from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900"
-                        iconBg="bg-gradient-to-br from-blue-500 to-blue-600"
-                    />
+                    <div>
+                        <OverviewCard
+                            title="Total Pendapatan"
+                            value={formatCurrency(incomeSummary.total)}
+                            subtitle="Total uang masuk"
+                            icon={DollarSign}
+                            gradient="from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
+                            iconBg="bg-gradient-to-br from-emerald-500 to-emerald-600"
+                        />
 
-                    <OverviewCard
-                        title="Total Pendapatan"
-                        value={formatCurrency(incomeSummary.total)}
-                        subtitle="Total uang masuk"
-                        icon={DollarSign}
-                        gradient="from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
-                        iconBg="bg-gradient-to-br from-emerald-500 to-emerald-600"
-                    />
+                        <Card className="border-sidebar-border/70 p-6 mt-3 dark:border-sidebar-border">
+                            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                                Detail Pendapatan
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Penjualan Beras
+                                    </span>
+                                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                                        {formatCurrency(incomeSummary.rice_sales)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Zakat Mal
+                                    </span>
+                                    <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                        {formatCurrency(incomeSummary.zakat_mall)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Infak
+                                    </span>
+                                    <span className="font-semibold text-purple-600 dark:text-purple-400">
+                                        {formatCurrency(incomeSummary.infaq)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-pink-50 p-3 dark:bg-pink-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Fidyah
+                                    </span>
+                                    <span className="font-semibold text-pink-600 dark:text-pink-400">
+                                        {formatCurrency(incomeSummary.fidyah)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg border-t-2 p-3">
+                                    <span className="text-sm font-semibold text-gray-800">
+                                        Total Pendapatan
+                                    </span>
+                                    <span className="text-lg font-bold">
+                                        {formatCurrency(incomeSummary.total)}
+                                    </span>
+                                </div>
+                            </div>
+                        </Card>
+                    </div>
 
-                    <OverviewCard
-                        title="Beras Terjual"
-                        value={
-                            formatNumber(salesSummary.total_quantity) + ' kg'
-                        }
-                        subtitle={`${salesSummary.count} transaksi`}
-                        icon={ShoppingCart}
-                        gradient="from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900"
-                        iconBg="bg-gradient-to-br from-orange-500 to-orange-600"
-                    />
+                    <div>
+                        <OverviewCard
+                            title="Total Beras didapat"
+                            value={formatNumber(riceIncome.total_income) + ' kg'}
+                            subtitle="Total beras yang didapat"
+                            icon={Warehouse}
+                            gradient="from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900"
+                            iconBg="bg-gradient-to-br from-blue-500 to-blue-600"
+                        />
+                        <Card className="border-sidebar-border/70 p-6 mt-3 dark:border-sidebar-border">
+                            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                                Ringkasan Pendapatan Beras
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Zakat Beras
+                                    </span>
+                                    <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                        {formatNumber(riceIncome.zakat_rice)} kg
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-orange-50 p-3 dark:bg-orange-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Infaq / Donasi Beras
+                                    </span>
+                                    <span className="font-semibold text-orange-600 dark:text-orange-400">
+                                        {formatNumber(riceIncome.donation_rice)} kg
+                                    </span>
+                                </div>
 
-                    <OverviewCard
-                        title="Total Transaksi"
-                        value={formatNumber(
-                            transactionSummary.total_transactions,
-                        )}
-                        subtitle="Jumlah transaksi"
-                        icon={TrendingUp}
-                        gradient="from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900"
-                        iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
-                    />
-                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-green-50 p-3 dark:bg-green-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Fidyah Beras
+                                    </span>
+                                    <span className="font-semibold text-green-600 dark:text-green-400">
+                                        {formatNumber(riceIncome.fidyah_rice)} kg
+                                    </span>
+                                </div>
 
-                <div className="grid gap-4 lg:grid-cols-2">
-                    <Card className="border-sidebar-border/70 p-6 dark:border-sidebar-border">
-                        <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                            Detail Stok Beras
-                        </h3>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Pembelian
-                                </span>
-                                <span className="font-semibold text-blue-600 dark:text-blue-400">
-                                    {formatNumber(riceStock.purchase)} kg
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-orange-50 p-3 dark:bg-orange-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Beras Terjual
-                                </span>
-                                <span className="font-semibold text-orange-600 dark:text-orange-400">
-                                    {formatNumber(riceStock.sales)} kg
-                                </span>
-                            </div>
 
-                            <div className="flex items-center justify-between p-3 border-t-1">
-                                <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
-                                    Stok Beras untuk dijual
-                                </span>
-                                <span className="font-bold">
-                                    {formatNumber(riceStock.current_stock)} kg
-                                </span>
+                                <div className="flex items-center justify-between rounded-lg border-t-2 p-3 dark:border-blue-800">
+                                    <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">
+                                        Total Beras
+                                    </span>
+                                    <span className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                                        {formatNumber(riceIncome.total_income)} kg
+                                    </span>
+                                </div>
                             </div>
+                        </Card>
+                    </div>
 
-                            <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 mt-6 dark:bg-emerald-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Zakat Fitrah
-                                </span>
-                                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                                    {formatNumber(riceStock.zakat_rice)} kg
-                                </span>
+                    <div>
+                        <OverviewCard
+                            title="Beras Terjual"
+                            value={
+                                formatNumber(salesSummary.total_quantity) + ' kg'
+                            }
+                            subtitle={`${salesSummary.count} transaksi`}
+                            icon={ShoppingCart}
+                            gradient="from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900"
+                            iconBg="bg-gradient-to-br from-orange-500 to-orange-600"
+                        />
+                        <Card className="border-sidebar-border/70 p-6 mt-3 dark:border-sidebar-border">
+                            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                                Ringkasan Penjualan Beras
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Total Penjualan
+                                    </span>
+                                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                                        {formatCurrency(salesSummary.total_amount)}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-orange-50 p-3 dark:bg-orange-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Jumlah Terjual
+                                    </span>
+                                    <span className="font-semibold text-orange-600 dark:text-orange-400">
+                                        {formatNumber(salesSummary.total_quantity)}{' '}
+                                        kg
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Jumlah Transaksi
+                                    </span>
+                                    <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                        {formatNumber(salesSummary.count)}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Infak/Sedekah Beras
-                                </span>
-                                <span className="font-semibold text-purple-600 dark:text-purple-400">
-                                    {formatNumber(riceStock.donation_rice)} kg
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-pink-50 p-3 dark:bg-pink-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Fidyah Beras
-                                </span>
-                                <span className="font-semibold text-pink-600 dark:text-pink-400">
-                                    {formatNumber(riceStock.fidyah_rice)} kg
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg border-t-2 p-3 dark:border-blue-800">
-                                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                                    Total Beras
-                                </span>
-                                <span className="text-lg font-bold text-gray-800 dark:text-gray-200">
-                                    {formatNumber(riceStock.total_current_stock)} kg
-                                </span>
-                            </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    </div>
 
-                    <Card className="border-sidebar-border/70 p-6 dark:border-sidebar-border">
-                        <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                            Detail Pendapatan
-                        </h3>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Penjualan Beras
-                                </span>
-                                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                                    {formatCurrency(incomeSummary.rice_sales)}
-                                </span>
+                    <div>
+                        <OverviewCard
+                            title="Total Pembelian"
+                            value={formatNumber(
+                                purchaseSummary.total_quantity,
+                            )}
+                            subtitle="Total beras yang dibeli"
+                            icon={TrendingUp}
+                            gradient="from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900"
+                            iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
+                        />
+                        <Card className="border-sidebar-border/70 p-6 mt-3 dark:border-sidebar-border">
+                            <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+                                Ringkasan Pembelian Beras
+                            </h3>
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Total Pembelian
+                                    </span>
+                                    <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                        {formatCurrency(
+                                            purchaseSummary.total_value,
+                                        )}
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Jumlah Dibeli
+                                    </span>
+                                    <span className="font-semibold text-purple-600 dark:text-purple-400">
+                                        {formatNumber(
+                                            purchaseSummary.total_quantity,
+                                        )}{' '}
+                                        kg
+                                    </span>
+                                </div>
+                                <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950">
+                                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        Jumlah Transaksi
+                                    </span>
+                                    <span className="font-semibold text-emerald-600 dark:text-emerald-400">
+                                        {formatNumber(purchaseSummary.count)}
+                                    </span>
+                                </div>
                             </div>
-                            <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Zakat Mal
-                                </span>
-                                <span className="font-semibold text-blue-600 dark:text-blue-400">
-                                    {formatCurrency(incomeSummary.zakat_mall)}
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Infak
-                                </span>
-                                <span className="font-semibold text-purple-600 dark:text-purple-400">
-                                    {formatCurrency(incomeSummary.infaq)}
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-pink-50 p-3 dark:bg-pink-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Fidyah
-                                </span>
-                                <span className="font-semibold text-pink-600 dark:text-pink-400">
-                                    {formatCurrency(incomeSummary.fidyah)}
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg border-t-2 p-3">
-                                <span className="text-sm font-semibold text-gray-800">
-                                    Total Pendapatan
-                                </span>
-                                <span className="text-lg font-bold">
-                                    {formatCurrency(incomeSummary.total)}
-                                </span>
-                            </div>
-                        </div>
-                    </Card>
-                </div>
-
-                <div className="grid gap-4 lg:grid-cols-2">
-                    <Card className="border-sidebar-border/70 p-6 dark:border-sidebar-border">
-                        <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                            Ringkasan Penjualan Beras
-                        </h3>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Total Penjualan
-                                </span>
-                                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                                    {formatCurrency(salesSummary.total_amount)}
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-orange-50 p-3 dark:bg-orange-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Jumlah Terjual
-                                </span>
-                                <span className="font-semibold text-orange-600 dark:text-orange-400">
-                                    {formatNumber(salesSummary.total_quantity)}{' '}
-                                    kg
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Jumlah Transaksi
-                                </span>
-                                <span className="font-semibold text-blue-600 dark:text-blue-400">
-                                    {formatNumber(salesSummary.count)}
-                                </span>
-                            </div>
-                        </div>
-                    </Card>
-
-                    <Card className="border-sidebar-border/70 p-6 dark:border-sidebar-border">
-                        <h3 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
-                            Ringkasan Pembelian Beras
-                        </h3>
-                        <div className="space-y-3">
-                            <div className="flex items-center justify-between rounded-lg bg-blue-50 p-3 dark:bg-blue-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Total Pembelian
-                                </span>
-                                <span className="font-semibold text-blue-600 dark:text-blue-400">
-                                    {formatCurrency(
-                                        purchaseSummary.total_value,
-                                    )}
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-purple-50 p-3 dark:bg-purple-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Jumlah Dibeli
-                                </span>
-                                <span className="font-semibold text-purple-600 dark:text-purple-400">
-                                    {formatNumber(
-                                        purchaseSummary.total_quantity,
-                                    )}{' '}
-                                    kg
-                                </span>
-                            </div>
-                            <div className="flex items-center justify-between rounded-lg bg-emerald-50 p-3 dark:bg-emerald-950">
-                                <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Jumlah Transaksi
-                                </span>
-                                <span className="font-semibold text-emerald-600 dark:text-emerald-400">
-                                    {formatNumber(purchaseSummary.count)}
-                                </span>
-                            </div>
-                        </div>
-                    </Card>
+                        </Card>
+                    </div>
                 </div>
 
                 <Card className="border-sidebar-border/70 p-6 dark:border-sidebar-border">

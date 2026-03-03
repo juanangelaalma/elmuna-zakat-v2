@@ -20,15 +20,15 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->format('Y-m-d'));
-        $endDate = $request->input('end_date', Carbon::now()->endOfMonth()->format('Y-m-d'));
+        $startDate = $request->input('start_date', Carbon::now()->format('Y-m-d'));
+        $endDate = $request->input('end_date', $startDate);
 
         $data = [
             'filters' => [
                 'start_date' => $startDate,
                 'end_date' => $endDate,
             ],
-            'riceStock' => $this->getRiceStock($startDate, $endDate),
+            'riceIncome' => $this->getRice($startDate, $endDate),
             'salesSummary' => $this->getSalesSummary($startDate, $endDate),
             'incomeSummary' => $this->getIncomeSummary($startDate, $endDate),
             'transactionSummary' => $this->getTransactionSummary($startDate, $endDate),
@@ -39,11 +39,8 @@ class DashboardController extends Controller
         return Inertia::render('dashboard', $data);
     }
 
-    private function getRiceStock($startDate, $endDate)
+    private function getRice($startDate, $endDate)
     {
-        $purchaseTotal = PurchaseRice::whereBetween('date', [$startDate, $endDate])
-            ->sum('quantity');
-
         $riceIncome = Rice::whereHas('transactionDetail.transaction', function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('date', [$startDate, $endDate]);
             })
@@ -52,34 +49,20 @@ class DashboardController extends Controller
         $riceDonations = Donation::whereHas('transactionDetail.transaction', function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('date', [$startDate, $endDate]);
             })
-            ->whereIn('unit_type', ['kg', 'karung'])
             ->sum('quantity');
 
         $riceFidyah = Fidyah::whereHas('transactionDetail.transaction', function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('date', [$startDate, $endDate]);
             })
-            ->whereIn('unit_type', ['kg', 'karung'])
             ->sum('quantity');
 
-        $riceSales = RiceSale::whereHas('transactionDetail.transaction', function ($query) use ($startDate, $endDate) {
-                $query->whereBetween('date', [$startDate, $endDate]);
-            })
-            ->sum('quantity');
-
-        $totalIncome = $purchaseTotal + $riceIncome + $riceDonations + $riceFidyah;
-        $totalOutcome = $riceSales;
-        $currentStockFromPurchaseIncomeOnly = $purchaseTotal - $totalOutcome;
-        $totalCurrentStock = $totalIncome - $totalOutcome;
+        $totalIncome = $riceIncome + $riceDonations + $riceFidyah;
 
         return [
-            'purchase' => $purchaseTotal,
             'zakat_rice' => $riceIncome,
             'donation_rice' => $riceDonations,
             'fidyah_rice' => $riceFidyah,
             'total_income' => $totalIncome,
-            'sales' => $riceSales,
-            'current_stock' => $currentStockFromPurchaseIncomeOnly,
-            'total_current_stock' => $totalCurrentStock
         ];
     }
 

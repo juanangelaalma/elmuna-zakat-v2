@@ -100,14 +100,6 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         return DB::raw('
             COALESCE((
-                SELECT SUM(rs.quantity)
-                FROM transaction_details td
-                JOIN rice_sales rs ON rs.transaction_detail_id = td.id
-                WHERE td.transaction_id = transactions.id
-                  AND td.type = \'' . TransactionItemType::RICE_SALES . '\'
-                  AND td.deleted_at IS NULL
-            ), 0) +
-            COALESCE((
                 SELECT SUM(r.quantity)
                 FROM transaction_details td
                 JOIN rices r ON r.transaction_detail_id = td.id
