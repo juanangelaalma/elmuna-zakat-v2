@@ -181,23 +181,23 @@ class ZakatLiveDashboardController extends Controller
     private function getCategoryBreakdown(): array
     {
         // Zakat Fitrah Beras (bawa sendiri) — type = 'rice'
-        $zakatBeras = TransactionDetail::where('type', 'rice')
+        $zakatBeras = TransactionDetail::where('type', TransactionItemType::RICE)
             ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
             ->whereNull('transactions.deleted_at')
             ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
             ->first();
         $zakatBerasKg = (float) Rice::whereHas('transactionDetail', fn($q) =>
-            $q->where('type', 'rice')
+            $q->where('type', TransactionItemType::RICE)
         )->sum('quantity');
 
         // Zakat Fitrah Beli di Masjid (penjualan beras) — type = 'rice_sale'
-        $zakatBeliMasjid = TransactionDetail::where('type', 'rice_sale')
+        $zakatBeliMasjid = TransactionDetail::where('type', TransactionItemType::RICE_SALES)
             ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
             ->whereNull('transactions.deleted_at')
             ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
             ->first();
         $zakatBeliKg = (float) RiceSale::whereHas('transactionDetail', fn($q) =>
-            $q->where('type', 'rice_sale')
+            $q->where('type', TransactionItemType::RICE_SALES)
         )->sum('quantity');
 
         // Zakat Mal — type = 'wealth'
