@@ -18,6 +18,7 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function getList(): Collection
     {
         return Transaction::select($this->getTransactionFields())
+            ->orderBy('created_at', 'desc')
             ->groupBy(
                 'transactions.id',
                 'transactions.transaction_number',
