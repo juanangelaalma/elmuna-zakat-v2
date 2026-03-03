@@ -164,17 +164,20 @@ class ZakatLiveDashboardController extends Controller
         // Chart: total beras per hari (7 hari terakhir)
         $chartData = $this->getRiceChartData(7);
 
-        // Estimasi penerima manfaat (per 2.5 kg)
-        $estimatedBeneficiaries = (int) floor($totalRice / 2.5);
+        // Estimasi penerima manfaat (per X kg, dari default_values)
+        $defaults = DefaultValue::first();
+        $kgPerPerson = (float) ($defaults?->beneficiary_rice_kg ?? 5);
+        $estimatedBeneficiaries = $kgPerPerson > 0 ? (int) floor($totalRice / $kgPerPerson) : 0;
 
         return [
-            'muzakki'            => $totalMuzakki,
-            'total_rice_kg'      => round($totalRice, 1),
-            'total_money'        => $totalMoney,
-            'total_money_fmt'    => 'Rp ' . number_format($totalMoney, 0, ',', '.'),
-            'breakdown'          => $breakdown,
-            'chart_data'         => $chartData,
-            'estimated_beneficiaries' => $estimatedBeneficiaries,
+            'muzakki'                  => $totalMuzakki,
+            'total_rice_kg'            => round($totalRice, 1),
+            'total_money'              => $totalMoney,
+            'total_money_fmt'          => 'Rp ' . number_format($totalMoney, 0, ',', '.'),
+            'breakdown'                => $breakdown,
+            'chart_data'               => $chartData,
+            'estimated_beneficiaries'  => $estimatedBeneficiaries,
+            'beneficiary_rice_kg'      => $kgPerPerson,
         ];
     }
 

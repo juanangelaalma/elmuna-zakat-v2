@@ -250,7 +250,8 @@
                     </div>
                     <h3 class="text-white/80 text-[10px] font-bold uppercase tracking-wider mb-1">Estimasi Penerima Manfaat</h3>
                     <p id="beneficiaries" class="text-white text-5xl font-bold mb-1 tracking-tight">—</p>
-                    <p class="text-secondary text-sm font-medium mb-6">Keluarga dapat disantuni</p>
+                    <p class="text-secondary text-sm font-medium mb-1">Jiwa dapat disantuni</p>
+                    <p id="beneficiary-kg-label" class="text-white/60 text-xs font-medium mb-6">Berdasarkan alokasi — kg per orang</p>
                     <div class="w-full h-px bg-white/20 mb-4"></div>
                     <div class="grid grid-cols-2 gap-3 w-full">
                         <div class="bg-black/20 p-3 rounded-xl border border-white/5">
@@ -378,6 +379,13 @@ function renderOverall(overall) {
     setText('overall-rice-small', overall.total_rice_kg.toLocaleString('id-ID', {minimumFractionDigits:1}) + ' kg');
     setText('overall-money', overall.total_money_fmt);
     setText('beneficiaries', overall.estimated_beneficiaries.toLocaleString('id-ID'));
+
+    // Per-person kg label
+    if (overall.beneficiary_rice_kg != null) {
+        const kg = parseFloat(overall.beneficiary_rice_kg);
+        const kgFmt = Number.isInteger(kg) ? kg.toString() : kg.toLocaleString('id-ID');
+        setText('beneficiary-kg-label', 'Berdasarkan alokasi ' + kgFmt + ' kg per orang');
+    }
 
     // Breakdown table
     const tbody = $('breakdown-table');

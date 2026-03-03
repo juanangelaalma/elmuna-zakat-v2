@@ -95,4 +95,5 @@ export interface DefaultValue {
     fidyah_quantity: number;
     fidyah_amount: number;
     unit: string;
+    beneficiary_rice_kg: number;
 }
