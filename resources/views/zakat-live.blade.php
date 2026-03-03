@@ -56,12 +56,12 @@
         .live-dot { animation: livePulse 1.5s ease-in-out infinite; }
     </style>
 </head>
-<body class="bg-bg-light text-text-dark font-display min-h-screen flex flex-col overflow-hidden selection:bg-primary/20 selection:text-primary">
+<body class="bg-bg-light text-text-dark font-display min-h-screen flex flex-col overflow-y-auto lg:overflow-hidden selection:bg-primary/20 selection:text-primary">
 
 <div class="flex-1 flex flex-col p-4 md:p-5 gap-5">
 
     {{-- ═══════════════════ HEADER ═══════════════════ --}}
-    <header class="flex items-center justify-between border-b border-slate-200 pb-5">
+    <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-5">
         <div class="flex items-center gap-4">
             <div class="size-14 bg-white rounded-full flex items-center justify-center text-primary border border-slate-100 shadow-soft">
                 <span class="material-symbols-outlined text-4xl">mosque</span>
@@ -75,9 +75,9 @@
             </div>
         </div>
 
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-2 sm:gap-3">
             {{-- Masehi --}}
-            <div class="flex items-center gap-2.5 bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-soft">
+            <div class="hidden sm:flex items-center gap-2.5 bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-soft">
                 <span class="material-symbols-outlined text-secondary text-2xl">calendar_month</span>
                 <div class="flex flex-col text-right">
                     <span class="text-[10px] text-text-muted uppercase font-bold tracking-wider">Masehi</span>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             {{-- Hijriah --}}
-            <div class="flex items-center gap-2.5 bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-soft">
+            <div class="hidden sm:flex items-center gap-2.5 bg-white px-4 py-2 rounded-xl border border-slate-100 shadow-soft">
                 <span class="material-symbols-outlined text-primary text-2xl">nights_stay</span>
                 <div class="flex flex-col text-right">
                     <span class="text-[10px] text-text-muted uppercase font-bold tracking-wider">Hijriah</span>
@@ -101,7 +101,7 @@
     </header>
 
     {{-- ═══════════════════ KARTU RINGKASAN HARI INI ═══════════════════ --}}
-    <div class="grid grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
         {{-- Muzakki Hari Ini --}}
         <div class="bg-surface p-5 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
             <div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
@@ -158,10 +158,10 @@
     </div>
 
     {{-- ═══════════════════ MAIN CONTENT GRID ═══════════════════ --}}
-    <div class="grid grid-cols-12 gap-5 flex-1 min-h-0">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:flex-1 lg:min-h-0">
 
         {{-- ─── Kolom Kiri: Stok + Chart ─── --}}
-        <div class="col-span-4 flex flex-col gap-5">
+        <div class="lg:col-span-4 flex flex-col gap-5">
 
             {{-- Stok Beras --}}
             <div class="bg-surface p-5 rounded-2xl shadow-card border border-slate-100 flex flex-col">
@@ -206,7 +206,7 @@
         </div>
 
         {{-- ─── Kolom Tengah: Tabel Rekapitulasi ─── --}}
-        <div class="col-span-5 bg-surface rounded-2xl shadow-card border border-slate-100 overflow-hidden flex flex-col">
+        <div class="lg:col-span-5 bg-surface rounded-2xl shadow-card border border-slate-100 overflow-hidden flex flex-col">
             <div class="p-5 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
                 <div>
                     <h3 class="text-base font-bold text-slate-800">Rekapitulasi Keseluruhan</h3>
@@ -239,10 +239,10 @@
         </div>
 
         {{-- ─── Kolom Kanan: Penerima Manfaat + Live Feed ─── --}}
-        <div class="col-span-3 flex flex-col gap-5">
+        <div class="lg:col-span-3 flex flex-col gap-5">
 
             {{-- Estimasi Penerima Manfaat --}}
-            <div class="bg-gradient-to-br from-primary to-[#1b4332] rounded-2xl shadow-xl shadow-primary/20 p-5 flex flex-col justify-center items-center text-center relative overflow-hidden flex-1">
+            <div class="bg-gradient-to-br from-primary to-[#1b4332] rounded-2xl shadow-xl shadow-primary/20 p-5 flex flex-col justify-center items-center text-center relative overflow-hidden lg:flex-1">
                 <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image:radial-gradient(circle at 2px 2px,white 1px,transparent 0);background-size:24px 24px;"></div>
                 <div class="relative z-10 w-full flex flex-col items-center">
                     <div class="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-md ring-1 ring-white/20 shadow-lg">
