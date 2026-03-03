@@ -14,16 +14,16 @@ export function getEffectiveValues(detail: TransactionItem['detail']): {
     let quantity = 0;
 
     if ('amount' in detail && detail.amount !== null) {
-        amount = detail.amount;
+        amount = Number(detail.amount);
     }
     if ('quantity' in detail && detail.quantity !== null) {
-        quantity = detail.quantity;
+        quantity = Number(detail.quantity);
     }
 
     // If fidyah, multiply by day_count
     if ('day_count' in detail && detail.day_count) {
-        if (amount) amount *= detail.day_count;
-        if (quantity) quantity *= detail.day_count;
+        if (amount) amount *= Number(detail.day_count);
+        if (quantity) quantity *= Number(detail.day_count);
     }
 
     return { amount, quantity };

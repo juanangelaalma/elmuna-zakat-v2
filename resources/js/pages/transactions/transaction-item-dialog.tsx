@@ -68,8 +68,8 @@ const TransactionItemDialog = ({
                         {step === 1
                             ? 'Pilih Jenis Transaksi'
                             : TRANSACTION_ITEM_TYPES.find(
-                                  (i) => i.id === selectedItem,
-                              )?.label}
+                                (i) => i.id === selectedItem,
+                            )?.label}
                     </DialogTitle>
                 </DialogHeader>
 

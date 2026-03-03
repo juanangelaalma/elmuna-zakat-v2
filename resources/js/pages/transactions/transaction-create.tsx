@@ -63,6 +63,7 @@ export default function TransactionCreate() {
     };
 
     const moneyTotal = data.items.reduce((total, item) => {
+        console.log(typeof getEffectiveValues(item.detail).amount)
         return total + getEffectiveValues(item.detail).amount;
     }, 0);
 
