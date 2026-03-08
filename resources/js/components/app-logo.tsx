@@ -1,13 +1,16 @@
 import { Sparkles } from 'lucide-react';
+import { usePage } from '@inertiajs/react';
+import { SharedData } from '@/types';
 
 export default function AppLogo() {
+    const { config } = usePage<SharedData>().props;
     return (
         <>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent">
                 <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                ElmunaZakat
+                {config['app.name_short']}
             </span>
         </>
     );

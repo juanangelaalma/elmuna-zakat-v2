@@ -16,6 +16,10 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+    public static $sharedConfig = [
+        'app.name',
+        'app.name_short'
+    ];
 
     /**
      * Determines the current asset version.
@@ -47,6 +51,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'defaultValue' => defaultValue(),
+            'config' => fn () => config()->get(static::$sharedConfig),
         ];
     }
 }

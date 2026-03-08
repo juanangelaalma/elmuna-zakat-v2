@@ -34,7 +34,7 @@ function Feature({ icon: Icon, title, description, delay }: FeatureProps) {
 }
 
 export default function WelcomeNew({ canRegister = true }: { canRegister?: boolean }) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, config } = usePage<SharedData>().props;
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -128,7 +128,7 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                                     className="mb-6 text-5xl font-bold leading-tight lg:text-7xl"
                                 >
                                     <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-                                        Elmuna Zakat
+                                        {config['app.name']}
                                     </span>
                                     <br />
                                     <span className="text-foreground">Al Munawwar</span>
@@ -272,7 +272,7 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                                         Tentang Sistem Ini
                                     </h2>
                                     <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
-                                        Elmuna Zakat adalah sistem manajemen zakat digital yang dikembangkan
+                                        {config['app.name']} adalah sistem manajemen zakat digital yang dikembangkan
                                         khusus untuk Masjid Al Munawwar oleh tim Remas Al Munawwar.
                                         Sistem ini tidak diperjualbelikan dan merupakan bagian dari upaya
                                         meningkatkan pelayanan kepada jamaah dalam pengelolaan zakat, infaq, dan sedekah.
@@ -297,7 +297,7 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
                                     <Sparkles className="h-4 w-4 text-white" />
                                 </div>
-                                <span className="font-semibold text-foreground">Elmuna Zakat</span>
+                                <span className="font-semibold text-foreground">{config['app.name']}</span>
                             </div>
                             <p className="text-sm text-muted-foreground text-center">
                                 © 2024 Masjid Al Munawwar. Developed by Remas Al Munawwar

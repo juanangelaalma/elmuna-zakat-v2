@@ -36,6 +36,7 @@ export interface SharedData {
     auth: Auth;
     sidebarOpen: boolean;
     defaultValue: DefaultValue;
+    config: Record<string, unknown>;
     [key: string]: unknown;
 }
 
