@@ -38,6 +38,15 @@
             transform: translate(-50%, -50%) rotate(90deg);
         }
 
+        .bg-img {
+            position: absolute;
+            top: 47%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-90deg);
+            height: 210mm;
+            z-index: -100;
+        }
+
         /* ── Header ── */
         .header {
             text-align: center;
@@ -130,7 +139,7 @@
         .item {
             margin-bottom: 5px;
             padding: 4px 5px;
-            background: #f5f5f5;
+            /* background: #f5f5f5; */
             border-left: 2px solid #1a1a1a;
         }
 
@@ -230,7 +239,25 @@
     </style>
 </head>
 <body>
+@php
+    $webpPath = public_path('images/receipt-bg.webp');
+    if (function_exists('imagecreatefromwebp') && file_exists($webpPath)) {
+        $im = @imagecreatefromwebp($webpPath);
+        if ($im) {
+            ob_start();
+            imagejpeg($im, null, 100);
+            $jpegData = ob_get_clean();
+            imagedestroy($im);
+            $bgSrc = 'data:image/jpeg;base64,' . base64_encode($jpegData);
+        } else {
+            $bgSrc = 'data:image/webp;base64,' . base64_encode(file_get_contents($webpPath));
+        }
+    } else {
+        $bgSrc = 'data:image/webp;base64,' . base64_encode(file_get_contents($webpPath));
+    }
+@endphp
 <div class="content-wrapper">
+    <img src="{{ $bgSrc }}" class="bg-img" />
 
     {{-- ── Header ── --}}
     <div class="header">
