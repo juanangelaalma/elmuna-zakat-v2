@@ -234,9 +234,9 @@
 
     {{-- ── Header ── --}}
     <div class="header">
-        <div class="org-name">El Muna Zakat</div>
+        <div class="org-name">{{ config('app.name') }}</div>
         <div class="org-sub">
-            Jl. Kyai Haji Wahid Hasyim No.2B, Hutan, Kauman, <br> Kec. Tulungagung, Kabupaten Tulungagung, Jawa Timur 66261
+            Jl. Kyai Haji Wahid Hasyim No.2B, Kauman, <br> Kec. Tulungagung, Kabupaten Tulungagung, Jawa Timur 66261
         </div>
         <div class="doc-title">Bukti Transaksi / Kuitansi</div>
     </div>

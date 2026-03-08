@@ -137,7 +137,8 @@ class SendWhatsAppNotification implements ShouldQueue
         $formattedMoney = 'Rp ' . number_format($moneyTotal, 0, ',', '.');
         $formattedRice  = $riceTotal . ' kg';
 
-        $message  = "🕌 *EL MUNA ZAKAT*\n";
+        $appName = config('app.name');
+        $message  = "🕌 **{$appName}**\n";
         $message .= "Bukti Transaksi / Kuitansi\n";
         $message .= "━━━━━━━━━━━━━━━━━━━━\n\n";
 
