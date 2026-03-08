@@ -17,6 +17,7 @@ use App\Contracts\{
     TransactionServiceInterface,
     DonationRepositoryInterface,
     DonationServiceInterface,
+    FidyahRepositoryInterface,
     FidyahServiceInterface,
     WealthRepositoryInterface,
     WealthServiceInterface,

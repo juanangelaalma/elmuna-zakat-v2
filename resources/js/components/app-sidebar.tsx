@@ -49,7 +49,7 @@ const mainNavItems: NavItem[] = [
                 icon: ShoppingCart,
             },
             {
-                title: 'Stok Beras',
+                title: 'Jenis Beras',
                 href: riceItems(), // Assuming riceItems() function exists for the route
                 icon: Package2,
             },
@@ -95,11 +95,6 @@ const mainNavItems: NavItem[] = [
                 icon: Trash2,
             },
         ]
-    },
-    {
-        title: 'Pengeluaran',
-        href: '/expenses',
-        icon: Receipt,
     },
     {
         title: 'Serah Terima',

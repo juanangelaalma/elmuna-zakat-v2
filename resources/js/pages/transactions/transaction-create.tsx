@@ -34,7 +34,7 @@ export default function TransactionCreate() {
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, post, processing, errors } = useForm({
-        date: new Date().toISOString().split('T')[0],
+        date: new Date().toLocaleDateString().split('T')[0],
         customer: '',
         address: '',
         wa_number: '',

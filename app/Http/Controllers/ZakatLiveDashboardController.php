@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\TransactionItemType;
 use App\Models\DefaultValue;
 use App\Models\Donation;
 use App\Models\Fidyah;
@@ -14,11 +15,27 @@ use App\Models\TransactionDetail;
 use App\Models\Wealth;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use App\Constants\TransactionItemType;
 
 class ZakatLiveDashboardController extends Controller
 {
+    // ─── Config: model → conditions ──────────────────────────────────────────
+
+    private array $riceModels = [
+        Rice::class     => [],
+        RiceSale::class => [],
+        Fidyah::class   => ['fidyah_type' => 'rice'],
+        Donation::class => ['donation_type' => 'rice'],
+    ];
+
+    private array $moneyModels = [
+        Donation::class => [],
+        Fidyah::class   => [],
+        Wealth::class   => [],
+        RiceSale::class => [],
+    ];
+
+    // ─── Routes ──────────────────────────────────────────────────────────────
+
     public function index()
     {
         return view('zakat-live');
@@ -40,56 +57,20 @@ class ZakatLiveDashboardController extends Controller
     {
         $today = Carbon::today()->toDateString();
 
-        // Total muzakki (distinct transactions) hari ini
-        $totalMuzakki = TransactionDetail::whereHas('transaction', fn($q) =>
-            $q->whereDate('date', $today)
-        )->whereIn('type', [TransactionItemType::RICE, TransactionItemType::RICE_SALES])->count();
+        $totalMuzakki = TransactionDetail::whereHas('transaction',
+            fn($q) => $q->whereDate('date', $today)
+        )->count();
 
-        // Total beras hari ini: rices + rice_sales
-        $riceFromZakat = Rice::whereHas('transactionDetail.transaction', fn($q) =>
-            $q->whereDate('date', $today)
-        )->sum('quantity');
-
-        $riceFromSales = RiceSale::whereHas('transactionDetail.transaction', fn($q) =>
-            $q->whereDate('date', $today)
-        )->sum('quantity');
-
-        $totalRice = (float) $riceFromZakat + (float) $riceFromSales;
-
-        // Total uang hari ini: donations + fidyahs + wealths + rice_sales
-        $totalMoney = $this->sumMoneyForDate($today);
-
-        // 5 transaksi terakhir hari ini (live feed)
-        $recentTransactions = $this->getRecentTransactions($today, 5);
+        $totalRice  = $this->sumByModels($this->riceModels, 'quantity', $today);
+        $totalMoney = $this->sumByModels($this->moneyModels, 'amount', $today);
 
         return [
             'muzakki'             => $totalMuzakki,
             'total_rice_kg'       => round($totalRice, 1),
-            'total_money'         => (float) $totalMoney,
-            'total_money_fmt'     => 'Rp ' . number_format($totalMoney, 0, ',', '.'),
-            'recent_transactions' => $recentTransactions,
+            'total_money'         => $totalMoney,
+            'total_money_fmt'     => $this->formatRupiah($totalMoney),
+            'recent_transactions' => $this->getRecentTransactions($today, 5),
         ];
-    }
-
-    private function sumMoneyForDate(string $date): float
-    {
-        $donations = Donation::whereHas('transactionDetail.transaction', fn($q) =>
-            $q->whereDate('date', $date)
-        )->sum('amount');
-
-        $fidyahs = Fidyah::whereHas('transactionDetail.transaction', fn($q) =>
-            $q->whereDate('date', $date)
-        )->sum('amount');
-
-        $wealths = Wealth::whereHas('transactionDetail.transaction', fn($q) =>
-            $q->whereDate('date', $date)
-        )->sum('amount');
-
-        $riceSales = RiceSale::whereHas('transactionDetail.transaction', fn($q) =>
-            $q->whereDate('date', $date)
-        )->sum('amount');
-
-        return (float) $donations + (float) $fidyahs + (float) $wealths + (float) $riceSales;
     }
 
     private function getRecentTransactions(string $date, int $limit): array
@@ -99,16 +80,11 @@ class ZakatLiveDashboardController extends Controller
             ->latest('id')
             ->limit($limit)
             ->get(['id', 'customer', 'created_at'])
-            ->map(function ($trx) {
-                $types = $trx->details->pluck('type')->unique()->values();
-                $typeLabels = $types->map(fn($t) => $this->typeLabel($t))->join(', ');
-
-                return [
-                    'name'        => $trx->customer,
-                    'types'       => $typeLabels,
-                    'created_at'  => $trx->created_at?->format('H:i'),
-                ];
-            })
+            ->map(fn($trx) => [
+                'name'       => $trx->customer,
+                'types'      => $trx->details->pluck('type')->unique()->map(fn($t) => $this->typeLabel($t))->join(', '),
+                'created_at' => $trx->created_at?->format('H:i'),
+            ])
             ->toArray();
     }
 
@@ -116,29 +92,19 @@ class ZakatLiveDashboardController extends Controller
 
     private function getStockData(): array
     {
-        // Total beras yang pernah dibeli
         $totalPurchased = (float) PurchaseRice::sum('quantity');
-
-        // Total beras yang sudah dialokasikan ke penjualan
         $totalAllocated = (float) PurchaseRiceAllocation::sum('quantity');
-
         $availableStock = max(0, $totalPurchased - $totalAllocated);
 
-        // Harga beras dari default_values
         $defaults    = DefaultValue::first();
-        $pricePerPkg = null;
-        if ($defaults && $defaults->rice_sales_quantity > 0) {
-            $pricePerPkg = (float) $defaults->rice_sales_amount / (float) $defaults->rice_sales_quantity;
-        }
+        $pricePerPkg = (float) $defaults->rice_sales_amount;
 
         return [
-            'available_kg'           => round($availableStock, 1),
-            'total_purchased_kg'     => round($totalPurchased, 1),
-            'price_per_pkg'          => $pricePerPkg,
-            'price_per_pkg_fmt'      => $pricePerPkg
-                ? 'Rp ' . number_format($pricePerPkg, 0, ',', '.')
-                : 'N/A',
-            'default_rice_quantity'  => $defaults?->rice_sales_quantity,
+            'available_kg'          => round($availableStock, 1),
+            'total_purchased_kg'    => round($totalPurchased, 1),
+            'price_per_pkg'         => $pricePerPkg,
+            'price_per_pkg_fmt'     => $pricePerPkg ? $this->formatRupiah($pricePerPkg) : 'N/A',
+            'default_rice_quantity' => $defaults?->rice_sales_quantity,
         ];
     }
 
@@ -146,152 +112,115 @@ class ZakatLiveDashboardController extends Controller
 
     private function getOverallData(): array
     {
-        // Total muzakki keseluruhan
-        $totalMuzakki = Transaction::count();
+        $totalRice  = $this->sumByModels($this->riceModels, 'quantity');
+        $totalMoney = $this->sumByModels($this->moneyModels, 'amount');
+        $totalMuzakki = $this->countByModels($this->riceModels);
 
-        // Total beras keseluruhan
-        $totalRice = (float) Rice::sum('quantity') + (float) RiceSale::sum('quantity');
-
-        // Total uang keseluruhan
-        $totalMoney = (float) Donation::sum('amount')
-            + (float) Fidyah::sum('amount')
-            + (float) Wealth::sum('amount')
-            + (float) RiceSale::sum('amount');
-
-        // Breakdown per kategori
-        $breakdown = $this->getCategoryBreakdown();
-
-        // Chart: total beras per hari (7 hari terakhir)
-        $chartData = $this->getRiceChartData(7);
-
-        // Estimasi penerima manfaat (per X kg, dari default_values)
-        $defaults = DefaultValue::first();
-        $kgPerPerson = (float) ($defaults?->beneficiary_rice_kg ?? 5);
-        $estimatedBeneficiaries = $kgPerPerson > 0 ? (int) floor($totalRice / $kgPerPerson) : 0;
+        $defaults     = DefaultValue::first();
+        $kgPerPerson  = (float) ($defaults?->beneficiary_rice_kg ?? 5);
 
         return [
-            'muzakki'                  => $totalMuzakki,
-            'total_rice_kg'            => round($totalRice, 1),
-            'total_money'              => $totalMoney,
-            'total_money_fmt'          => 'Rp ' . number_format($totalMoney, 0, ',', '.'),
-            'breakdown'                => $breakdown,
-            'chart_data'               => $chartData,
-            'estimated_beneficiaries'  => $estimatedBeneficiaries,
-            'beneficiary_rice_kg'      => $kgPerPerson,
+            'muzakki'                 => $totalMuzakki,
+            'total_rice_kg'           => round($totalRice, 1),
+            'total_money'             => $totalMoney,
+            'total_money_fmt'         => $this->formatRupiah($totalMoney),
+            'breakdown'               => $this->getCategoryBreakdown(),
+            'chart_data'              => $this->getRiceChartData(7),
+            'estimated_beneficiaries' => $kgPerPerson > 0 ? (int) floor($totalRice / $kgPerPerson) : 0,
+            'beneficiary_rice_kg'     => $kgPerPerson,
         ];
     }
 
     private function getCategoryBreakdown(): array
     {
-        // Zakat Fitrah Beras (bawa sendiri) — type = 'rice'
-        $zakatBeras = TransactionDetail::where('type', TransactionItemType::RICE)
-            ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
-            ->whereNull('transactions.deleted_at')
-            ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
-            ->first();
-        $zakatBerasKg = (float) Rice::whereHas('transactionDetail', fn($q) =>
-            $q->where('type', TransactionItemType::RICE)
-        )->sum('quantity');
-
-        // Zakat Fitrah Beli di Masjid (penjualan beras) — type = 'rice_sale'
-        $zakatBeliMasjid = TransactionDetail::where('type', TransactionItemType::RICE_SALES)
-            ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
-            ->whereNull('transactions.deleted_at')
-            ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
-            ->first();
-        $zakatBeliKg = (float) RiceSale::whereHas('transactionDetail', fn($q) =>
-            $q->where('type', TransactionItemType::RICE_SALES)
-        )->sum('quantity');
-
-        // Zakat Mal — type = 'wealth'
-        $zakatMal = TransactionDetail::where('type', 'wealth')
-            ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
-            ->whereNull('transactions.deleted_at')
-            ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
-            ->first();
-        $zakatMalAmount = (float) Wealth::sum('amount');
-
-        // Infaq/Sedekah — type = 'donation'
-        $infaq = TransactionDetail::where('type', 'donation')
-            ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
-            ->whereNull('transactions.deleted_at')
-            ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
-            ->first();
-        $infaqAmount = (float) Donation::sum('amount');
-
-        // Fidyah — type = 'fidyah'
-        $fidyah = TransactionDetail::where('type', 'fidyah')
-            ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
-            ->whereNull('transactions.deleted_at')
-            ->selectRaw('COUNT(DISTINCT transactions.id) as trx_count')
-            ->first();
-        $fidyahAmount = (float) Fidyah::sum('amount');
-
-        return [
+        $categories = [
             'zakat_beras' => [
-                'label'   => 'Zakat Fitrah (Beras)',
-                'muzakki' => (int) ($zakatBeras->trx_count ?? 0),
-                'value'   => round($zakatBerasKg, 1),
-                'unit'    => 'kg',
-                'color'   => 'primary',
+                'label'  => 'Zakat Fitrah (Beras)',
+                'type'   => TransactionItemType::RICE,
+                'model'  => Rice::class,
+                'field'  => 'quantity',
+                'unit'   => 'kg',
+                'color'  => 'primary',
             ],
             'zakat_beli_masjid' => [
-                'label'   => 'Zakat Fitrah (Beli di Masjid)',
-                'muzakki' => (int) ($zakatBeliMasjid->trx_count ?? 0),
-                'value'   => round($zakatBeliKg, 1),
-                'unit'    => 'kg',
-                'color'   => 'orange',
+                'label'  => 'Zakat Fitrah (Beli di Masjid)',
+                'type'   => TransactionItemType::RICE_SALES,
+                'model'  => RiceSale::class,
+                'field'  => 'quantity',
+                'unit'   => 'kg',
+                'color'  => 'orange',
             ],
             'zakat_mal' => [
-                'label'     => 'Zakat Mal',
-                'muzakki'   => (int) ($zakatMal->trx_count ?? 0),
-                'value'     => $zakatMalAmount,
-                'value_fmt' => 'Rp ' . number_format($zakatMalAmount, 0, ',', '.'),
-                'unit'      => 'Rp',
-                'color'     => 'secondary',
+                'label'  => 'Zakat Mal',
+                'type'   => TransactionItemType::WEALTH,
+                'model'  => Wealth::class,
+                'field'  => 'amount',
+                'unit'   => 'Rp',
+                'color'  => 'secondary',
             ],
             'infaq' => [
-                'label'     => 'Infaq & Sedekah',
-                'muzakki'   => (int) ($infaq->trx_count ?? 0),
-                'value'     => $infaqAmount,
-                'value_fmt' => 'Rp ' . number_format($infaqAmount, 0, ',', '.'),
-                'unit'      => 'Rp',
-                'color'     => 'blue',
+                'label'  => 'Infaq & Sedekah',
+                'type'   => TransactionItemType::DONATION,
+                'model'  => Donation::class,
+                'field'  => 'amount',
+                'unit'   => 'Rp',
+                'color'  => 'blue',
             ],
             'fidyah' => [
-                'label'     => 'Fidyah',
-                'muzakki'   => (int) ($fidyah->trx_count ?? 0),
-                'value'     => $fidyahAmount,
-                'value_fmt' => 'Rp ' . number_format($fidyahAmount, 0, ',', '.'),
-                'unit'      => 'Rp',
-                'color'     => 'purple',
+                'label'  => 'Fidyah',
+                'type'   => TransactionItemType::FIDYAH,
+                'model'  => Fidyah::class,
+                'field'  => 'amount',
+                'unit'   => 'Rp',
+                'color'  => 'purple',
             ],
         ];
+
+        return collect($categories)->map(function ($cat) {
+            $muzakki = TransactionDetail::where('type', $cat['type'])
+                ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
+                ->whereNull('transactions.deleted_at')
+                ->distinct('transaction_details.transaction_id')
+                ->count();
+
+            $value = (float) $cat['model']::whereHas('transactionDetail',
+                fn($q) => $q->where('type', $cat['type'])
+            )->sum($cat['field']);
+
+            $result = [
+                'label'   => $cat['label'],
+                'muzakki' => $muzakki,
+                'value'   => $cat['unit'] === 'kg' ? round($value, 1) : $value,
+                'unit'    => $cat['unit'],
+                'color'   => $cat['color'],
+            ];
+
+            if ($cat['unit'] === 'Rp') {
+                $result['value_fmt'] = $this->formatRupiah($value);
+            }
+
+            return $result;
+        })->toArray();
     }
 
     private function getRiceChartData(int $days): array
     {
-        $result = [];
-        for ($i = $days - 1; $i >= 0; $i--) {
-            $date    = Carbon::today()->subDays($i)->toDateString();
-            $dayName = Carbon::today()->subDays($i)->isoFormat('ddd');
+        return collect(range($days - 1, 0))
+            ->map(function ($i) {
+                $date = Carbon::today()->subDays($i)->toDateString();
 
-            $riceQty = (float) Rice::whereHas('transactionDetail.transaction', fn($q) =>
-                $q->whereDate('date', $date)
-            )->sum('quantity');
+                $total = $this->sumByModels([
+                    Rice::class     => [],
+                    RiceSale::class => [],
+                ], 'quantity', $date);
 
-            $riceSaleQty = (float) RiceSale::whereHas('transactionDetail.transaction', fn($q) =>
-                $q->whereDate('date', $date)
-            )->sum('quantity');
-
-            $result[] = [
-                'date'       => $date,
-                'day'        => $dayName,
-                'total_rice' => round($riceQty + $riceSaleQty, 1),
-            ];
-        }
-
-        return $result;
+                return [
+                    'date'       => $date,
+                    'day'        => Carbon::parse($date)->isoFormat('ddd'),
+                    'total_rice' => round($total, 1),
+                ];
+            })
+            ->toArray();
     }
 
     // ─── MARQUEE ─────────────────────────────────────────────────────────────
@@ -301,51 +230,70 @@ class ZakatLiveDashboardController extends Controller
         $today = Carbon::today()->toDateString();
 
         return TransactionDetail::with(['rice', 'riceSale', 'donation', 'fidyah', 'wealth'])
-            ->whereHas('transaction', fn($q) =>
-                $q->whereDate('date', $today)
-            )->latest('id')
+            ->whereHas('transaction', fn($q) => $q->whereDate('date', $today))
+            ->latest('id')
             ->get(['id', 'giver_name', 'type', 'created_at'])
-            ->map(function ($t) {
-                $amount = 0;
-                $quantity = 0;
-
-                if ($t->type === TransactionItemType::RICE) {
-                    $quantity = $t->rice?->quantity ?? 0;
-                } elseif ($t->type === TransactionItemType::RICE_SALES) {
-                    $amount = $t->riceSale?->amount ?? 0;
-                    $quantity = $t->riceSale?->quantity ?? 0;
-                } elseif ($t->type === TransactionItemType::DONATION) {
-                    $amount = $t->donation?->amount ?? 0;
-                    $quantity = $t->donation?->quantity ?? 0;
-                } elseif ($t->type === TransactionItemType::FIDYAH) {
-                    $amount = $t->fidyah?->amount ?? 0;
-                    $quantity = $t->fidyah?->quantity ?? 0;
-                } elseif ($t->type === TransactionItemType::WEALTH) {
-                    $amount = $t->wealth?->amount ?? 0;
-                }
-
-                return [
-                    'name'       => $t->giver_name,
-                    'type'       => $this->typeLabel($t->type),
-                    'created_at' => $t->created_at?->format('H:i'),
-                    'amount'     => (float) $amount,
-                    'quantity'   => (float) $quantity,
-                ];
-            })
+            ->map(fn($t) => [
+                'name'       => $t->giver_name,
+                'type'       => $this->typeLabel($t->type),
+                'created_at' => $t->created_at?->format('H:i'),
+                'amount'     => (float) $this->resolveDetailValue($t, 'amount'),
+                'quantity'   => (float) $this->resolveDetailValue($t, 'quantity'),
+            ])
             ->toArray();
     }
 
-    // ─── HELPER ──────────────────────────────────────────────────────────────
+    private function resolveDetailValue(TransactionDetail $detail, string $field): mixed
+    {
+        return match ($detail->type) {
+            TransactionItemType::RICE       => $field === 'quantity' ? $detail->rice?->quantity : 0,
+            TransactionItemType::RICE_SALES => $detail->riceSale?->$field,
+            TransactionItemType::DONATION   => $detail->donation?->$field,
+            TransactionItemType::FIDYAH     => $detail->fidyah?->$field,
+            TransactionItemType::WEALTH     => $field === 'amount' ? $detail->wealth?->amount : 0,
+            default                         => 0,
+        };
+    }
+
+    // ─── HELPERS ─────────────────────────────────────────────────────────────
+
+    /**
+     * Sum a field across multiple models, optionally filtered by date.
+     * $models format: [ModelClass => ['column' => 'value'], ...]
+     */
+    private function sumByModels(array $models, string $field, ?string $date = null): float
+    {
+        return collect($models)
+            ->map(fn($conditions, $model) => (float) $model::whereHas(
+                'transactionDetail.transaction',
+                fn($q) => $date ? $q->whereDate('date', $date) : $q
+            )->where($conditions)->sum($field))
+            ->sum();
+    }
+
+    private function countByModels(array $models): int
+    {
+        return collect($models)
+            ->map(fn($conditions, $model) => $model::whereHas('transactionDetail.transaction')
+                ->where($conditions)
+                ->count())
+            ->sum();
+    }
+
+    private function formatRupiah(float $amount): string
+    {
+        return 'Rp ' . number_format($amount, 0, ',', '.');
+    }
 
     private function typeLabel(string $type): string
     {
         return match ($type) {
-            TransactionItemType::RICE => 'Zakat Fitrah (Beras)',
+            TransactionItemType::RICE       => 'Zakat Fitrah (Beras)',
             TransactionItemType::RICE_SALES => 'Zakat Fitrah (Beli di Masjid)',
-            TransactionItemType::WEALTH => 'Zakat Mal',
-            TransactionItemType::DONATION => 'Infaq/Sedekah',
-            TransactionItemType::FIDYAH => 'Fidyah',
-            default     => ucfirst($type),
+            TransactionItemType::WEALTH     => 'Zakat Mal',
+            TransactionItemType::DONATION   => 'Infaq/Sedekah',
+            TransactionItemType::FIDYAH     => 'Fidyah',
+            default                         => ucfirst($type),
         };
     }
 }
