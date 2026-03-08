@@ -101,6 +101,11 @@ const mainNavItems: NavItem[] = [
         href: '/expenses',
         icon: Receipt,
     },
+    {
+        title: 'Serah Terima',
+        href: '/shift-handovers',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

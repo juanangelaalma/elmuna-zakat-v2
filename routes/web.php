@@ -63,6 +63,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('default-value', [DefaultValueController::class, 'index'])->name('defaultValue');
     Route::patch('default-value', [DefaultValueController::class, 'update'])->name('defaultValueUpdate');
+
+    // Shift Handover routes
+    Route::get('shift-handovers', [\App\Http\Controllers\ShiftHandoverController::class, 'index'])->name('shift-handovers.index');
+    Route::get('shift-handovers/create', [\App\Http\Controllers\ShiftHandoverController::class, 'create'])->name('shift-handovers.create');
+    Route::post('shift-handovers', [\App\Http\Controllers\ShiftHandoverController::class, 'store'])->name('shift-handovers.store');
+    Route::get('shift-handovers/{id}', [\App\Http\Controllers\ShiftHandoverController::class, 'show'])->name('shift-handovers.show');
+    Route::get('shift-handovers/{id}/pdf', [\App\Http\Controllers\ShiftHandoverController::class, 'exportPdf'])->name('shift-handovers.pdf');
 });
 
 require __DIR__.'/settings.php';
