@@ -35,7 +35,7 @@ export default function PurchaseCreate() {
         rice_item_id: '',
         quantity: '',
         price_per_kg: '',
-        date: new Date().toISOString().split('T')[0]
+        date: new Date().toLocaleDateString().split('T')[0]
     });
 
     // Calculate total value

@@ -168,7 +168,7 @@
                 <div class="flex justify-between items-start mb-4">
                     <div>
                         <h3 class="text-base font-bold text-slate-800">Status Stok Beras</h3>
-                        <p class="text-xs text-text-muted mt-0.5 font-medium">Total pembelian: <span id="stock-total">—</span> kg</p>
+                        <p class="text-xs text-text-muted mt-0.5 font-medium">Total beras: <span id="stock-total">—</span> kg</p>
                     </div>
                     <div class="bg-slate-50 px-3 py-1 rounded-lg border border-slate-100">
                         <span id="stock-pct-label" class="text-secondary text-xs font-bold">—</span>
@@ -185,7 +185,7 @@
                             <span class="material-symbols-outlined text-lg">sell</span>
                         </div>
                         <div>
-                            <p class="text-[10px] text-text-muted uppercase font-bold tracking-wider">Harga Beras / Porsi</p>
+                            <p class="text-[10px] text-text-muted uppercase font-bold tracking-wider">Harga Beras per 3kg</p>
                             <p id="stock-price" class="text-slate-800 font-bold text-base">—</p>
                         </div>
                     </div>

@@ -158,6 +158,7 @@ class TransactionRepository implements TransactionRepositoryInterface
 
         $details = DB::table('transaction_details as td')
             ->where('td.transaction_id', $id)
+            ->whereNull('td.deleted_at')
             ->leftJoin('rice_sales as rs', function ($join) {
                 $join->on('td.id', '=', 'rs.transaction_detail_id')
                     ->where('td.type', TransactionItemType::RICE_SALES);
@@ -249,6 +250,8 @@ class TransactionRepository implements TransactionRepositoryInterface
         return DB::table('transaction_details as td')
             ->join('rice_sales as rs', 'td.id', '=', 'rs.transaction_detail_id')
             ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->whereNull('t.deleted_at')
+            ->whereNull('td.deleted_at')
             ->where('td.type', TransactionItemType::RICE_SALES)
             ->select([
                 'td.id',
@@ -267,6 +270,8 @@ class TransactionRepository implements TransactionRepositoryInterface
         return DB::table('transaction_details as td')
             ->join('rices as r', 'td.id', '=', 'r.transaction_detail_id')
             ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->whereNull('t.deleted_at')
+            ->whereNull('td.deleted_at')
             ->where('td.type', TransactionItemType::RICE)
             ->select([
                 'td.id',
@@ -284,6 +289,8 @@ class TransactionRepository implements TransactionRepositoryInterface
         return DB::table('transaction_details as td')
             ->join('donations as d', 'td.id', '=', 'd.transaction_detail_id')
             ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->whereNull('t.deleted_at')
+            ->whereNull('td.deleted_at')
             ->where('td.type', TransactionItemType::DONATION)
             ->select([
                 'td.id',
@@ -303,6 +310,8 @@ class TransactionRepository implements TransactionRepositoryInterface
         return DB::table('transaction_details as td')
             ->join('fidyahs as f', 'td.id', '=', 'f.transaction_detail_id')
             ->join('transactions as t', 'td.transaction_id', '=', 't.id')
+            ->whereNull('t.deleted_at')
+            ->whereNull('td.deleted_at')
             ->where('td.type', TransactionItemType::FIDYAH)
             ->select([
                 'td.id',
@@ -323,6 +332,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             ->join('wealths as w', 'td.id', '=', 'w.transaction_detail_id')
             ->join('transactions as t', 'td.transaction_id', '=', 't.id')
             ->whereNull('t.deleted_at')
+            ->whereNull('td.deleted_at')
             ->where('td.type', TransactionItemType::WEALTH)
             ->select([
                 'td.id',
