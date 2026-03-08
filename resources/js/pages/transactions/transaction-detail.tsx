@@ -25,6 +25,7 @@ import {
     Printer,
     Trash2,
     User,
+    MessageCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -46,6 +47,7 @@ interface Transaction {
     customer: string;
     address: string;
     wa_number: string;
+    is_wa_sent: boolean;
     officer_name: string;
     items: TransactionItem[];
 }
@@ -78,6 +80,16 @@ export default function TransactionDetail() {
     const handleDelete = () => {
         router.delete(`/transactions/${transaction.id}`, {
             preserveScroll: false,
+        });
+    };
+
+    const [isResending, setIsResending] = useState(false);
+
+    const handleResendWa = () => {
+        setIsResending(true);
+        router.post(`/transactions/${transaction.id}/resend-wa`, {}, {
+            preserveScroll: true,
+            onFinish: () => setIsResending(false),
         });
     };
 
@@ -139,6 +151,16 @@ export default function TransactionDetail() {
                                         Kembali
                                     </Button>
                                 </Link>
+                                {!transaction.is_wa_sent && transaction.wa_number && (
+                                    <Button
+                                        onClick={handleResendWa}
+                                        disabled={isResending}
+                                        className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
+                                    >
+                                        <MessageCircle className="h-4 w-4" />
+                                        {isResending ? 'Mengirim...' : 'Kirim Ulang WA'}
+                                    </Button>
+                                )}
                                 <Button
                                     onClick={handleGenerateReceipt}
                                     className="gap-2"

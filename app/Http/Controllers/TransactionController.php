@@ -93,6 +93,32 @@ class TransactionController extends Controller
         return $pdf->stream('struk-' . $transaction['transaction_number'] . '.pdf');
     }
 
+    public function resendWa($id)
+    {
+        $transaction = $this->service->getById(strval($id));
+
+        if (!$transaction) {
+            return redirect()->back()->with('error', 'Transaction not found');
+        }
+
+        if (empty($transaction['wa_number'])) {
+            return redirect()->back()->with('error', 'Nomor WhatsApp tidak tersedia untuk transaksi ini.');
+        }
+
+        SendWhatsAppNotification::dispatch(
+            $transaction['id'],
+            $transaction['wa_number'],
+            $transaction['customer'],
+            $transaction['address'],
+            $transaction['officer_name'],
+            $transaction['transaction_number'],
+            $transaction['date'],
+            $transaction['items'],
+        );
+
+        return redirect()->back()->with('success', 'Pesan WhatsApp sedang dikirim ulang.');
+    }
+
     public function receiptForAdmin($id)
     {
         $transaction = $this->service->getById(strval($id));
