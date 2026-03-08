@@ -44,8 +44,8 @@ class SendWhatsAppNotification implements ShouldQueue
         $items = FidyahHelper::normalizeItems($this->items);
 
         $itemTypeLabels = [
-            'RICE_SALES' => 'Penjualan Beras',
-            'RICE'       => 'Zakat Fitrah (Beras)',
+            'RICE_SALES' => 'Zakat Fitrah (Beli Beras)',
+            'RICE'       => 'Zakat Fitrah (Bawa Beras)',
             'DONATION'   => 'Infaq / Sedekah',
             'FIDYAH'     => 'Fidyah',
             'WEALTH'     => 'Zakat Mall',
