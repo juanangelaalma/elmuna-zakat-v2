@@ -70,7 +70,7 @@ export default function TransactionDetail() {
     }, 0);
 
     const handleGenerateReceipt = () => {
-        window.open(`/transactions/${transaction.id}/receipt`, '_blank');
+        window.open(`/transactions/${transaction.id}/receipt/view`, '_blank');
     };
 
     const [showDeleteDialog, setShowDeleteDialog] = useState(false);

@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Carbon;
 use App\Utils\TransactionNumberGenerator;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\URL;
 
 class TransactionController extends Controller
 {
@@ -64,6 +65,7 @@ class TransactionController extends Controller
 
         if (!empty($validatedData['wa_number'])) {
             SendWhatsAppNotification::dispatch(
+                $createdTransaction->id,
                 $validatedData['wa_number'],
                 $validatedData['customer'],
                 $validatedData['address'],
@@ -89,6 +91,18 @@ class TransactionController extends Controller
             ->setPaper([0, 0, 311.81, 623.62], 'portrait'); // Ukuran amplop DL: 110mm x 220mm
 
         return $pdf->stream('struk-' . $transaction['transaction_number'] . '.pdf');
+    }
+
+    public function receiptForAdmin($id)
+    {
+        $transaction = $this->service->getById(strval($id));
+
+        if (!$transaction) {
+            abort(404, 'Transaction not found');
+        }
+
+        // Generate signed URL lalu redirect — admin tidak perlu punya signed URL manual
+        return redirect(URL::signedRoute('transactions.receipt', ['id' => $id]));
     }
 
     public function destroy($id)
