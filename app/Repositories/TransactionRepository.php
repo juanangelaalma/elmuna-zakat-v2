@@ -240,6 +240,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             'customer' => $transaction->customer,
             'address' => $transaction->address,
             'wa_number' => $transaction->wa_number,
+            'is_wa_sent' => $transaction->is_wa_sent,
             'officer_name' => $transaction->officer_name,
             'items' => $details,
         ];
@@ -505,6 +506,7 @@ class TransactionRepository implements TransactionRepositoryInterface
             'customer'           => $transaction->customer,
             'address'            => $transaction->address,
             'wa_number'          => $transaction->wa_number,
+            'is_wa_sent'         => $transaction->is_wa_sent,
             'officer_name'       => $transaction->officer_name,
             'items'              => $details,
         ];

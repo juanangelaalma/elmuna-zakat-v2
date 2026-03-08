@@ -12,6 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
+use App\Models\Transaction;
 
 class SendWhatsAppNotification implements ShouldQueue
 {
@@ -35,7 +36,12 @@ class SendWhatsAppNotification implements ShouldQueue
         $message = $this->buildMessage();
         Log::info('message ' . $message);
         Log::info('Sending WhatsApp notification to ' . $this->waNumber);
-        $whatsAppService->send($this->waNumber, $message);
+        
+        $success = $whatsAppService->send($this->waNumber, $message);
+        
+        if ($success) {
+            Transaction::where('id', $this->id)->update(['is_wa_sent' => true]);
+        }
     }
 
     private function buildMessage(): string
