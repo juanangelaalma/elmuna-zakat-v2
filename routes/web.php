@@ -18,6 +18,11 @@ Route::get('/', function () {
 Route::get('/zakat-live', [ZakatLiveDashboardController::class, 'index'])->name('zakat-live');
 Route::get('/zakat-live/data', [ZakatLiveDashboardController::class, 'data'])->name('zakat-live.data');
 
+// Public receipt — accessible via signed URL only (no auth required, but signature must be valid)
+Route::get('/transactions/{id}/receipt', [TransactionController::class, 'receipt'])
+    ->middleware('signed')
+    ->name('transactions.receipt');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -35,7 +40,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('transactions/trash', [TransactionController::class, 'trash'])->name('transactions.trash');
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactionCreate');
     Route::get('transactions/{id}', [TransactionController::class, 'show'])->name('transactionDetail');
-    Route::get('transactions/{id}/receipt', [TransactionController::class, 'receipt'])->name('transactionReceipt');
+    // receipt route dipindah ke public section di atas dengan middleware 'signed'
+    // admin dapat akses receipt via route ini, lalu di-redirect ke signed URL
+    Route::get('transactions/{id}/receipt/view', [TransactionController::class, 'receiptForAdmin'])->name('transactions.receipt.admin');
     Route::post('transactions/store', [TransactionController::class, 'store'])->name('transactionStore');
     Route::delete('transactions/{id}', [TransactionController::class, 'destroy'])->name('transactions.destroy');
     Route::patch('transactions/{id}/restore', [TransactionController::class, 'restore'])->name('transactions.restore');

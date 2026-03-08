@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 
 class SendWhatsAppNotification implements ShouldQueue
 {
@@ -19,6 +20,7 @@ class SendWhatsAppNotification implements ShouldQueue
     public int $tries = 3;
 
     public function __construct(
+        private string $id,
         private string $waNumber,
         private string $customer,
         private string $address,
@@ -31,6 +33,8 @@ class SendWhatsAppNotification implements ShouldQueue
     public function handle(WhatsAppService $whatsAppService): void
     {
         $message = $this->buildMessage();
+        Log::info('message ' . $message);
+        Log::info('Sending WhatsApp notification to ' . $this->waNumber);
         $whatsAppService->send($this->waNumber, $message);
     }
 
@@ -153,8 +157,9 @@ class SendWhatsAppNotification implements ShouldQueue
         $message .= "💰 Total Uang  : {$formattedMoney}\n";
         $message .= "🌾 Total Beras : {$formattedRice}\n\n";
 
-        $message .= "Dashboard zakat bisa diakses melalui:\n";
-        $message .= config('app.url') . "/zakat-live\n\n";
+        $receiptUrl = URL::signedRoute('transactions.receipt', ['id' => $this->id]);
+        $message .= "Nota dapat diakses di:\n";
+        $message .= $receiptUrl . "\n\n";
 
         $message .= "_Jazakumullahu Khairan_\n";
         $message .= "_Semoga menjadi amal ibadah yang berkah_ 🤲";
