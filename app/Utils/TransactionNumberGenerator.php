@@ -13,7 +13,7 @@ class TransactionNumberGenerator
 
     public function generate()
     {
-        $storeCode = 'EM';
+        $storeCode = 'UPZ';
 
         $year = Carbon::now()->format('Y');
         $month = Carbon::now()->format('m');
@@ -22,11 +22,12 @@ class TransactionNumberGenerator
 
         $sequenceNumber = 1;
         if ($lastTransaction) {
-            $lastSequence = (int)substr($lastTransaction->transaction_number, -4);
+            $parts = explode('-', $lastTransaction->transaction_number);
+            $lastSequence = (int)($parts[1] ?? 0);
             $sequenceNumber = $lastSequence + 1;
         }
 
-        $transactionNumber = $storeCode . '-' . $year . '-' . $month . '-' . str_pad($sequenceNumber, 4, '0', STR_PAD_LEFT);
+        $transactionNumber = $storeCode . '-' . str_pad($sequenceNumber, 4, '0', STR_PAD_LEFT) . '-' . $month . '-' . $year;
 
         return $transactionNumber;
     }
