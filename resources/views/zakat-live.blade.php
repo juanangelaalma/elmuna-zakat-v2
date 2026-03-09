@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Zakat Live — Masjid Al Munawwar</title>
+    <title>Dashboard Zakat Live — UPZ AL MUNAWWAR</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -67,7 +67,7 @@
                 <span class="material-symbols-outlined text-4xl">mosque</span>
             </div>
             <div>
-                <h1 class="text-2xl font-bold tracking-tight text-slate-800">Masjid Al Munawwar</h1>
+                <h1 class="text-2xl font-bold tracking-tight text-slate-800">UPZ AL MUNAWWAR</h1>
                 <div class="flex items-center gap-2 mt-0.5">
                     <span class="live-dot size-2 rounded-full bg-green-500 inline-block"></span>
                     <p class="text-text-muted text-xs font-semibold uppercase tracking-wider">Dashboard Zakat Real-Time</p>
