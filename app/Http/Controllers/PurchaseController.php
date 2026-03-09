@@ -6,6 +6,7 @@ use App\Contracts\PurchaseRiceServiceInterface;
 use App\Contracts\RiceItemServiceInterface;
 use App\Http\Requests\PurchaseStoreRequest;
 use Inertia\Inertia;
+use Illuminate\Support\Carbon;
 
 class PurchaseController extends Controller
 {
@@ -35,10 +36,10 @@ class PurchaseController extends Controller
         $validatedData = $request->validated();
         $userId = auth()->user()->id;
         $validatedData['created_by'] = $userId;
+        $validatedData['date'] = Carbon::parse($validatedData['date'])->format('Y-m-d');
 
         $this->service->createPurchaseRice($validatedData);
 
         return redirect()->route('purchases');
     }
-
 }
