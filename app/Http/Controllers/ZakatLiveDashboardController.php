@@ -27,6 +27,11 @@ class ZakatLiveDashboardController extends Controller
         Donation::class => ['donation_type' => 'rice'],
     ];
 
+    private array $riceModelsWithoutDonationAndFidyah = [
+        Rice::class     => [],
+        RiceSale::class => [],
+    ];
+
     private array $moneyModels = [
         Donation::class => [],
         Fidyah::class   => [],
@@ -57,7 +62,8 @@ class ZakatLiveDashboardController extends Controller
     {
         $today = Carbon::today()->toDateString();
 
-        $totalMuzakki = TransactionDetail::whereHas('transaction',
+        $totalMuzakki = TransactionDetail::whereHas(
+            'transaction',
             fn($q) => $q->whereDate('date', $today)
         )->count();
 
@@ -112,9 +118,9 @@ class ZakatLiveDashboardController extends Controller
 
     private function getOverallData(): array
     {
-        $totalRice  = $this->sumByModels($this->riceModels, 'quantity');
+        $totalRice  = $this->sumByModels($this->riceModelsWithoutDonationAndFidyah, 'quantity');
         $totalMoney = $this->sumByModels($this->moneyModels, 'amount');
-        $totalMuzakki = $this->countByModels($this->riceModels);
+        $totalMuzakki = $this->countByModels($this->riceModelsWithoutDonationAndFidyah);
 
         $defaults     = DefaultValue::first();
         $kgPerPerson  = (float) ($defaults?->beneficiary_rice_kg ?? 5);
@@ -183,7 +189,8 @@ class ZakatLiveDashboardController extends Controller
                 ->distinct('transaction_details.transaction_id')
                 ->count();
 
-            $value = (float) $cat['model']::whereHas('transactionDetail',
+            $value = (float) $cat['model']::whereHas(
+                'transactionDetail',
                 fn($q) => $q->where('type', $cat['type'])
             )->sum($cat['field']);
 
