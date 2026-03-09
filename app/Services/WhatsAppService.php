@@ -20,6 +20,7 @@ class WhatsAppService
 
         $response = Http::withHeaders([
             'Content-Type'  => 'application/json',
+            'X-Api-Key' => $apiKey,
         ])->post("{$baseUrl}/api/whatsapp/chats/send-text", [
             "sessionId" => $sessionId,
             "chatId" => $phone,
