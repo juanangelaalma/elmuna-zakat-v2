@@ -36,9 +36,9 @@ class SendWhatsAppNotification implements ShouldQueue
         $message = $this->buildMessage();
         Log::info('message ' . $message);
         Log::info('Sending WhatsApp notification to ' . $this->waNumber);
-        
+
         $success = $whatsAppService->send($this->waNumber, $message);
-        
+
         if ($success) {
             Transaction::where('id', $this->id)->update(['is_wa_sent' => true]);
         }
@@ -165,8 +165,8 @@ class SendWhatsAppNotification implements ShouldQueue
         $message .= "🌾 Total Beras : {$formattedRice}\n\n";
 
         $receiptUrl = URL::signedRoute('transactions.receipt', ['id' => $this->id]);
-        $message .= "Nota dapat diakses di:\n";
-        $message .= $receiptUrl . "\n\n";
+        $message .= "Nota dapat diakses pada link berikut:\n";
+        $message .= $receiptUrl . " \n\n";
 
         $message .= "_Jazakumullahu Khairan_\n";
         $message .= "_Semoga menjadi amal ibadah yang berkah_ 🤲";
