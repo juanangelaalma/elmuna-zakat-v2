@@ -23,7 +23,7 @@ class TransactionController extends Controller
     {
         $transactions = $this->service->getList();
         $transactionSummary = $this->summarizeTransactions($transactions);
-        
+
         $totalAmount = $transactionSummary->totalAmount;
         $totalQuantity = $transactionSummary->totalQuantity;
         $numberOfTransactions = count($transactions);
@@ -39,7 +39,7 @@ class TransactionController extends Controller
     public function show($id)
     {
         $transaction = $this->service->getById(strval($id));
-        
+
         if (!$transaction) {
             return redirect()->route('transactions')->with('error', 'Transaction not found');
         }
@@ -82,7 +82,7 @@ class TransactionController extends Controller
     public function receipt($id)
     {
         $transaction = $this->service->getById(strval($id));
-        
+
         if (!$transaction) {
             abort(404, 'Transaction not found');
         }
@@ -105,7 +105,7 @@ class TransactionController extends Controller
             return redirect()->back()->with('error', 'Nomor WhatsApp tidak tersedia untuk transaksi ini.');
         }
 
-        SendWhatsAppNotification::dispatch(
+        $job = new SendWhatsAppNotification(
             $transaction['id'],
             $transaction['wa_number'],
             $transaction['customer'],
@@ -116,7 +116,13 @@ class TransactionController extends Controller
             $transaction['items'],
         );
 
-        return redirect()->back()->with('success', 'Pesan WhatsApp sedang dikirim ulang.');
+        $success = $job->handle(app(\App\Services\WhatsAppService::class));
+
+        if ($success) {
+            return redirect()->back()->with('success', 'Pesan WhatsApp berhasil dikirim ulang.');
+        } else {
+            return redirect()->back()->with('error', 'Gagal mengirim ulang pesan WhatsApp.');
+        }
     }
 
     public function receiptForAdmin($id)
@@ -149,7 +155,7 @@ class TransactionController extends Controller
         $trashedTransactions = $this->service->getTrashedList();
         return Inertia::render('transactions/trash', compact('trashedTransactions'));
     }
-    
+
     private function summarizeTransactions($transactions)
     {
         $totalAmount = $transactions->sum('total_transaction_amount');
@@ -266,7 +272,7 @@ class TransactionController extends Controller
             'transaction_number' => 'Nomor Transaksi',
         ];
 
-        $labels = array_map(function($col) use ($columnLabels) {
+        $labels = array_map(function ($col) use ($columnLabels) {
             return $columnLabels[$col] ?? $col;
         }, $columns);
 
@@ -285,10 +291,10 @@ class TransactionController extends Controller
         })->toArray();
 
         $file = fopen('php://temp', 'r+');
-        
+
         // Add BOM for UTF-8 to ensure Excel displays correctly
-        fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
-        
+        fprintf($file, chr(0xEF) . chr(0xBB) . chr(0xBF));
+
         fputcsv($file, $labels);
         foreach ($exportData as $row) {
             fputcsv($file, $row);

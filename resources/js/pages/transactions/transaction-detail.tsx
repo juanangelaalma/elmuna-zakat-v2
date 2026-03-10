@@ -89,6 +89,19 @@ export default function TransactionDetail() {
         setIsResending(true);
         router.post(`/transactions/${transaction.id}/resend-wa`, {}, {
             preserveScroll: true,
+            onSuccess: (page) => {
+                setIsResending(false);
+                const flash = page.props.flash as any;
+                if (flash?.error) {
+                    alert('Gagal: ' + flash.error);
+                } else if (flash?.success) {
+                    alert('Sukses: ' + flash.success);
+                }
+            },
+            onError: (errors) => {
+                setIsResending(false);
+                alert('Terjadi kesalahan: ' + Object.values(errors).join(', '));
+            },
             onFinish: () => setIsResending(false),
         });
     };

@@ -44,6 +44,10 @@ class HandleInertiaRequests extends Middleware
 
         return [
             ...parent::share($request),
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
@@ -51,7 +55,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'defaultValue' => defaultValue(),
-            'config' => fn () => config()->get(static::$sharedConfig),
+            'config' => fn() => config()->get(static::$sharedConfig),
         ];
     }
 }

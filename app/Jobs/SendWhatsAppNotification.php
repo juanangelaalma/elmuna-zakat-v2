@@ -31,7 +31,7 @@ class SendWhatsAppNotification implements ShouldQueue
         private array  $items,
     ) {}
 
-    public function handle(WhatsAppService $whatsAppService): void
+    public function handle(WhatsAppService $whatsAppService): bool
     {
         $message = $this->buildMessage();
         Log::info('message ' . $message);
@@ -42,6 +42,8 @@ class SendWhatsAppNotification implements ShouldQueue
         if ($success) {
             Transaction::where('id', $this->id)->update(['is_wa_sent' => true]);
         }
+
+        return $success;
     }
 
     private function buildMessage(): string
