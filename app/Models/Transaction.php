@@ -12,6 +12,10 @@ class Transaction extends Model
 
     protected $guarded = ["id"];
 
+    protected $casts = [
+        'is_wa_sent' => 'boolean',
+    ];
+
     public function details()
     {
         return $this->hasMany(TransactionDetail::class);

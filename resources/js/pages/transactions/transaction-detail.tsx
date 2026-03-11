@@ -157,14 +157,14 @@ export default function TransactionDetail() {
                                     })}
                                 </p>
                             </div>
-                            <div className="flex gap-2">
+                            <div className="flex gap-2"> 
                                 <Link href={transactions().url}>
                                     <Button variant="outline" className="gap-2">
                                         <ArrowLeft className="h-4 w-4" />
                                         Kembali
                                     </Button>
                                 </Link>
-                                {!transaction.is_wa_sent && transaction.wa_number && (
+                                {(!transaction.is_wa_sent || String(transaction.is_wa_sent) === '0') && transaction.wa_number && (
                                     <Button
                                         onClick={handleResendWa}
                                         disabled={isResending}
