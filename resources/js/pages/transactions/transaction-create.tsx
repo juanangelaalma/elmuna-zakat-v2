@@ -47,7 +47,7 @@ export default function TransactionCreate() {
     };
 
     const normalizePhoneNumber = (phone: string): string => {
-        // Hapus semua karakter non-digit
+        if (!phone) return '';
         const digits = phone.replace(/\D/g, '');
         if (digits.startsWith('0')) {
             return '62' + digits.slice(1);
@@ -151,7 +151,6 @@ export default function TransactionCreate() {
                                             setData('address', e.target.value)
                                         }
                                         placeholder="Alamat Lengkap"
-                                        required
                                     />
                                     {errors.address && (
                                         <p className="text-sm text-red-500">
@@ -172,7 +171,6 @@ export default function TransactionCreate() {
                                             setData('wa_number', normalizePhoneNumber(e.target.value))
                                         }
                                         placeholder="08xxx / 628xxx / 8xxx"
-                                        required
                                     />
                                     {errors.wa_number && (
                                         <p className="text-sm text-red-500">
@@ -195,6 +193,7 @@ export default function TransactionCreate() {
                                             )
                                         }
                                         placeholder="Nama Petugas"
+                                        disabled
                                         required
                                     />
                                     {errors.officer_name && (

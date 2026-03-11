@@ -8,8 +8,8 @@ class TransactionDTO {
     public string $transaction_number;
     public Carbon $date;
     public string $customer;
-    public string $address;
-    public string $wa_number;
+    public ?string $address;
+    public ?string $wa_number;
     public string $officer_name;
     public int $created_by;
     public Carbon $created_at;
@@ -20,8 +20,8 @@ class TransactionDTO {
         string $transaction_number,
         Carbon $date,
         string $customer,
-        string $address,
-        string $wa_number,
+        ?string $address,
+        ?string $wa_number,
         string $officer_name,
         int $created_by,
         array $transaction_details = []

@@ -19,7 +19,7 @@ class TransactionStoreRequest extends FormRequest
      */
     protected function prepareForValidation(): void
     {
-        if ($this->has('wa_number')) {
+        if ($this->wa_number) {
             $this->merge([
                 'wa_number' => $this->normalizePhoneNumber($this->input('wa_number')),
             ]);
@@ -56,8 +56,8 @@ class TransactionStoreRequest extends FormRequest
         return [
             'date' => 'required|date',
             'customer' => 'required|string',
-            'address' => 'required|string',
-            'wa_number' => 'required|string',
+            'address' => 'string',
+            'wa_number' => 'string|nullable',
             'officer_name' => 'required|string',
             'items' => 'required|array',
         ];
