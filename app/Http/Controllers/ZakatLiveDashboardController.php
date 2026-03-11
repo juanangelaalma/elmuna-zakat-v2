@@ -22,7 +22,6 @@ class ZakatLiveDashboardController extends Controller
 
     private array $riceModels = [
         Rice::class     => [],
-        RiceSale::class => [],
         Fidyah::class   => ['fidyah_type' => 'rice'],
         Donation::class => ['donation_type' => 'rice'],
     ];
