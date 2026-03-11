@@ -61,13 +61,10 @@ class ZakatLiveDashboardController extends Controller
     {
         $today = Carbon::today()->toDateString();
 
-        $totalMuzakki = TransactionDetail::whereHas(
-            'transaction',
-            fn($q) => $q->whereDate('date', $today)
-        )->count();
+        $totalMuzakki = TransactionDetail::count();
 
-        $totalRice  = $this->sumByModels($this->riceModels, 'quantity', $today);
-        $totalMoney = $this->sumByModels($this->moneyModels, 'amount', $today);
+        $totalRice  = $this->sumByModels($this->riceModels, 'quantity');
+        $totalMoney = $this->sumByModels($this->moneyModels, 'amount');
 
         return [
             'muzakki'             => $totalMuzakki,
@@ -185,7 +182,7 @@ class ZakatLiveDashboardController extends Controller
             $muzakki = TransactionDetail::where('type', $cat['type'])
                 ->join('transactions', 'transactions.id', '=', 'transaction_details.transaction_id')
                 ->whereNull('transactions.deleted_at')
-                ->distinct('transaction_details.transaction_id')
+                ->distinct('transaction_details.id')
                 ->count();
 
             $value = (float) $cat['model']::whereHas(

@@ -35,7 +35,7 @@
         ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
         .marquee-wrap { overflow: hidden; white-space: nowrap; }
-        .marquee-inner { display: inline-block; animation: marquee 50s linear infinite; }
+        .marquee-inner { display: inline-block; animation: marquee 100s linear infinite; }
         @keyframes marquee {
             0%   { transform: translateX(100vw); }
             100% { transform: translateX(-100%); }
@@ -102,7 +102,7 @@
 
     {{-- ═══════════════════ KARTU RINGKASAN HARI INI ═══════════════════ --}}
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-        {{-- Muzakki Hari Ini --}}
+        {{-- Muzakki Total --}}
         <div class="bg-surface p-5 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
             <div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                 <span class="material-symbols-outlined text-9xl text-secondary">group</span>
@@ -112,7 +112,7 @@
                     <div class="p-1.5 bg-slate-50 rounded-lg">
                         <span class="material-symbols-outlined text-secondary">person</span>
                     </div>
-                    <p class="text-text-muted text-xs font-bold uppercase tracking-wider">Muzakki Hari Ini</p>
+                    <p class="text-text-muted text-xs font-bold uppercase tracking-wider">Muzakki Total</p>
                 </div>
                 <p class="text-5xl font-bold text-slate-800 mt-3">
                     <span id="today-muzakki">—</span>
@@ -121,7 +121,7 @@
             </div>
         </div>
 
-        {{-- Beras Hari Ini --}}
+        {{-- Beras Total --}}
         <div class="bg-surface p-5 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
             <div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                 <span class="material-symbols-outlined text-9xl text-primary">grain</span>
@@ -131,7 +131,7 @@
                     <div class="p-1.5 bg-slate-50 rounded-lg">
                         <span class="material-symbols-outlined text-primary">grain</span>
                     </div>
-                    <p class="text-text-muted text-xs font-bold uppercase tracking-wider">Beras Terkumpul Hari Ini</p>
+                    <p class="text-text-muted text-xs font-bold uppercase tracking-wider">Beras Terkumpul Total</p>
                 </div>
                 <p class="text-5xl font-bold text-secondary mt-3">
                     <span id="today-rice">—</span>
@@ -140,7 +140,7 @@
             </div>
         </div>
 
-        {{-- Uang Hari Ini --}}
+        {{-- Uang Total --}}
         <div class="bg-surface p-5 rounded-2xl shadow-card border border-slate-100 relative overflow-hidden group">
             <div class="absolute -top-2 -right-2 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                 <span class="material-symbols-outlined text-9xl text-emerald-600">payments</span>
@@ -150,7 +150,7 @@
                     <div class="p-1.5 bg-slate-50 rounded-lg">
                         <span class="material-symbols-outlined text-emerald-600">payments</span>
                     </div>
-                    <p class="text-text-muted text-xs font-bold uppercase tracking-wider">Total Dana Hari Ini</p>
+                    <p class="text-text-muted text-xs font-bold uppercase tracking-wider">Total Dana Terkumpul</p>
                 </div>
                 <p id="today-money" class="text-4xl font-bold text-slate-800 mt-3 tracking-tight">—</p>
             </div>
