@@ -13,6 +13,7 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 import { purchases, purchaseStore } from '@/routes';
+import { format } from 'date-fns';
 import { type BreadcrumbItem } from '@/types';
 import { Form, Head, Link, useForm, usePage } from '@inertiajs/react';
 import { ArrowLeft, DollarSign, Package, Save } from 'lucide-react';
@@ -35,7 +36,7 @@ export default function PurchaseCreate() {
         rice_item_id: '',
         quantity: '',
         price_per_kg: '',
-        date: new Date().toLocaleDateString().split('T')[0]
+        date: format(new Date(), 'yyyy-MM-dd')
     });
 
     // Calculate total value

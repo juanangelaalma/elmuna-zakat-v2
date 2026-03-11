@@ -15,6 +15,7 @@ import { getEffectiveValues } from '@/lib/transaction-item-utils';
 import TransactionItemDialog from '@/pages/transactions/transaction-item-dialog';
 import { transactions } from '@/routes';
 import { BreadcrumbItem, SharedData, TransactionItem } from '@/types';
+import { format } from 'date-fns';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 import TransactionItemCard from './forms/transaction-item-card';
@@ -34,7 +35,7 @@ export default function TransactionCreate() {
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, post, processing, errors } = useForm({
-        date: new Date().toLocaleDateString().split('T')[0],
+        date: format(new Date(), 'yyyy-MM-dd'),
         customer: '',
         address: '',
         wa_number: '',

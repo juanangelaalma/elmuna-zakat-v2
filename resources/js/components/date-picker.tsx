@@ -19,10 +19,13 @@ interface DatePickerProps {
 const DatePicker = ({ date, setDate, className, name = 'date' }: DatePickerProps) => {
     const [open, setOpen] = useState(false);
 
-    const handleSetDate = (date: any) => {
-        setDate(format(date, 'Y-M-dd'))
+    const handleSetDate = (newDate: any) => {
+        if (!newDate) return;
+        setDate(format(newDate, 'yyyy-MM-dd'))
         setOpen(false)
     }
+
+    const parsedDate = date ? new Date(date) : undefined;
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -33,19 +36,19 @@ const DatePicker = ({ date, setDate, className, name = 'date' }: DatePickerProps
                     className={`h-12 w-full justify-start text-left font-normal data-[empty=true]:text-muted-foreground ${className}`}
                 >
                     <CalendarIcon />
-                    {date ? (
-                        format(date, 'PPP')
+                    {parsedDate ? (
+                        format(parsedDate, 'PPP')
                     ) : (
                         <span>Pilih Tanggal</span>
                     )}
-                    
-                <input type='hidden' name={name} value={date} />
+
+                    <input type='hidden' name={name} value={date} />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
                 <Calendar
                     mode="single"
-                    selected={date}
+                    selected={parsedDate}
                     onSelect={handleSetDate}
                 />
             </PopoverContent>
