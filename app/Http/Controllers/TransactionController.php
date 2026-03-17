@@ -76,7 +76,7 @@ class TransactionController extends Controller
             );
         }
 
-        return redirect()->route('transactions');
+        return redirect()->route('transactionDetail', $createdTransaction->id);
     }
 
     public function receipt($id)
