@@ -44,7 +44,9 @@ class TransactionController extends Controller
             return redirect()->route('transactions')->with('error', 'Transaction not found');
         }
 
-        return Inertia::render('transactions/transaction-detail', compact('transaction'));
+        $alreadyHandedOver = $this->service->alreadyHandedOver(intval($id));
+
+        return Inertia::render('transactions/transaction-detail', compact('transaction', 'alreadyHandedOver'));
     }
 
     public function store(TransactionStoreRequest $request)

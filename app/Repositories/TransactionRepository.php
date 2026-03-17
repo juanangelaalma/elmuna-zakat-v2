@@ -151,7 +151,7 @@ class TransactionRepository implements TransactionRepositoryInterface
     public function getById(int $id): ?array
     {
         $transaction = Transaction::find($id);
-        
+
         if (!$transaction) {
             return null;
         }
@@ -512,6 +512,11 @@ class TransactionRepository implements TransactionRepositoryInterface
         ];
     }
 
+    public function alreadyHandedOver(int $id): bool
+    {
+        return Transaction::find($id)->shiftHandover()->exists();
+    }
+
     /**
      * Re-allocate stock from available purchase rices for a given rice sale (used on restore).
      */
@@ -545,4 +550,3 @@ class TransactionRepository implements TransactionRepositoryInterface
         }
     }
 }
-

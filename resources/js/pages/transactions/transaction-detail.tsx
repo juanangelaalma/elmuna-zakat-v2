@@ -53,7 +53,7 @@ interface Transaction {
 }
 
 export default function TransactionDetail() {
-    const { transaction } = usePage<{ transaction: Transaction }>().props;
+    const { transaction, alreadyHandedOver } = usePage<{ transaction: Transaction; alreadyHandedOver: boolean }>().props;
 
     console.log(transaction.items);
 
@@ -157,7 +157,7 @@ export default function TransactionDetail() {
                                     })}
                                 </p>
                             </div>
-                            <div className="flex gap-2"> 
+                            <div className="flex gap-2">
                                 <Link href={transactions().url}>
                                     <Button variant="outline" className="gap-2">
                                         <ArrowLeft className="h-4 w-4" />
@@ -181,14 +181,16 @@ export default function TransactionDetail() {
                                     <Printer className="h-4 w-4" />
                                     Cetak Struk
                                 </Button>
-                                <Button
-                                    variant="destructive"
-                                    className="gap-2"
-                                    onClick={() => setShowDeleteDialog(true)}
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                    Hapus Transaksi
-                                </Button>
+                                {!alreadyHandedOver && (
+                                    <Button
+                                        variant="destructive"
+                                        className="gap-2"
+                                        onClick={() => setShowDeleteDialog(true)}
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                        Hapus Transaksi
+                                    </Button>
+                                )}
                                 <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
                                     <DialogContent>
                                         <DialogHeader>
