@@ -352,6 +352,10 @@
             <span class="font-bold text-slate-700 text-fluid-base">Terima kasih kepada para Muzakki hari ini…</span>
         </div>
     </div>
+    <div class="shrink-0 hidden sm:flex items-center bg-slate-50 h-full border-l border-slate-200 text-slate-400 text-fluid-xs font-medium italic"
+         style="padding:0 clamp(.75rem,1.2vw,2rem);gap:clamp(.3rem,.4vw,.6rem)">
+        Build with <span class="text-red-400 not-italic">❤</span> by&nbsp;<span class="text-primary font-semibold not-italic">Remas El Muna</span>
+    </div>
 </footer>
 
 <script>
