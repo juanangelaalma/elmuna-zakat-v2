@@ -23,6 +23,7 @@ import {
     BookOpen,
     Folder,
     LayoutGrid,
+    MessageSquare,
     Package2,
     Settings,
     ShoppingCart,
@@ -93,6 +94,11 @@ const mainNavItems: NavItem[] = [
                 title: 'Sampah Transaksi',
                 href: '/transactions/trash',
                 icon: Trash2,
+            },
+            {
+                title: 'Manajemen WA',
+                href: '/transactions/wa-management',
+                icon: MessageSquare,
             },
         ]
     },

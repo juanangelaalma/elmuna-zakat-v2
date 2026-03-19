@@ -38,6 +38,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('transactions/index', [TransactionController::class, 'index'])->name('transactions');
     Route::get('transactions/trash', [TransactionController::class, 'trash'])->name('transactions.trash');
+    Route::get('transactions/wa-management', [TransactionController::class, 'waManagement'])->name('transactions.waManagement');
+    Route::post('transactions/bulk-resend-wa', [TransactionController::class, 'bulkResendWa'])->name('transactions.bulkResendWa');
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactionCreate');
     Route::get('transactions/{id}', [TransactionController::class, 'show'])->name('transactionDetail');
     Route::post('transactions/{id}/resend-wa', [TransactionController::class, 'resendWa'])->name('transactions.resendWa');

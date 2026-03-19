@@ -517,6 +517,24 @@ class TransactionRepository implements TransactionRepositoryInterface
         return Transaction::find($id)->shiftHandover()->exists();
     }
 
+    public function getWaList(): Collection
+    {
+        return Transaction::whereNotNull('wa_number')
+            ->where('wa_number', '!=', '')
+            ->select([
+                'id',
+                'transaction_number',
+                'date',
+                'customer',
+                'wa_number',
+                'officer_name',
+                'is_wa_sent',
+                'created_at',
+            ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
     /**
      * Re-allocate stock from available purchase rices for a given rice sale (used on restore).
      */

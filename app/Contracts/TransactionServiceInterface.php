@@ -21,4 +21,5 @@ interface TransactionServiceInterface
     public function getDonations(): SupportCollection;
     public function getFidyah(): SupportCollection;
     public function getWealths(): SupportCollection;
+    public function getWaList(): Collection;
 }

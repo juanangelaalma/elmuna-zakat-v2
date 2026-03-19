@@ -21,5 +21,7 @@ interface TransactionRepositoryInterface
     public function getDonations(): SupportCollection;
     public function getFidyah(): SupportCollection;
     public function getWealths(): SupportCollection;
+    public function getWaList(): Collection;
+    public function alreadyHandedOver(int $id): bool;
 }
 

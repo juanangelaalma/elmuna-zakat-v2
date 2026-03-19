@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use App\Utils\TransactionNumberGenerator;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
@@ -100,10 +101,16 @@ class TransactionController extends Controller
         $transaction = $this->service->getById(strval($id));
 
         if (!$transaction) {
+            if (request()->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Transaction not found'], 404);
+            }
             return redirect()->back()->with('error', 'Transaction not found');
         }
 
         if (empty($transaction['wa_number'])) {
+            if (request()->wantsJson()) {
+                return response()->json(['success' => false, 'message' => 'Nomor WhatsApp tidak tersedia untuk transaksi ini.'], 422);
+            }
             return redirect()->back()->with('error', 'Nomor WhatsApp tidak tersedia untuk transaksi ini.');
         }
 
@@ -118,13 +125,82 @@ class TransactionController extends Controller
             $transaction['items'],
         );
 
+        // Reset flag so the job doesn't skip sending to already-sent transactions
+        \App\Models\Transaction::where('id', $transaction['id'])->update(['is_wa_sent' => false]);
+
         $success = $job->handle(app(\App\Services\WhatsAppService::class));
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'success' => $success,
+                'message' => $success
+                    ? 'Pesan WhatsApp berhasil dikirim ulang.'
+                    : 'Gagal mengirim ulang pesan WhatsApp.',
+            ]);
+        }
 
         if ($success) {
             return redirect()->back()->with('success', 'Pesan WhatsApp berhasil dikirim ulang.');
         } else {
             return redirect()->back()->with('error', 'Gagal mengirim ulang pesan WhatsApp.');
         }
+    }
+
+    public function waManagement()
+    {
+        $transactions = $this->service->getWaList();
+        return Inertia::render('transactions/wa-management', compact('transactions'));
+    }
+
+    public function bulkResendWa(Request $request)
+    {
+        $ids = $request->input('ids', []);
+
+        if (empty($ids)) {
+            return response()->json(['success' => false, 'message' => 'Tidak ada transaksi yang dipilih.'], 422);
+        }
+
+        $results = [];
+        $whatsAppService = app(\App\Services\WhatsAppService::class);
+
+        foreach ($ids as $id) {
+            $transaction = $this->service->getById(strval($id));
+
+            if (!$transaction || empty($transaction['wa_number'])) {
+                $results[] = ['id' => $id, 'success' => false, 'message' => 'Nomor WA tidak tersedia.'];
+                continue;
+            }
+
+            $job = new SendWhatsAppNotification(
+                $transaction['id'],
+                $transaction['wa_number'],
+                $transaction['customer'],
+                $transaction['address'],
+                $transaction['officer_name'],
+                $transaction['transaction_number'],
+                $transaction['date'],
+                $transaction['items'],
+            );
+
+            // Reset flag so the job doesn't skip already-sent transactions during manual resend
+            \App\Models\Transaction::where('id', $transaction['id'])->update(['is_wa_sent' => false]);
+
+            $success = $job->handle($whatsAppService);
+            $results[] = [
+                'id'      => $id,
+                'success' => $success,
+                'message' => $success ? 'Berhasil' : 'Gagal',
+            ];
+        }
+
+        $successCount = count(array_filter($results, fn($r) => $r['success']));
+        $totalCount   = count($results);
+
+        return response()->json([
+            'success' => $successCount > 0,
+            'message' => "{$successCount} dari {$totalCount} pesan berhasil dikirim.",
+            'results' => $results,
+        ]);
     }
 
     public function receiptForAdmin($id)

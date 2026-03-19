@@ -96,6 +96,11 @@ class TransactionService implements TransactionServiceInterface
         return $this->repository->getWealths();
     }
 
+    public function getWaList(): Collection
+    {
+        return $this->repository->getWaList();
+    }
+
     public function alreadyHandedOver(int $id): bool
     {
         return $this->repository->alreadyHandedOver($id);
