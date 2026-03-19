@@ -683,6 +683,14 @@
             }).join('<span class="text-slate-300 shrink-0" style="margin:0 clamp(.75rem,1.2vw,2rem)">•</span>');
             // Duplicate for seamless loop
             el.innerHTML = items + '<span class="inline-block w-24"></span>' + items;
+
+            // Hitung kecepatan konstan berdasarkan panjang konten
+            setTimeout(() => {
+                const distancePx = window.innerWidth + el.scrollWidth;
+                const speedPxPerSec = 100; // Sesuaikan untuk kecepatan scrolling (px/detik)
+                const duration = distancePx / speedPxPerSec;
+                el.style.animationDuration = duration + 's';
+            }, 50);
         }
 
         // ═══════════════════════════════════════════════
