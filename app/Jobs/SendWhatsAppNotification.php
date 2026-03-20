@@ -54,7 +54,7 @@ class SendWhatsAppNotification implements ShouldQueue
         return $success;
     }
 
-    private function buildMessage(): string
+    public function buildMessage(): string
     {
         // Normalize: fold day_count into quantity/amount upfront
         $items = FidyahHelper::normalizeItems($this->items);

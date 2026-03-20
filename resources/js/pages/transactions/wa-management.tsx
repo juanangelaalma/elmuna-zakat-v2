@@ -106,6 +106,33 @@ export default function WaManagement() {
             );
     };
 
+    const handleMarkSent = (id: number) => {
+        setLoadingIds((prev) => new Set(prev).add(id));
+        axios.post(`/transactions/${id}/mark-wa-sent`, {}, {
+            headers: { Accept: 'application/json' }
+        })
+            .then((res) => {
+                const data = res.data;
+                if (data.success) {
+                    markSent(id);
+                    showToast(data.message, 'success');
+                } else {
+                    showToast(data.message, 'error');
+                }
+            })
+            .catch((err) => {
+                const msg = err.response?.data?.message || 'Terjadi kesalahan jaringan.';
+                showToast(msg, 'error');
+            })
+            .finally(() =>
+                setLoadingIds((prev) => {
+                    const next = new Set(prev);
+                    next.delete(id);
+                    return next;
+                }),
+            );
+    };
+
     const handleBulkResend = () => {
         if (selectedIds.size === 0) return;
         setBulkLoading(true);
@@ -352,22 +379,51 @@ export default function WaManagement() {
                                                     <WaBadge sent={trx.is_wa_sent} />
                                                 </td>
                                                 <td className="px-4 py-3 text-center">
-                                                    {!trx.is_wa_sent && (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleResend(trx.id)}
-                                                            disabled={isLoading}
-                                                            title="Kirim Ulang WA"
-                                                            className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-60"
-                                                        >
-                                                            {isLoading ? (
-                                                                <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                                                            ) : (
-                                                                <Send className="h-3.5 w-3.5" />
-                                                            )}
-                                                            {isLoading ? 'Mengirim...' : 'Kirim Ulang'}
-                                                        </button>
-                                                    )}
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        {!trx.is_wa_sent && trx.wa_number && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => window.open(`/transactions/${trx.id}/manual-wa`, '_blank')}
+                                                                title="Kirim WA Manual"
+                                                                className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-600 px-3 py-1.5 text-xs font-medium text-emerald-600 shadow-sm transition hover:bg-emerald-50 disabled:opacity-60"
+                                                            >
+                                                                <MessageSquare className="h-3.5 w-3.5" />
+                                                                Manual
+                                                            </button>
+                                                        )}
+                                                        {!trx.is_wa_sent && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleResend(trx.id)}
+                                                                disabled={isLoading}
+                                                                title="Kirim Ulang WA"
+                                                                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-emerald-700 disabled:opacity-60"
+                                                            >
+                                                                {isLoading ? (
+                                                                    <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+                                                                ) : (
+                                                                    <Send className="h-3.5 w-3.5" />
+                                                                )}
+                                                                {isLoading ? 'Mengirim...' : 'Kirim Ulang'}
+                                                            </button>
+                                                        )}
+                                                        {!trx.is_wa_sent && (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => handleMarkSent(trx.id)}
+                                                                disabled={isLoading}
+                                                                title="Tandai WA Sudah Terkirim"
+                                                                className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 disabled:opacity-60 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                                                            >
+                                                                {isLoading ? (
+                                                                    <RefreshCw className="h-3.5 w-3.5 animate-spin text-emerald-600" />
+                                                                ) : (
+                                                                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+                                                                )}
+                                                                Tandai
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </td>
                                             </tr>
                                         );

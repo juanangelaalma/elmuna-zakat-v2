@@ -26,6 +26,7 @@ import {
     Trash2,
     User,
     MessageCircle,
+    CheckCircle2,
 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -84,6 +85,7 @@ export default function TransactionDetail() {
     };
 
     const [isResending, setIsResending] = useState(false);
+    const [isMarking, setIsMarking] = useState(false);
 
     const handleResendWa = () => {
         setIsResending(true);
@@ -103,6 +105,20 @@ export default function TransactionDetail() {
                 alert('Terjadi kesalahan: ' + Object.values(errors).join(', '));
             },
             onFinish: () => setIsResending(false),
+        });
+    };
+
+    const handleMarkSent = () => {
+        setIsMarking(true);
+        router.post(`/transactions/${transaction.id}/mark-wa-sent`, {}, {
+            preserveScroll: true,
+            onSuccess: (page) => {
+                const flash = page.props.flash as any;
+                if (flash?.error) alert('Gagal: ' + flash.error);
+                else if (flash?.success) alert('Sukses: ' + flash.success);
+            },
+            onError: (err) => alert('Terjadi kesalahan'),
+            onFinish: () => setIsMarking(false),
         });
     };
 
@@ -166,12 +182,33 @@ export default function TransactionDetail() {
                                 </Link>
                                 {(!transaction.is_wa_sent || String(transaction.is_wa_sent) === '0') && transaction.wa_number && (
                                     <Button
+                                        onClick={() => window.open(`/transactions/${transaction.id}/manual-wa`, '_blank')}
+                                        variant="outline"
+                                        className="gap-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+                                    >
+                                        <MessageCircle className="h-4 w-4" />
+                                        Kirim WA Manual
+                                    </Button>
+                                )}
+                                {(!transaction.is_wa_sent || String(transaction.is_wa_sent) === '0') && transaction.wa_number && (
+                                    <Button
                                         onClick={handleResendWa}
                                         disabled={isResending}
                                         className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white"
                                     >
                                         <MessageCircle className="h-4 w-4" />
                                         {isResending ? 'Mengirim...' : 'Kirim Ulang WA'}
+                                    </Button>
+                                )}
+                                {(!transaction.is_wa_sent || String(transaction.is_wa_sent) === '0') && (
+                                    <Button
+                                        onClick={handleMarkSent}
+                                        disabled={isMarking}
+                                        variant="outline"
+                                        className="gap-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50"
+                                    >
+                                        <CheckCircle2 className="h-4 w-4" />
+                                        {isMarking ? 'Tandai...' : 'Tandai Terkirim'}
                                     </Button>
                                 )}
                                 <Button

@@ -43,6 +43,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('transactions/create', [TransactionController::class, 'create'])->name('transactionCreate');
     Route::get('transactions/{id}', [TransactionController::class, 'show'])->name('transactionDetail');
     Route::post('transactions/{id}/resend-wa', [TransactionController::class, 'resendWa'])->name('transactions.resendWa');
+    Route::get('transactions/{id}/manual-wa', [TransactionController::class, 'manualWa'])->name('transactions.manualWa');
+    Route::post('transactions/{id}/mark-wa-sent', [TransactionController::class, 'markWaSent'])->name('transactions.markWaSent');
     // receipt route dipindah ke public section di atas dengan middleware 'signed'
     // admin dapat akses receipt via route ini, lalu di-redirect ke signed URL
     Route::get('transactions/{id}/receipt/view', [TransactionController::class, 'receiptForAdmin'])->name('transactions.receipt.admin');

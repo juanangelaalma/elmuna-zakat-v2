@@ -146,6 +146,63 @@ class TransactionController extends Controller
         }
     }
 
+    public function manualWa($id)
+    {
+        $transaction = $this->service->getById(strval($id));
+
+        if (!$transaction) {
+            return redirect()->back()->with('error', 'Transaction not found');
+        }
+
+        if (empty($transaction['wa_number'])) {
+            return redirect()->back()->with('error', 'Nomor WhatsApp tidak tersedia untuk transaksi ini.');
+        }
+
+        $job = new SendWhatsAppNotification(
+            $transaction['id'],
+            $transaction['wa_number'],
+            $transaction['customer'],
+            $transaction['address'],
+            $transaction['officer_name'],
+            $transaction['transaction_number'],
+            $transaction['date'],
+            $transaction['items'],
+        );
+
+        $message = $job->buildMessage();
+        
+        $phone = $transaction['wa_number'];
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+        if (str_starts_with($phone, '0')) {
+            $phone = '62' . substr($phone, 1);
+        }
+
+        $url = 'https://wa.me/' . $phone . '?text=' . urlencode($message);
+        
+        return redirect()->away($url);
+    }
+
+    public function markWaSent($id)
+    {
+        $updated = \App\Models\Transaction::where('id', $id)->update(['is_wa_sent' => true]);
+
+        if (!$updated) {
+             if (request()->wantsJson()) {
+                 return response()->json(['success' => false, 'message' => 'Transaction not found'], 404);
+             }
+             return redirect()->back()->with('error', 'Transaction not found');
+        }
+
+        if (request()->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil ditandai sebagai terkirim.'
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Berhasil ditandai sebagai terkirim WA.');
+    }
+
     public function waManagement()
     {
         $transactions = $this->service->getWaList();
