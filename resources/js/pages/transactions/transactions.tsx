@@ -30,8 +30,8 @@ const columns = [
 ];
 
 export default function Transactions() {
-    const { transactions, totalAmount, totalQuantity, numberOfTransactions } =
-        usePage().props;
+    const { transactions, totalAmount, totalQuantity, numberOfTransactions, visibleAvailableStock, amilAvailableStock } =
+        usePage().props as any;
 
     const onRowClick = (row) => {
         router.visit(`/transactions/${row.id}`);
@@ -41,7 +41,25 @@ export default function Transactions() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Transaksi" />
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                    <OverviewCard
+                        title="Stok Zakat Live"
+                        value={`${formatNumber(visibleAvailableStock)} kg`}
+                        subtitle="Tampil di web utama"
+                        icon={Package}
+                        gradient="from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900"
+                        iconBg="bg-gradient-to-br from-blue-500 to-blue-600"
+                    />
+
+                    <OverviewCard
+                        title="Stok Amil"
+                        value={`${formatNumber(amilAvailableStock)} kg`}
+                        subtitle="Khusus Amil"
+                        icon={Package}
+                        gradient="from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900"
+                        iconBg="bg-gradient-to-br from-orange-500 to-orange-600"
+                    />
+
                     <OverviewCard
                         title="Total Uang didapat"
                         value={formatCurrency(totalAmount)}
@@ -53,20 +71,11 @@ export default function Transactions() {
 
                     <OverviewCard
                         title="Total Beras didapat"
-                        value={formatNumber(totalQuantity) + ' kg'}
+                        value={`${formatNumber(totalQuantity)} kg`}
                         subtitle="Total Kuantitas Beras"
                         icon={Package}
-                        gradient="from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900"
-                        iconBg="bg-gradient-to-br from-blue-500 to-blue-600"
-                    />
-
-                    <OverviewCard
-                        title="Total Transaksi"
-                        value={formatNumber(numberOfTransactions)}
-                        subtitle="Jumlah transaksi"
-                        icon={ShoppingCart}
                         gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
-                        iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
+                        iconBg="bg-gradient-to-br from-green-500 to-green-600"
                     />
                 </div>
 

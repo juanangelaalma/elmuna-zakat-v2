@@ -29,7 +29,15 @@ class TransactionController extends Controller
         $totalQuantity = $transactionSummary->totalQuantity;
         $numberOfTransactions = count($transactions);
 
-        return Inertia::render('transactions/transactions', compact('transactions', 'totalAmount', 'totalQuantity', 'numberOfTransactions'));
+        $visiblePurchased = \App\Models\PurchaseRice::where('is_visible', true)->sum('quantity');
+        $visibleAllocated = \App\Models\PurchaseRiceAllocation::whereHas('purchaseRice', fn($q) => $q->where('is_visible', true))->sum('quantity');
+        $visibleAvailableStock = max(0, $visiblePurchased - $visibleAllocated);
+
+        $amilPurchased = \App\Models\PurchaseRice::where('is_visible', false)->sum('quantity');
+        $amilAllocated = \App\Models\PurchaseRiceAllocation::whereHas('purchaseRice', fn($q) => $q->where('is_visible', false))->sum('quantity');
+        $amilAvailableStock = max(0, $amilPurchased - $amilAllocated);
+
+        return Inertia::render('transactions/transactions', compact('transactions', 'totalAmount', 'totalQuantity', 'numberOfTransactions', 'visibleAvailableStock', 'amilAvailableStock'));
     }
 
     public function create()
