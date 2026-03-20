@@ -11,7 +11,7 @@ const RiceSale = ({
     transactionItem: TransactionItem | null;
     setTransactionItem: (item: TransactionItem) => void;
 }) => {
-    const { defaultValue } = usePage<SharedData>().props;
+    const { defaultValue, availableStock } = usePage<any>().props;
 
     const handleCustomerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (transactionItem) {
@@ -74,7 +74,14 @@ const RiceSale = ({
             </div>
 
             <div className="grid grid-cols-1 gap-2 text-start">
-                <Label htmlFor="quantity">Jumlah (Kg)</Label>
+                <Label htmlFor="quantity" className="flex items-center justify-between">
+                    Jumlah (Kg)
+                    {availableStock !== undefined && (
+                        <span className={availableStock < 10 ? 'text-red-500' : 'text-green-500'}>
+                            Sisa Keseluruhan: {availableStock} kg
+                        </span>
+                    )}
+                </Label>
                 <Input
                     id="quantity"
                     type="number"

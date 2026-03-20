@@ -42,7 +42,11 @@ class TransactionController extends Controller
 
     public function create()
     {
-        return Inertia::render('transactions/transaction-create');
+        $totalPurchased = \App\Models\PurchaseRice::sum('quantity');
+        $totalAllocated = \App\Models\PurchaseRiceAllocation::sum('quantity');
+        $availableStock = max(0, $totalPurchased - $totalAllocated);
+
+        return Inertia::render('transactions/transaction-create', compact('availableStock'));
     }
 
     public function show($id)
