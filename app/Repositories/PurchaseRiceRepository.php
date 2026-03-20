@@ -37,12 +37,14 @@ class PurchaseRiceRepository implements PurchaseRiceRepositoryInterface
 
     public function getAvailablePurchaseRices(): Collection
     {
-        return PurchaseRice::select('purchase_rices.id', 'purchase_rices.quantity', 'purchase_rices.price_per_kg')
+        return PurchaseRice::select('purchase_rices.id', 'purchase_rices.quantity', 'purchase_rices.price_per_kg', 'purchase_rices.is_visible')
             ->leftJoin('purchase_rice_allocations', 'purchase_rices.id', 'purchase_rice_allocations.purchase_rice_id')
             ->selectRaw('purchase_rices.quantity - COALESCE(SUM(purchase_rice_allocations.quantity), 0) as remaining_quantity')
-            ->groupBy('purchase_rices.id', 'purchase_rices.quantity', 'purchase_rices.price_per_kg')
+            ->groupBy('purchase_rices.id', 'purchase_rices.quantity', 'purchase_rices.price_per_kg', 'purchase_rices.is_visible')
             ->havingRaw('remaining_quantity > 0')
-            ->orderBy('purchase_rices.created_at', 'desc')
+            ->orderBy('purchase_rices.is_visible', 'desc')
+            ->orderBy('purchase_rices.date', 'asc')
+            ->orderBy('purchase_rices.created_at', 'asc')
             ->get();
     }
 

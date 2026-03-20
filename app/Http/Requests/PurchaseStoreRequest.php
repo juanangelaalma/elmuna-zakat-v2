@@ -26,6 +26,7 @@ class PurchaseStoreRequest extends FormRequest
             'date' => 'required',
             'quantity' => 'required|numeric|min:0',
             'price_per_kg' => 'required|numeric|min:0',
+            'is_visible' => 'required|boolean',
         ];
     }
 }

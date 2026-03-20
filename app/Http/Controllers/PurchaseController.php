@@ -22,7 +22,15 @@ class PurchaseController extends Controller
         $totalValue = $purchases->sum(fn($item) => $item->quantity * $item->price_per_kg);
         $totalStocks = $this->service->getTotalStocks();
 
-        return Inertia::render('purchases/purchases', compact('purchases', 'totalQuantity', 'totalValue', 'totalStocks'));
+        $visiblePurchased = \App\Models\PurchaseRice::where('is_visible', true)->sum('quantity');
+        $visibleAllocated = \App\Models\PurchaseRiceAllocation::whereHas('purchaseRice', fn($q) => $q->where('is_visible', true))->sum('quantity');
+        $visibleAvailableStock = max(0, $visiblePurchased - $visibleAllocated);
+
+        $amilPurchased = \App\Models\PurchaseRice::where('is_visible', false)->sum('quantity');
+        $amilAllocated = \App\Models\PurchaseRiceAllocation::whereHas('purchaseRice', fn($q) => $q->where('is_visible', false))->sum('quantity');
+        $amilAvailableStock = max(0, $amilPurchased - $amilAllocated);
+
+        return Inertia::render('purchases/purchases', compact('purchases', 'totalQuantity', 'totalValue', 'totalStocks', 'visibleAvailableStock', 'amilAvailableStock'));
     }
 
     public function create()

@@ -19,13 +19,25 @@ const columns = [
     { key: 'id', label: 'ID' },
     { key: 'date', label: 'Tanggal' },
     { key: 'rice_item.name', label: 'Nama' },
-    { key: 'quantity', label: 'Jumlah' },
+    { key: 'quantity', label: 'Jumlah (kg)' },
     { key: 'price_per_kg', label: 'Harga/kg', render: formatCurrency },
+    {
+        key: 'is_visible',
+        label: 'Status',
+        render: (value: boolean | number | string) => {
+            const isVisible = value === true || value === 1 || value === '1';
+            return isVisible ? (
+                <span className="rounded-md bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700">Tampil (Zakat Live)</span>
+            ) : (
+                <span className="rounded-md bg-orange-100 px-2 py-1 text-xs font-medium text-orange-700">Stok Amil</span>
+            );
+        },
+    },
 ];
 
 export default function Purchases() {
-    const { purchases, totalQuantity, totalValue, totalStocks } =
-        usePage().props;
+    const { purchases, totalQuantity, totalValue, totalStocks, visibleAvailableStock, amilAvailableStock } =
+        usePage().props as any;
 
     const onRowClick = (row) => {
         router.visit(`/purchases/${row.id}`);
@@ -35,32 +47,41 @@ export default function Purchases() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pembelian" />
             <div className="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid gap-4 md:grid-cols-3">
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     <OverviewCard
-                        title="Total Jumlah"
-                        value={`${formatNumber(totalQuantity)} kg`}
-                        subtitle="Total pembelian beras"
+                        title="Stok Tersedia"
+                        value={`${formatNumber(visibleAvailableStock)} kg`}
+                        subtitle="Tampil di Zakat Live"
                         icon={Package}
                         gradient="from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900"
                         iconBg="bg-gradient-to-br from-blue-500 to-blue-600"
                     />
 
                     <OverviewCard
-                        title="Total Nilai"
-                        value={formatCurrency(totalValue)}
-                        subtitle="Nilai total pembelian"
-                        icon={DollarSign}
-                        gradient="from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
-                        iconBg="bg-gradient-to-br from-emerald-500 to-emerald-600"
+                        title="Stok Amil"
+                        value={`${formatNumber(amilAvailableStock)} kg`}
+                        subtitle="Khusus Amil (Tersembunyi)"
+                        icon={Package}
+                        gradient="from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900"
+                        iconBg="bg-gradient-to-br from-orange-500 to-orange-600"
                     />
 
                     <OverviewCard
-                        title="Total Stok"
-                        value={formatNumber(totalStocks)}
-                        subtitle="Jumlah jenis beras saat ini"
+                        title="Total Pembelian"
+                        value={`${formatNumber(totalQuantity)} kg`}
+                        subtitle="Akumulasi seluruhnya"
                         icon={Package}
-                        gradient="from-blue-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
+                        gradient="from-purple-50 to-purple-100 dark:from-purple-950 dark:to-purple-900"
                         iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
+                    />
+
+                    <OverviewCard
+                        title="Total Nilai"
+                        value={formatCurrency(totalValue)}
+                        subtitle="Nilai akumulasi pembelian"
+                        icon={DollarSign}
+                        gradient="from-emerald-50 to-emerald-100 dark:from-emerald-950 dark:to-emerald-900"
+                        iconBg="bg-gradient-to-br from-emerald-500 to-emerald-600"
                     />
                 </div>
 

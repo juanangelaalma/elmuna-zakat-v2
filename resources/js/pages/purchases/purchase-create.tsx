@@ -36,6 +36,7 @@ export default function PurchaseCreate() {
         rice_item_id: '',
         quantity: '',
         price_per_kg: '',
+        is_visible: true,
         date: format(new Date(), 'yyyy-MM-dd')
     });
 
@@ -129,6 +130,32 @@ export default function PurchaseCreate() {
                                                         {item.name}
                                                     </SelectItem>
                                                 ))}
+                                            </SelectContent>
+                                        </Select>
+
+                                        {/* Status Stok Input */}
+                                        <Label htmlFor="is_visible">
+                                            Status Stok{' '}
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        </Label>
+                                        <Select
+                                            name="is_visible"
+                                            value={data.is_visible ? "1" : "0"}
+                                            onValueChange={(value) =>
+                                                setData('is_visible', value === "1")
+                                            }
+                                        >
+                                            <SelectTrigger>
+                                                <div className="flex items-center gap-2">
+                                                    <Package className="h-4 w-4 text-gray-400" />
+                                                    <SelectValue placeholder="Pilih status stok" />
+                                                </div>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="1">Tampil (Zakat Live)</SelectItem>
+                                                <SelectItem value="0">Stok Amil (Tersembunyi)</SelectItem>
                                             </SelectContent>
                                         </Select>
 

@@ -94,8 +94,10 @@ class ZakatLiveDashboardController extends Controller
 
     private function getStockData(): array
     {
-        $totalPurchased = (float) PurchaseRice::sum('quantity');
-        $totalAllocated = (float) PurchaseRiceAllocation::sum('quantity');
+        $totalPurchased = (float) PurchaseRice::where('is_visible', true)->sum('quantity');
+        $totalAllocated = (float) PurchaseRiceAllocation::whereHas('purchaseRice', function($q) {
+            $q->where('is_visible', true);
+        })->sum('quantity');
         $availableStock = max(0, $totalPurchased - $totalAllocated);
 
         $defaults    = DefaultValue::first();
