@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Zakat Live — UPZ AL MUNAWWAR</title>
+    <title>Dashboard Zakat Live — ElMuza</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
@@ -208,7 +208,7 @@
                     <span class="material-symbols-outlined icon-fluid-lg">mosque</span>
                 </div>
                 <div>
-                    <h1 class="text-fluid-3xl font-black tracking-tight text-slate-800">UPZ AL MUNAWWAR</h1>
+                    <h1 class="text-fluid-3xl font-black tracking-tight text-slate-800">ElMuza</h1>
                     <div class="flex items-center gap-2 mt-1">
                         <span class="live-dot dot-fluid rounded-full bg-green-500 inline-block shrink-0"></span>
                         <p class="text-fluid-sm text-text-muted font-semibold uppercase tracking-wider">Dashboard Zakat Real-Time</p>

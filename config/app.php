@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'UPZ AL MUNAWWAR'),
-    'name_short' => env('APP_NAME_SHORT', 'UPZELMUNA'),
+    'name' => env('APP_NAME', 'ELMUNA ZAKAT'),
+    'name_short' => env('APP_NAME_SHORT', 'ElMuza'),
 
     /*
     |--------------------------------------------------------------------------

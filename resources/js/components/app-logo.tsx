@@ -10,7 +10,7 @@ export default function AppLogo() {
                 <Sparkles className="h-5 w-5 text-white" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                UPZELMUNA
+                ElMuza
             </span>
         </>
     );

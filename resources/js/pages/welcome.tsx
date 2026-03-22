@@ -128,10 +128,9 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                                     className="mb-6 text-5xl font-bold leading-tight lg:text-7xl"
                                 >
                                     <span className="bg-gradient-to-r from-foreground via-primary to-accent bg-clip-text text-transparent">
-                                        UPZ AL MUNAWWAR
+                                        ElMuza
                                     </span>
                                     <br />
-                                    <span className="text-foreground">Al Munawwar</span>
                                 </motion.h1>
 
                                 <motion.p
@@ -272,7 +271,7 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                                         Tentang Sistem Ini
                                     </h2>
                                     <p className="mb-8 text-lg text-muted-foreground leading-relaxed">
-                                        UPZ AL MUNAWWAR adalah sistem manajemen zakat digital yang dikembangkan
+                                        ElMuza adalah sistem manajemen zakat digital yang dikembangkan
                                         khusus untuk Masjid Al Munawwar oleh tim Remas Al Munawwar.
                                         Sistem ini tidak diperjualbelikan dan merupakan bagian dari upaya
                                         meningkatkan pelayanan kepada jamaah dalam pengelolaan zakat, infaq, dan sedekah.
@@ -297,7 +296,7 @@ export default function WelcomeNew({ canRegister = true }: { canRegister?: boole
                                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-accent">
                                     <Sparkles className="h-4 w-4 text-white" />
                                 </div>
-                                <span className="font-semibold text-foreground">UPZ AL MUNAWWAR</span>
+                                <span className="font-semibold text-foreground">ElMuza</span>
                             </div>
                             <p className="text-sm text-muted-foreground text-center">
                                 © 2024 Masjid Al Munawwar. Developed by Remas Al Munawwar
